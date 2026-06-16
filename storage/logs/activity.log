@@ -1,0 +1,740 @@
+[2026-01-18 07:47:34] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 07:47:47] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 07:47:47] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 07:48:23] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 07:48:23] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 07:58:23] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 07:58:53] ACTION: REGISTER_SUCCESS | USER: 7 | DETAILS: New user registered: donaharun@gmail.com | IP: ::1
+[2026-01-18 08:11:26] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 08:11:26] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:23:59] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:24:05] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 08:24:41] ACTION: LOGIN_FAILED | USER: GUEST | DETAILS: Wrong password for user: 5 | IP: ::1
+[2026-01-18 08:24:46] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 08:24:46] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:25:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:25:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:27:04] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:27:35] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 08:29:52] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 08:29:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:30:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:30:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:30:22] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 08:31:42] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 08:31:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:31:47] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:31:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:35:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:35:59] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 08:36:07] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 08:36:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:36:44] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 08:37:01] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: 127.0.0.1
+[2026-01-18 08:37:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: 127.0.0.1
+[2026-01-18 08:42:01] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 08:42:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:42:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:58:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 08:59:02] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:00:36] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:00:36] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:08:15] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:11:56] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:11:56] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:12:09] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:20:04] ACTION: PASSWORD_RESET | USER: 1 | DETAILS: Reset password for user ID: 9 | IP: ::1
+[2026-01-18 09:21:53] ACTION: PASSWORD_RESET | USER: 1 | DETAILS: Reset password for user ID: 9 | IP: ::1
+[2026-01-18 09:22:00] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:22:45] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:22:45] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:23:01] ACTION: PASSWORD_RESET | USER: 1 | DETAILS: Reset password for user ID: 5 | IP: ::1
+[2026-01-18 09:23:14] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:23:18] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:23:27] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 09:23:27] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:23:53] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 09:24:02] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:24:02] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:25:41] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:26:07] ACTION: REGISTER_SUCCESS | USER: 10 | DETAILS: New user registered: huruhara@gmail.com | IP: ::1
+[2026-01-18 09:26:22] ACTION: LOGIN_SUCCESS | USER: 10 | DETAILS: User logged in: 10 | IP: ::1
+[2026-01-18 09:26:46] ACTION: LOGOUT | USER: 10 | DETAILS: User logged out: huruhara | IP: ::1
+[2026-01-18 09:26:56] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:26:56] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:27:24] ACTION: USER_CREATE | USER: 1 | DETAILS: Created user: sonia@gmail.com with role: USER | IP: ::1
+[2026-01-18 09:27:32] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:48:41] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 09:48:41] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 09:48:55] ACTION: EMAIL_VERIFY_MANUAL | USER: 1 | DETAILS: Email verified manually for user ID: 11 | IP: ::1
+[2026-01-18 09:49:07] ACTION: PASSWORD_RESET | USER: 1 | DETAILS: Reset password for user ID: 11 | IP: ::1
+[2026-01-18 09:49:13] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 09:49:22] ACTION: LOGIN_SUCCESS | USER: 11 | DETAILS: User logged in: 11 | IP: ::1
+[2026-01-18 10:14:24] ACTION: LOGOUT | USER: 11 | DETAILS: User logged out: SoniaSonia | IP: ::1
+[2026-01-18 10:14:34] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 10:14:34] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 10:43:17] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 10:43:19] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 10:43:19] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 10:48:51] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:48] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:58] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:59] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:59] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:59] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:01:59] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:02:00] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:04:06] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:04:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:04:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:04:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:04:07] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:12:09] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:21:23] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:22:06] ACTION: VACANCY_CREATE | USER: 1 | DETAILS: Created vacancy: KPS-2026-14a3 | IP: ::1
+[2026-01-18 11:23:03] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:23:47] ACTION: VACANCY_CREATE | USER: 1 | DETAILS: Created vacancy: GP-2026-0ae5 | IP: ::1
+[2026-01-18 11:25:35] ACTION: VACANCY_CREATE | USER: 1 | DETAILS: Created vacancy: TKD-2026-16ec | IP: ::1
+[2026-01-18 11:25:39] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:26:03] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:27:43] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 11:27:54] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 11:27:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:29:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:29:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:34:18] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 11:34:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:03] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:51] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:51] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:38:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:39:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:44:53] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:46:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:46:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:46:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:49:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:50:44] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:52:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:53:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:57:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:57:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:57:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:57:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:57:17] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 11:57:30] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 11:57:30] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 11:58:49] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 13 | IP: ::1
+[2026-01-18 11:59:26] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 12 | IP: ::1
+[2026-01-18 12:00:31] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 11 | IP: ::1
+[2026-01-18 12:00:34] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 12:00:52] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:00:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:36] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:36] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:36] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:02:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:03:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:03:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:03:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:03:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:03:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:07:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:07:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:07:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:08:10] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:08:26] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 12:08:26] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:08:49] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 11 | IP: ::1
+[2026-01-18 12:08:52] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 12:09:06] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:09:06] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:13:50] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:14:01] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-18 12:14:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:14:30] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 11 | IP: ::1
+[2026-01-18 12:14:39] ACTION: VACANCY_UPDATE | USER: 1 | DETAILS: Updated vacancy ID: 13 | IP: ::1
+[2026-01-18 12:14:47] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-18 12:15:03] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:15:03] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:15:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:17:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:18:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:24] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:21:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:22:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:22:09] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:22:09] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:24:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:24:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:24:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:24:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:34:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:34:57] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:36:22] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:36:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:26] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:36:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:37:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:37:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:37:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:37:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:37:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:38:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:38:31] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:38:31] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:39:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:40:45] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:11] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:41:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:42:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:42:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:42:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:42:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:43:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:43:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:44] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:44] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:44] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:44] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:45] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:44:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:53] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:47:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:48:05] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:48:15] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:48:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:29] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:29] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:29] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:29] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:49:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:17] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:50:27] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:50:27] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:50:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:52:03] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:52:04] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:10] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:11] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:11] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:53:52] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 12:54:11] ACTION: LOGIN_SUCCESS | USER: 2 | DETAILS: User logged in: 2 | IP: ::1
+[2026-01-18 12:54:11] ACTION: DASHBOARD_ACCESS | USER: 2 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:54:28] ACTION: DASHBOARD_ACCESS | USER: 2 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:54:33] ACTION: DASHBOARD_ACCESS | USER: 2 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:54:35] ACTION: LOGOUT | USER: 2 | DETAILS: User logged out: Admin Verifikator | IP: ::1
+[2026-01-18 12:54:50] ACTION: LOGIN_SUCCESS | USER: 3 | DETAILS: User logged in: 3 | IP: ::1
+[2026-01-18 12:54:50] ACTION: DASHBOARD_ACCESS | USER: 3 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 12:55:06] ACTION: LOGOUT | USER: 3 | DETAILS: User logged out: Assessor Penilai | IP: ::1
+[2026-01-18 12:55:33] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 12:55:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:21:27] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 13:21:27] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:23:10] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:27:26] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 13:35:01] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 13:35:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:36:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:36:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:39:29] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 13:43:36] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 13:43:36] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:52:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:53:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:53:11] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:53:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:54:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:54:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:55:06] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:55:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:55:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:58:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:58:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:58:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:59:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 13:59:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:11:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:11:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:12:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:12:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:12:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:14:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:16:53] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:17:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:24] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:26:24] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:31:26] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:31:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:31:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 14:32:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:04:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:04:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:04:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:53] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:10:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:11:02] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:11:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:11:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:22:27] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:22:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:22:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:22:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:23:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:30:30] ACTION: LOGIN_FAILED | USER: GUEST | DETAILS: Wrong password for user: 5 | IP: ::1
+[2026-01-18 15:30:36] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 15:30:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 15:34:50] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 15:34:59] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 15:34:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:21] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 16:21:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:27] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 10 | IP: ::1
+[2026-01-18 16:21:38] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 10 | IP: ::1
+[2026-01-18 16:21:41] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 11 | IP: ::1
+[2026-01-18 16:21:43] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 12 | IP: ::1
+[2026-01-18 16:21:47] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 12 | IP: ::1
+[2026-01-18 16:21:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:51] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:51] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:21:52] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:22:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:24:00] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 12 | IP: ::1
+[2026-01-18 16:30:37] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 12 | IP: ::1
+[2026-01-18 16:30:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:30:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:44:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:45:02] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 10 | IP: ::1
+[2026-01-18 16:45:05] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 11 | IP: ::1
+[2026-01-18 16:45:06] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 12 | IP: ::1
+[2026-01-18 16:45:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:46:35] ACTION: SUBMISSION_SUBMITTED | USER: 5 | DETAILS: User submitted application ID: 13 | IP: ::1
+[2026-01-18 16:46:35] ACTION: APPLICATION_SUBMITTED | USER: 5 | DETAILS: Submitted application for vacancy ID: 13 | IP: ::1
+[2026-01-18 16:53:31] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:53:38] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 13 | IP: ::1
+[2026-01-18 16:53:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:54:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 16:59:32] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 16:59:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:00:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:01:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:01:46] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:25:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:25:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:25:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:25:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:25:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:26:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:26:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:26:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:26:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:26:06] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 14 | IP: ::1
+[2026-01-18 17:26:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:50:56] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 17:50:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:50:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:51:17] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 15 | IP: ::1
+[2026-01-18 17:51:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:56:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:56:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:56:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:56:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:56:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:57:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:57:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:57:06] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 17:57:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 18:01:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 18:07:43] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 18:32:41] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 18:33:00] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 18:34:02] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 19:30:24] ACTION: REGISTER_SUCCESS | USER: 12 | DETAILS: New user registered: n.dwi.rahayuningtyas@gmail.com | IP: ::1
+[2026-01-18 19:30:42] ACTION: LOGIN_SUCCESS | USER: 12 | DETAILS: User logged in: 12 | IP: ::1
+[2026-01-18 19:35:50] ACTION: PROFILE_UPDATE | USER: 12 | DETAILS: Profile updated for user: 12 | IP: ::1
+[2026-01-18 19:36:26] ACTION: PROFILE_UPDATE | USER: 12 | DETAILS: Profile updated for user: 12 | IP: ::1
+[2026-01-18 19:36:44] ACTION: PROFILE_UPDATE | USER: 12 | DETAILS: Profile updated for user: 12 | IP: ::1
+[2026-01-18 19:36:53] ACTION: DASHBOARD_ACCESS | USER: 12 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 19:37:15] ACTION: PROFILE_UPDATE | USER: 12 | DETAILS: Profile updated for user: 12 | IP: ::1
+[2026-01-18 19:37:16] ACTION: DASHBOARD_ACCESS | USER: 12 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 20:56:30] ACTION: REMEMBER_LOGIN | USER: 12 | DETAILS: Auto login via remember token | IP: ::1
+[2026-01-18 20:56:49] ACTION: LOGOUT | USER: 12 | DETAILS: User logged out: Novita Dwi R | IP: ::1
+[2026-01-18 20:56:57] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 20:56:57] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:41:45] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 21:41:45] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:42:53] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:43:06] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:43:10] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:43:37] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:45:50] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:46:13] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:46:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:47:10] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:47:23] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:47:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:53:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:53:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:53:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:04] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:54:34] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-18 21:54:40] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:42] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 21:54:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:01:54] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 22:10:34] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 22:10:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:11:09] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:11:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:11:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:13:45] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 22:14:32] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 22:14:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:15:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:15:17] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:16:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:16:42] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 22:17:24] ACTION: REGISTER_SUCCESS | USER: 13 | DETAILS: New user registered: pitriyanti@gmail.com | IP: ::1
+[2026-01-18 22:17:34] ACTION: LOGIN_SUCCESS | USER: 13 | DETAILS: User logged in: 13 | IP: ::1
+[2026-01-18 22:20:06] ACTION: LOGOUT | USER: 13 | DETAILS: User logged out: pitriyanti | IP: ::1
+[2026-01-18 22:20:28] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 22:20:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:22:45] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:36:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 22:36:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:01:16] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:01:18] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:01:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:07:29] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:07:33] ACTION: DRAFT_CREATED | USER: 5 | DETAILS: Created draft submission ID: 22 for vacancy: 12 | IP: ::1
+[2026-01-18 23:19:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:19:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:19:37] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 23:19:47] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 23:19:47] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:19:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:20:32] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:20:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:20:34] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-18 23:20:42] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 23:20:43] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:20:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:21:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:34] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 23:46:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:36] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:46:54] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:47:14] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:47:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:48:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:48:03] ACTION: DRAFT_CREATED | USER: 5 | DETAILS: Created draft submission ID: 23 for vacancy: 11 | IP: ::1
+[2026-01-18 23:48:53] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:49:11] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:50:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:50:27] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:51:41] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:52:35] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-18 23:52:35] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:52:45] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:52:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:53:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:54:21] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:54:26] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:54:38] ACTION: SUBMISSION_CANCELLED | USER: 5 | DETAILS: User cancelled draft submission ID: 23 | IP: ::1
+[2026-01-18 23:54:39] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:55:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:55:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:56:25] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:57:33] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:59:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-18 23:59:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:01:04] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:01:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:03:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:03:26] ACTION: PROFILE_UPDATE | USER: 5 | DETAILS: Profile updated for user: 5 | IP: ::1
+[2026-01-19 00:03:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:08:28] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:09:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:21:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:22:50] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:23:07] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:23:38] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:30:04] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:30:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:30:05] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:30:14] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: invoice-detail-perjalanan (1).pdf for submission ID: 24 | IP: ::1
+[2026-01-19 00:30:55] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:31:21] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Inovice_VA_NUMBER_DUNN_KEMENBUD.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:31:32] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SK Menbud Pengangkatan Kabiro Humas.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:31:46] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SPMT, SPMJ, SPP.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:31:57] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Surat Pemberitahuan Gangguan Masal PDNS1 (1).pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:32:09] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 20260109152137Surat Edaran Pengisian Pegawai Balai Pelestarian Kebudayaan dan Kantor Pelestarian Kebudayaan 08012026.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:32:17] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 20260102141024 Undangan Rapat Pleno 5Jan2026-.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:32:25] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Undangan-Webinar-Pengembangan kompetensi Dosen.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:32:30] ACTION: SUBMISSION_SUBMITTED | USER: 5 | DETAILS: User submitted application ID: 25 | IP: ::1
+[2026-01-19 00:32:30] ACTION: APPLICATION_SUBMITTED | USER: 5 | DETAILS: Submitted application for vacancy ID: 13 | IP: ::1
+[2026-01-19 00:32:37] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:32:49] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:36:48] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SK Menbud Pengangkatan Kabiro Humas.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:11] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: PermendiktiSaintek-no-1-tahun-2024.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:15] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SPMT, SPMJ, SPP.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:19] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SPMT, SPMJ, SPP.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:24] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Surat Pemberitahuan Gangguan Masal PDNS1 (1).pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:29] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 2663097_1767075369_Pemberitahuan-Aktiv.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:33] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SPMT, SPMJ, SPP.pdf for submission ID: 25 | IP: ::1
+[2026-01-19 00:37:39] ACTION: SUBMISSION_SUBMITTED | USER: 5 | DETAILS: User submitted application ID: 25 | IP: ::1
+[2026-01-19 00:37:39] ACTION: APPLICATION_SUBMITTED | USER: 5 | DETAILS: Submitted application for vacancy ID: 13 | IP: ::1
+[2026-01-19 00:37:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:48:15] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:48:24] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 00:48:37] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 20260109173455Salinan-nomor-194-P-2025.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:48:42] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Surat Pemberitahuan Gangguan Masal PDNS1 (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:48:47] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 2663097_1767075369_Pemberitahuan-Aktiv.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:48:51] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Undangan Sosialisasi SIPRINKA_8 Jan 2026_Daring (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:48:57] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Pengajuan Geolocation Lokasi Kerja BPK XVI (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:49:02] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Salinan-nomor-194-P-2025.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:49:06] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Inovice_VA_NUMBER_DUNN_KEMENBUD.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 00:49:34] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 06:58:58] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-19 06:58:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:01:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:02:24] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Undangan sumpah PPPK - panitia- ok.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:02:31] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Surat Pemberitahuan Gangguan Masal PDNS1 (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:02:40] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SPMT, SPMJ, SPP.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:02:45] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Surat Pemberitahuan Gangguan Masal PDNS1 (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:02:53] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Pengajuan Geolocation Lokasi Kerja BPK XVI.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:02:57] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: SE_Kepala_BKN_Nomor_11_Tahun_2025_tentang_Perlindungan_dan_Pemanfaatan.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:03:02] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 20260109152137Surat Edaran Pengisian Pegawai Balai Pelestarian Kebudayaan dan Kantor Pelestarian Kebudayaan 08012026.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:07:33] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 0468_SK Tim Pengelolaan Instansi Digital_20250818.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:07:51] ACTION: SUBMISSION_UPDATED | USER: 5 | DETAILS: User updated draft submission ID: 26 | IP: ::1
+[2026-01-19 07:08:30] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:10:00] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:10:01] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:16:56] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-19 07:16:56] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:18:13] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 0468_SK Tim Pengelolaan Instansi Digital_20250818.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:18:19] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Kehadiran.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:18:23] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: 2417903_1757592539_Keterlambatan-Pemba (1).pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:18:28] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: payment-detail-perjalanan.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:18:32] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Nomor ND-1774 Pendaftaran Akun Zoom Dosen Pegawai dan Mahasiswa SKSG UI.pdf for submission ID: 26 | IP: ::1
+[2026-01-19 07:18:39] ACTION: SUBMISSION_UPDATED | USER: 5 | DETAILS: User updated draft submission ID: 26 | IP: ::1
+[2026-01-19 07:18:58] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:18:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:18:59] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:19:08] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:19:19] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:19:20] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 07:19:21] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-19 10:55:22] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-19 10:55:22] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-19 10:55:32] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-20 21:58:00] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-20 21:58:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-20 21:58:30] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-20 21:58:36] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-20 21:58:39] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-20 21:58:47] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-20 21:58:47] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-20 22:05:48] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-20 22:05:56] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-01-29 23:31:21] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-01-29 23:31:21] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-29 23:31:57] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-01-29 23:32:24] ACTION: LOGIN_SUCCESS | USER: 2 | DETAILS: User logged in: 2 | IP: ::1
+[2026-01-29 23:32:24] ACTION: DASHBOARD_ACCESS | USER: 2 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-29 23:32:39] ACTION: LOGOUT | USER: 2 | DETAILS: User logged out: Admin Verifikator | IP: ::1
+[2026-01-29 23:32:52] ACTION: LOGIN_SUCCESS | USER: 3 | DETAILS: User logged in: 3 | IP: ::1
+[2026-01-29 23:32:52] ACTION: DASHBOARD_ACCESS | USER: 3 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-29 23:32:58] ACTION: LOGOUT | USER: 3 | DETAILS: User logged out: Assessor Penilai | IP: ::1
+[2026-01-29 23:33:12] ACTION: LOGIN_SUCCESS | USER: 5 | DETAILS: User logged in: 5 | IP: ::1
+[2026-01-29 23:33:12] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-29 23:33:42] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:33:50] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:33:57] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:34:04] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:34:11] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:34:16] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:34:22] ACTION: FILE_UPLOADED | USER: 5 | DETAILS: User uploaded file: Draft AKhir_Undangan Asesmen Potensi dan Kompetensi, 2026.pdf for submission ID: 26 | IP: ::1
+[2026-01-29 23:40:31] ACTION: DASHBOARD_ACCESS | USER: 5 | DETAILS: User accessed dashboard | IP: ::1
+[2026-01-29 23:41:41] ACTION: LOGOUT | USER: 5 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-02-22 17:54:46] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-02-22 17:54:46] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-02-22 17:55:24] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-05-02 19:11:18] ACTION: REGISTER_SUCCESS | USER: 14 | DETAILS: New user registered: orangbiasa@gmail.com | IP: ::1
+[2026-05-02 19:11:32] ACTION: LOGIN_SUCCESS | USER: 14 | DETAILS: User logged in: 14 | IP: ::1
+[2026-05-02 19:22:40] ACTION: LOGOUT | USER: 14 | DETAILS: User logged out: Orang Biasa | IP: ::1
+[2026-06-17 03:43:15] ACTION: REGISTER_SUCCESS | USER: 17 | DETAILS: New user registered: kurnia@gmail.com | IP: ::1

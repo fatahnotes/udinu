@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test AJAX Calls</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Test AJAX Calls to User API</h1>
+    
+    <div>
+        <button onclick="testConnection()">Test Connection</button>
+        <button onclick="testStats()">Test Stats</button>
+        <button onclick="testList()">Test List Users</button>
+        <button onclick="testCreate()">Test Create User</button>
+    </div>
+    
+    <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 100px;">
+        Results will appear here...
+    </div>
+    
+    <script>
+        function log(msg) {
+            $('#result').prepend('<div>' + msg + '</div>');
+            console.log(msg);
+        }
+        
+        function testConnection() {
+            log('Testing connection...');
+            $.ajax({
+                url: 'user-api.php?action=test',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    log('✓ Connection test: ' + JSON.stringify(response));
+                },
+                error: function(xhr, status, error) {
+                    log('✗ Connection error: ' + error + ' - ' + xhr.responseText);
+                }
+            });
+        }
+        
+        function testStats() {
+            log('Testing stats...');
+            $.ajax({
+                url: 'user-api.php?action=stats',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    log('✓ Stats: ' + JSON.stringify(response));
+                },
+                error: function(xhr, status, error) {
+                    log('✗ Stats error: ' + error + ' - ' + xhr.responseText);
+                }
+            });
+        }
+        
+        function testList() {
+            log('Testing list...');
+            $.ajax({
+                url: 'user-api.php?action=list&page=1',
+                type: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    log('✓ List: Found ' + (response.data?.users?.length || 0) + ' users');
+                    console.log('List response:', response);
+                },
+                error: function(xhr, status, error) {
+                    log('✗ List error: ' + error + ' - ' + xhr.responseText);
+                    console.log('List error details:', xhr);
+                }
+            });
+        }
+        
+        function testCreate() {
+            log('Testing create...');
+            $.ajax({
+                url: 'user-api.php?action=create',
+                type: 'POST',
+                data: {
+                    name: 'Test User ' + Date.now(),
+                    email: 'test_' + Date.now() + '@example.com',
+                    password: 'Test123!',
+                    role: 'USER'
+                },
+                dataType: 'json',
+                success: function(response) {
+                    log('✓ Create: ' + JSON.stringify(response));
+                },
+                error: function(xhr, status, error) {
+                    log('✗ Create error: ' + error + ' - ' + xhr.responseText);
+                }
+            });
+        }
+    </script>
+</body>
+</html>
