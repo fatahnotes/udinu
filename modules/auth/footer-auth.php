@@ -15,7 +15,7 @@
             </p>
             <p class="text-white mb-0">
                 <small>
-                    &copy; <?php echo date('Y'); ?> Sistem Pendaftaran Guru Garuda. Hak Cipta Dilindungi.<br>
+                    &copy; <?php echo date('Y'); ?> Sistem Pendaftaran Ujian Dinas dan Ujian Penyesuaian Kenaikan Pangkat. Hak Cipta Dilindungi.<br>
                     Kementerian Pendidikan Tinggi, Sains dan Teknologi
                 </small>
             </p>

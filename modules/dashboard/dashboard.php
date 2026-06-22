@@ -140,7 +140,7 @@ include __DIR__ . '/header-dashboard.php';
                 <div class="col-md-8">
                     <h2 class="mb-3">Selamat Datang, <?php echo htmlspecialchars($user_name); ?>!</h2>
                     <p class="mb-0">
-                        Anda login sebagai <strong><?php echo $user_role; ?></strong> di Sistem Pendaftaran Guru Garuda.
+                        Anda login sebagai <strong><?php echo $user_role; ?></strong> di Sistem Pendaftaran UDIN & UPKP.
                         <?php if (!$profile_complete && $user_role === 'USER'): ?>
                             <br><i class="fas fa-exclamation-triangle me-1"></i>
                             <strong>Lengkapi profil Anda</strong> untuk dapat mengikuti seleksi.

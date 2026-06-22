@@ -738,3 +738,32 @@
 [2026-05-02 19:11:32] ACTION: LOGIN_SUCCESS | USER: 14 | DETAILS: User logged in: 14 | IP: ::1
 [2026-05-02 19:22:40] ACTION: LOGOUT | USER: 14 | DETAILS: User logged out: Orang Biasa | IP: ::1
 [2026-06-17 03:43:15] ACTION: REGISTER_SUCCESS | USER: 17 | DETAILS: New user registered: kurnia@gmail.com | IP: ::1
+[2026-06-17 08:36:24] ACTION: REGISTER_SUCCESS | USER: 18 | DETAILS: New user registered: tara@gmail.com | IP: ::1
+[2026-06-17 08:38:06] ACTION: REGISTER_SUCCESS | USER: 19 | DETAILS: New user registered: bruka@gmail.com | IP: ::1
+[2026-06-17 08:38:36] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-17 08:38:36] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 08:38:54] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 08:39:12] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-17 08:56:12] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-17 08:56:13] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 08:57:34] ACTION: VACANCY_CREATE | USER: 1 | DETAILS: Created vacancy: KPS-2026-d236 | IP: ::1
+[2026-06-17 09:08:40] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:08:46] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-17 09:21:43] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-17 09:21:43] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:22:25] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:22:27] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:23:00] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:23:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:23:17] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:24:08] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:24:09] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:24:09] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:24:09] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 09:25:47] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-17 10:29:01] ACTION: REGISTER_SUCCESS | USER: 20 | DETAILS: New user registered: ghafur@gmail.com | IP: ::1
+[2026-06-17 10:29:15] ACTION: LOGIN_SUCCESS | USER: 20 | DETAILS: User logged in: 20 | IP: ::1
+[2026-06-17 10:29:45] ACTION: LOGOUT | USER: 20 | DETAILS: User logged out: Ghafur | IP: ::1
+[2026-06-17 11:40:55] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-17 11:40:55] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-17 12:24:39] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1

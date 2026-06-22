@@ -377,7 +377,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                         <?php if ($mode == 'view'): ?>
                             Lihat dan kelola data profil Anda
                         <?php else: ?>
-                            Lengkapi data profil Anda untuk dapat mengikuti seleksi Guru Garuda
+                            Lengkapi data profil Anda untuk dapat mengikuti seleksi UDIN & UPKP
                         <?php endif; ?>
                     </p>
                 </div>

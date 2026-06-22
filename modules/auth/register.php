@@ -1,6 +1,19 @@
 <?php
 $pageTitle = "Registrasi Akun";
-$customCSS = "";
+$customCSS = "
+/* Tambahan style untuk tombol gradasi */
+.btn-grad {
+    background: linear-gradient(135deg, #F9DA00, #FF9133);
+    border: none;
+    color: #000 !important;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-grad:hover {
+    background: linear-gradient(135deg, #FF9133, #F9DA00);
+    color: #000 !important;
+}
+";
 $customJS = "";
 
 require_once __DIR__ . '/../../config/config.php';
@@ -47,8 +60,8 @@ include __DIR__ . '/header-auth.php';
 ?>
 
 <div class="auth-header">
-    <h1 class="display-5 mb-3">Registrasi Akun Baru</h1>
-    <p class="lead mb-0">Bergabunglah dengan program Guru Garuda untuk membangun pendidikan Indonesia yang lebih baik.</p>
+    <h1 class="display-5 mb-3">Registrasi Akun</h1>
+    <p class="lead mb-0">Daftarkan diri Anda untuk mengikuti Ujian Dinas (UDIN) atau Ujian Penyesuaian Kenaikan Pangkat (UPKP) secara online.</p>
 </div>
 
 <div class="auth-body">
@@ -158,12 +171,12 @@ include __DIR__ . '/header-auth.php';
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="newsletter" name="newsletter" checked>
                 <label class="form-check-label" for="newsletter">
-                    Saya ingin menerima informasi terbaru tentang seleksi dan program Guru Garuda via email
+                    Saya ingin menerima informasi terbaru tentang jadwal ujian, pengumuman, dan info penting UDIN/UPKP via email
                 </label>
             </div>
         </div>
         
-        <button type="submit" class="btn-auth w-100 mb-3" id="registerBtn">
+        <button type="submit" class="btn btn-grad w-100 mb-3" id="registerBtn">
             <i class="fas fa-user-plus me-2"></i>Daftar Sekarang
         </button>
         
@@ -179,7 +192,6 @@ include __DIR__ . '/header-auth.php';
     
     <hr class="my-4">
     
-    
 </div>
 
 <?php
@@ -190,20 +202,12 @@ document.getElementById('password').addEventListener('input', function() {
     var strengthBar = document.getElementById('passwordStrengthBar');
     var strength = 0;
     
-    // Length check
     if (password.length >= 8) strength += 25;
-    
-    // Contains lowercase
     if (/[a-z]/.test(password)) strength += 25;
-    
-    // Contains uppercase
     if (/[A-Z]/.test(password)) strength += 25;
-    
-    // Contains numbers or symbols
     if (/[0-9]/.test(password)) strength += 13;
     if (/[^A-Za-z0-9]/.test(password)) strength += 12;
     
-    // Update strength bar
     strengthBar.style.width = strength + '%';
     strengthBar.className = 'password-strength-bar ';
     
@@ -218,7 +222,6 @@ document.getElementById('password').addEventListener('input', function() {
     }
 });
 
-// Password match checker
 document.getElementById('confirm_password').addEventListener('input', function() {
     var password = document.getElementById('password').value;
     var confirmPassword = this.value;
@@ -236,7 +239,6 @@ document.getElementById('confirm_password').addEventListener('input', function()
     }
 });
 
-// Toggle password visibility
 document.getElementById('togglePassword').addEventListener('click', function() {
     var passwordInput = document.getElementById('password');
     var icon = this.querySelector('i');
@@ -252,34 +254,29 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     }
 });
 
-// Form validation
 document.getElementById('registerForm').addEventListener('submit', function(e) {
     var password = document.getElementById('password').value;
     var confirmPassword = document.getElementById('confirm_password').value;
     var terms = document.getElementById('terms');
     
-    // Check password match
     if (password !== confirmPassword) {
         e.preventDefault();
         showToast('Password dan konfirmasi password tidak cocok!', 'danger');
         return false;
     }
     
-    // Check terms acceptance
     if (!terms.checked) {
         e.preventDefault();
         showToast('Anda harus menyetujui Syarat & Ketentuan!', 'danger');
         return false;
     }
     
-    // Password strength validation
     if (password.length < 8) {
         e.preventDefault();
         showToast('Password minimal 8 karakter!', 'danger');
         return false;
     }
     
-    // Show loading
     showFormLoading('registerForm');
 });
 JS;

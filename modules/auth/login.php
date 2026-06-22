@@ -1,6 +1,19 @@
 <?php
 $pageTitle = "Login Akun";
-$customCSS = "";
+$customCSS = "
+/* Tombol gradasi */
+.btn-grad {
+    background: linear-gradient(135deg, #F9DA00, #FF9133);
+    border: none;
+    color: #000 !important;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-grad:hover {
+    background: linear-gradient(135deg, #FF9133, #F9DA00);
+    color: #000 !important;
+}
+";
 $customJS = "";
 
 require_once __DIR__ . '/../../config/config.php';
@@ -64,8 +77,8 @@ include __DIR__ . '/header-auth.php';
 ?>
 
 <div class="auth-header">
-    <h1 class="display-5 mb-3">Login ke Akun Anda</h1>
-    <p class="lead mb-0">Masuk ke Sistem Pendaftaran Guru Garuda untuk mengakses dashboard dan mengikuti seleksi.</p>
+    <h1 class="display-5 mb-3">Login Akun</h1>
+    <p class="lead mb-0">Masuk ke Portal Pendaftaran Ujian Dinas (UDIN) dan Ujian Penyesuaian Kenaikan Pangkat (UPKP).</p>
 </div>
 
 <div class="auth-body">
@@ -97,7 +110,7 @@ include __DIR__ . '/header-auth.php';
                             <i class="fas fa-envelope"></i>
                         </span>
                         <input type="email" class="form-control" name="email" 
-                               placeholder="contoh@email.com" required
+                               placeholder="contoh@instansi.go.id" required
                                value="<?php echo sanitize_output($_POST['email'] ?? ''); ?>">
                     </div>
                 </div>
@@ -126,8 +139,8 @@ include __DIR__ . '/header-auth.php';
                     </label>
                 </div>
                 
-                <button type="submit" class="btn-auth w-100 mb-3">
-                    <i class="fas fa-sign-in-alt me-2"></i>Login
+                <button type="submit" class="btn btn-grad w-100 mb-3">
+                    <i class="fas fa-sign-in-alt me-2"></i>Masuk
                 </button>
                 
                 <div class="text-center">
@@ -141,65 +154,23 @@ include __DIR__ . '/header-auth.php';
             </form>
             
             <hr class="my-4">
-            
-           
         </div>
         
-        <!-- Demo Accounts & Info -->
+        <!-- Informasi & Bantuan -->
         <div class="col-lg-5">
             <div class="bg-light rounded p-4 h-100">
-                <h4 class="mb-4"><i class="fas fa-key me-2"></i>Akun Demo</h4>
+                <h4 class="mb-4"><i class="fas fa-info-circle me-2"></i>Informasi Ujian</h4>
                 
-                <div class="demo-table">
-                    <table class="table table-bordered mb-0">
-                        <thead>
-                            <tr>
-                                <th>Role</th>
-                                <th>Email</th>
-                          
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><span class="badge-role bg-danger text-white">Super Admin</span></td>
-                                <td>superadmin@gurugaruda.id</td>
-                         
-                            </tr>
-                            <tr>
-                                <td><span class="badge-role bg-warning text-dark">Admin</span></td>
-                                <td>admin@gurugaruda.id</td>
-                         
-                            </tr>
-                            <tr>
-                                <td><span class="badge-role bg-info text-white">Assessor</span></td>
-                                <td>assessor@gurugaruda.id</td>
-                        
-                            </tr>
-                            <tr>
-                                <td><span class="badge-role bg-success text-white">User</span></td>
-                                <td>guru.contoh@sekolah.id</td>
-                             
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p class="mt-2 mb-0 text-muted text-center">
-                    <small>Password sama untuk semua akun demo</small>
-                </p>
-                
-                <hr class="my-4">
-                
-                <!-- Info Boxes -->
                 <div class="row g-3">
                     <div class="col-12">
                         <div class="d-flex align-items-center p-3 bg-white rounded">
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" 
                                  style="width: 50px; height: 50px;">
-                                <i class="fas fa-shield-alt"></i>
+                                <i class="fas fa-calendar-alt"></i>
                             </div>
                             <div>
-                                <h6 class="mb-1">Sistem Aman</h6>
-                                <p class="mb-0 small text-muted">Data Anda dilindungi dengan enkripsi tingkat tinggi</p>
+                                <h6 class="mb-1">Jadwal Ujian</h6>
+                                <p class="mb-0 small text-muted">UDIN & UPKP dilaksanakan sesuai periode yang ditetapkan</p>
                             </div>
                         </div>
                     </div>
@@ -207,11 +178,11 @@ include __DIR__ . '/header-auth.php';
                         <div class="d-flex align-items-center p-3 bg-white rounded">
                             <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" 
                                  style="width: 50px; height: 50px;">
-                                <i class="fas fa-mobile-alt"></i>
+                                <i class="fas fa-file-alt"></i>
                             </div>
                             <div>
-                                <h6 class="mb-1">Responsif</h6>
-                                <p class="mb-0 small text-muted">Akses dari semua perangkat dengan tampilan optimal</p>
+                                <h6 class="mb-1">Persyaratan</h6>
+                                <p class="mb-0 small text-muted">Lengkapi dokumen sesuai ketentuan sebelum mendaftar</p>
                             </div>
                         </div>
                     </div>
@@ -222,12 +193,18 @@ include __DIR__ . '/header-auth.php';
                                 <i class="fas fa-headset"></i>
                             </div>
                             <div>
-                                <h6 class="mb-1">Bantuan 24/7</h6>
-                                <p class="mb-0 small text-muted">Tim support siap membantu melalui berbagai saluran</p>
+                                <h6 class="mb-1">Bantuan</h6>
+                                <p class="mb-0 small text-muted">Hubungi helpdesk di nomor 021-1500-123 atau email info@udin-upkp.go.id</p>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <hr class="my-4">
+                
+                <p class="text-center mb-0">
+                    <small class="text-muted">Portal ini hanya untuk ASN yang terdaftar</small>
+                </p>
             </div>
         </div>
     </div>

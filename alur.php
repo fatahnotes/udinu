@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Alur Seleksi Guru Garuda";
+$pageTitle = "Alur Pendaftaran UDIN & UPKP";
 $activePage = "alur";
 
 /* CSS khusus halaman alur */
@@ -37,12 +37,12 @@ $customCSS = <<<CSS
 .alur-timeline-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 2rem 5rem;
+    padding: 0 2rem 3rem; /* dikurangi dari 5rem menjadi 3rem */
 }
 
 .alur-section-title {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem; /* sedikit dikurangi */
 }
 
 .alur-section-title h2 {
@@ -57,7 +57,7 @@ $customCSS = <<<CSS
 
 .alur-timeline {
     position: relative;
-    padding: 3rem 0;
+    padding: 2rem 0; /* dikurangi dari 3rem */
 }
 
 .alur-timeline::before {
@@ -68,12 +68,12 @@ $customCSS = <<<CSS
     left: 50%;
     transform: translateX(-50%);
     width: 4px;
-    background: linear-gradient(to bottom, #00c2ff, #015fc9);
+    background: linear-gradient(to bottom, #F9DA00, #FF9133);
 }
 
 .alur-timeline-item {
     display: flex;
-    margin-bottom: 4rem;
+    margin-bottom: 2rem; /* dikurangi dari 4rem */
 }
 
 .alur-timeline-item:nth-child(even) {
@@ -96,17 +96,18 @@ $customCSS = <<<CSS
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg,#015fc9,#00c2ff);
+    background: linear-gradient(135deg, #F9DA00, #FF9133);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #fff;
+    color: #000;
+    font-weight: 700;
 }
 
 .alur-timeline-content {
     background: #fff;
     border-radius: 15px;
-    padding: 2rem;
+    padding: 1.5rem; /* dikurangi dari 2rem */
     box-shadow: 0 10px 30px rgba(0,0,0,.08);
     width: calc(50% - 70px);
     margin: 0 20px;
@@ -114,7 +115,7 @@ $customCSS = <<<CSS
 
 .alur-timeline-step {
     font-weight: 600;
-    color: #015fc9;
+    color: #FF9133;
 }
 
 .alur-timeline-title {
@@ -128,10 +129,15 @@ $customCSS = <<<CSS
 }
 
 .alur-timeline-highlight {
-    background: rgba(1,95,201,.05);
-    border-left: 4px solid #015fc9;
-    padding: 1rem;
+    background: rgba(255,145,51,.05);
+    border-left: 4px solid #FF9133;
+    padding: 0.75rem; /* sedikit lebih kecil */
     border-radius: 10px;
+    line-height: 1.4;
+}
+
+.alur-timeline-highlight ul {
+    margin-bottom: 0;
 }
 
 @media(max-width:992px){
@@ -147,10 +153,11 @@ include 'header.php';
 <!-- HERO -->
 <div class="alur-hero wow fadeIn">
     <div class="container py-5">
-        <h1 class="alur-hero-title">Alur Seleksi Guru & Tenaga Kependidikan</h1>
+        <h1 class="alur-hero-title">Alur Pendaftaran Ujian Dinas & UPKP</h1>
         <p class="alur-hero-text">
-            Proses seleksi dilaksanakan secara sistematis, objektif, dan transparan melalui sistem digital terintegrasi
-            untuk memastikan terpilihnya pendidik dan tenaga kependidikan terbaik bagi SMA Unggul Garuda.
+            Proses pendaftaran Ujian Dinas (UDIN) dan Ujian Penyesuaian Kenaikan Pangkat (UPKP) 
+            dilaksanakan secara daring melalui portal ini. Ikuti setiap tahapan dengan saksama agar 
+            pengajuan Anda berjalan lancar.
         </p>
     </div>
 </div>
@@ -158,61 +165,50 @@ include 'header.php';
 <!-- TIMELINE -->
 <section class="alur-timeline-container">
     <div class="alur-section-title">
-        <h2>Tahapan Seleksi Nasional</h2>
-        <p>Setiap peserta akan melalui tahapan berikut secara berurutan melalui portal seleksi</p>
+        <h2>Tahapan Pendaftaran</h2>
+        <p>Setiap peserta wajib melalui seluruh tahapan berikut secara berurutan</p>
     </div>
 
     <div class="alur-timeline">
 
         <?php
         $steps = [
-    [
-        "Registrasi Akun",
-        "Peserta membuat akun menggunakan nama lengkap dan email aktif sebagai pintu masuk ke sistem seleksi.",
-        ["Nama lengkap", "Email aktif", "Verifikasi email otomatis"]
-    ],
-    [
-        "Lengkapi Profil",
-        "Peserta wajib melengkapi data pribadi sebagai dasar validasi identitas dan kelayakan administrasi.",
-        ["Identitas diri", "Riwayat pendidikan", "Instansi asal"]
-    ],
-    [
-        "Pilih Jalur Seleksi",
-        "Peserta memilih jalur seleksi yang tersedia: Kepala Sekolah, Guru, atau Tenaga Kependidikan sesuai kualifikasi.",
-        ["Sesuai kompetensi", "Formasi berbeda", "Persyaratan khusus tiap jalur"]
-    ],
-    [
-        "Unggah Dokumen Persyaratan",
-        "Peserta mengunggah seluruh dokumen sesuai persyaratan yang telah ditentukan pada masing-masing formasi.",
-        ["Ijazah dan transkrip", "Dokumen pengalaman kerja", "Sertifikat pendukung"]
-    ],
-    [
-        "Seleksi Administrasi",
-        "Panitia melakukan verifikasi dan validasi dokumen dengan status Memenuhi Syarat (MS) atau Tidak Memenuhi Syarat (TMS).",
-        ["Validasi keabsahan dokumen", "Catatan verifikator", "Proses terdokumentasi"]
-    ],
-    [
-        "Pengumuman Hasil Administrasi",
-        "Peserta dapat melihat hasil seleksi administrasi secara personal melalui akun masing-masing di portal seleksi.",
-        ["Notifikasi di dashboard", "Status lolos/tidak lolos", "Transparan dan personal"]
-    ],
-    [
-        "Tes Kompetensi",
-        "Peserta yang lolos administrasi mengikuti tes kompetensi sesuai formasi untuk mengukur kemampuan akademik dan profesional.",
-        ["Berbasis bidang keahlian", "Instrumen terukur", "Hasil terekam sistem"]
-    ],
-    [
-        "Asesmen Center",
-        "Peserta mengikuti asesmen lanjutan untuk menilai aspek kompetensi, integritas, dan kesiapan peran secara lebih komprehensif.",
-        ["Simulasi dan studi kasus", "Penilaian oleh asesor", "Pendekatan objektif"]
-    ],
-    [
-        "Pengumuman Akhir",
-        "Hasil akhir seleksi diumumkan secara resmi melalui dashboard peserta sesuai jadwal yang ditetapkan panitia.",
-        ["Status akhir kelulusan", "Akses melalui akun masing-masing", "Terdokumentasi dalam sistem"]
-    ],
-];
-
+            [
+                "Registrasi Akun",
+                "Buat akun menggunakan email aktif dan data diri lengkap untuk masuk ke sistem pendaftaran.",
+                ["Nama lengkap sesuai identitas", "Email aktif pribadi", "Verifikasi email otomatis"]
+            ],
+            [
+                "Lengkapi Profil & Unggah Dokumen",
+                "Lengkapi biodata, riwayat pendidikan, dan unggah seluruh dokumen persyaratan yang ditentukan.",
+                ["Scan ijazah terbaru", "SK pangkat/jabatan terakhir", "Dokumen pendukung lainnya"]
+            ],
+            [
+                "Seleksi Administrasi",
+                "Panitia memverifikasi kelengkapan dan keabsahan dokumen. Hasil: Memenuhi Syarat (MS) atau Tidak Memenuhi Syarat (TMS).",
+                ["Validasi dokumen oleh verifikator", "Catatan jika ada kekurangan", "Proses transparan"]
+            ],
+            [
+                "Pengumuman Hasil Seleksi",
+                "Peserta dapat melihat status lolos/tidak lolos seleksi administrasi melalui dashboard masing-masing.",
+                ["Notifikasi di dashboard", "Status personal", "Informasi jadwal ujian"]
+            ],
+            [
+                "Pelaksanaan Ujian",
+                "Peserta yang lolos mengikuti ujian sesuai jadwal dan lokasi yang ditentukan (daring/luring).",
+                ["Ujian berbasis kompetensi", "Pengawasan ketat", "Tata tertib peserta"]
+            ],
+            [
+                "Pengumuman Hasil Ujian",
+                "Hasil ujian diumumkan secara resmi melalui portal dan dashboard peserta. Status kelulusan dapat dilihat secara personal.",
+                ["Skor dan status kelulusan", "Akses personal", "Diumumkan serentak"]
+            ],
+            [
+                "Unduh Sertifikat Kelulusan",
+                "Peserta yang dinyatakan lulus dapat mengunduh sertifikat resmi sebagai bukti kelulusan UDIN/UPKP.",
+                ["Sertifikat digital", "Tersedia di dashboard", "Dapat dicetak mandiri"]
+            ],
+        ];
 
         foreach ($steps as $i => $step) {
         ?>

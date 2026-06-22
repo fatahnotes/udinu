@@ -65,7 +65,7 @@ $sidebar_menu = get_sidebar_menu($_SESSION['user_role']);
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $pageTitle; ?> - Sistem Pendaftaran Guru Garuda</title>
+    <title><?php echo $pageTitle; ?> - Sistem Pendaftaran UDIN & UPKP</title>
     
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -471,7 +471,7 @@ $sidebar_menu = get_sidebar_menu($_SESSION['user_role']);
             </button>
             
             <div class="sidebar-header">           
-                <h3><i class="fas fa-chalkboard-teacher me-2"></i>GURU GARUDA</h3>
+                <h3><i class="fas fa-chalkboard-teacher me-2"></i>UDIN & UPKP</h3>
                 <p>Dashboard <?php echo isset($_SESSION['user_role']) ? strtoupper($_SESSION['user_role']) : ''; ?></p>
             </div>
             

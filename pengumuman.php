@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Pengumuman Seleksi";
+$pageTitle = "Pengumuman Ujian Dinas & UPKP";
 $activePage = "pengumuman";
 
 include 'header.php';
@@ -7,41 +7,51 @@ include 'header.php';
 /* ===== DATA SEMENTARA (NANTI BISA GANTI DATABASE) ===== */
 $pengumuman = [
     1 => [
-        'judul' => 'Pengumuman Hasil Seleksi Administrasi Tahap I',
-        'tanggal' => '10 Juni 2026',
+        'judul' => 'Pembukaan Pendaftaran Ujian Dinas (UDIN) dan UPKP',
+        'tanggal' => '5 Juni 2026',
         'isi' => '
-        <p>Panitia Seleksi Guru dan Tenaga Kependidikan SMA Unggul Garuda mengumumkan bahwa proses seleksi administrasi tahap I telah selesai dilaksanakan.</p>
-        <p>Peserta dapat melihat status kelulusan administrasi melalui akun masing-masing pada dashboard portal seleksi.</p>
+        <p>Panitia Penyelenggara Ujian Dinas (UDIN) dan Ujian Penyesuaian Kenaikan Pangkat (UPKP) mengumumkan bahwa pendaftaran telah resmi dibuka.</p>
+        <p>ASN yang memenuhi syarat dapat segera melakukan pendaftaran melalui portal ini dengan melengkapi dokumen yang dipersyaratkan.</p>
         <ul>
-            <li>Peserta dengan status <strong>Lolos Administrasi</strong> berhak mengikuti tahapan Tes Kompetensi.</li>
-            <li>Peserta dengan status <strong>Tidak Lolos</strong> dapat melihat alasan verifikasi pada akun masing-masing.</li>
+            <li>Periode pendaftaran: <strong>5 – 25 Juni 2026</strong></li>
+            <li>Jenis ujian yang dibuka: UDIN dan UPKP</li>
+            <li>Pendaftaran dilakukan secara online melalui akun masing-masing</li>
         </ul>
-        <p>Demikian pengumuman ini disampaikan untuk menjadi perhatian.</p>'
+        <p>Pastikan Anda membaca pedoman dan persyaratan sebelum mendaftar.</p>'
     ],
     2 => [
-        'judul' => 'Jadwal Pelaksanaan Tes Kompetensi Seleksi Guru Garuda',
-        'tanggal' => '18 Juni 2026',
+        'judul' => 'Hasil Verifikasi Administrasi Pendaftaran',
+        'tanggal' => '2 Juli 2026',
         'isi' => '
-        <p>Tes kompetensi akan dilaksanakan secara daring dan luring sesuai dengan jadwal berikut:</p>
+        <p>Panitia telah menyelesaikan proses verifikasi dokumen administrasi seluruh pendaftar.</p>
+        <p>Peserta dapat melihat status kelulusan administrasi melalui dashboard masing-masing dengan ketentuan:</p>
         <ul>
-            <li>Guru Matematika dan IPA: 20 Juni 2026</li>
-            <li>Guru Bahasa dan Sosial: 21 Juni 2026</li>
-            <li>Tenaga Kependidikan: 22 Juni 2026</li>
+            <li><strong>Memenuhi Syarat (MS)</strong> – berhak mengikuti ujian</li>
+            <li><strong>Tidak Memenuhi Syarat (TMS)</strong> – dapat melihat alasan pada catatan verifikator</li>
         </ul>
-        <p>Peserta wajib mencetak kartu ujian melalui dashboard masing-masing.</p>'
+        <p>Bagi peserta yang dinyatakan TMS, masa sanggah dibuka hingga 5 Juli 2026.</p>'
     ],
     3 => [
-        'judul' => 'Pengumuman Tahapan Asesmen Center',
-        'tanggal' => '30 Juni 2026',
+        'judul' => 'Jadwal Pelaksanaan Ujian Dinas & UPKP',
+        'tanggal' => '8 Juli 2026',
         'isi' => '
-        <p>Peserta yang dinyatakan lolos Tes Kompetensi akan mengikuti tahapan Asesmen Center.</p>
-        <p>Asesmen ini bertujuan untuk menilai aspek:</p>
+        <p>Ujian akan dilaksanakan sesuai jadwal berikut:</p>
         <ul>
-            <li>Integritas dan etika profesional</li>
-            <li>Kemampuan problem solving</li>
-            <li>Komunikasi dan kolaborasi</li>
-            <li>Kepemimpinan (untuk formasi tertentu)</li>
-        </ul>'
+            <li><strong>Ujian Dinas (UDIN):</strong> 15 Juli 2026 (sesi pagi & siang)</li>
+            <li><strong>Ujian Penyesuaian Kenaikan Pangkat (UPKP):</strong> 16 Juli 2026 (sesi pagi & siang)</li>
+        </ul>
+        <p>Peserta wajib mencetak kartu ujian melalui dashboard dan hadir 30 menit sebelum ujian dimulai. Lokasi ujian akan tertera pada kartu peserta.</p>'
+    ],
+    4 => [
+        'judul' => 'Pengumuman Hasil Ujian',
+        'tanggal' => '25 Juli 2026',
+        'isi' => '
+        <p>Panitia telah menyelesaikan penilaian ujian. Hasil ujian dapat dilihat melalui dashboard masing-masing peserta.</p>
+        <ul>
+            <li><strong>Lulus</strong> – sertifikat kelulusan dapat diunduh di dashboard</li>
+            <li><strong>Tidak Lulus</strong> – peserta dapat mengulang pada periode berikutnya sesuai ketentuan</li>
+        </ul>
+        <p>Selamat kepada peserta yang dinyatakan lulus. Semoga pencapaian ini mendukung pengembangan karier Anda sebagai ASN yang profesional.</p>'
     ]
 ];
 
@@ -127,9 +137,9 @@ $id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 </style>
 
 <div class="text-center mb-5">
-    <h1 class="display-5">Pengumuman Seleksi</h1>
+    <h1 class="display-5">Pengumuman Ujian Dinas & UPKP</h1>
     <p class="text-muted">
-        Informasi resmi tahapan seleksi Guru dan Tenaga Kependidikan SMA Unggul Garuda
+        Informasi resmi pendaftaran, verifikasi, jadwal, dan hasil Ujian Dinas (UDIN) serta Ujian Penyesuaian Kenaikan Pangkat (UPKP)
     </p>
 </div>
 
