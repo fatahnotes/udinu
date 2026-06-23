@@ -14,7 +14,7 @@ $session_config = [
     'use_only_cookies' => true,
     'use_trans_sid' => false,
     'cookie_path' => '/',
-    'cookie_domain' => $_SERVER['HTTP_HOST'] ?? '',
+    'cookie_domain' => '',
     'sid_length' => 128,
     'sid_bits_per_character' => 6
 ];
@@ -40,10 +40,7 @@ if (session_status() === PHP_SESSION_NONE) {
 // ============================================
 
 // Deteksi environment
-$isDevelopment = (getenv('APP_ENV') === 'development' || 
-                  (isset($_SERVER['SERVER_NAME']) && 
-                  (strpos($_SERVER['SERVER_NAME'], 'localhost') !== false || 
-                   strpos($_SERVER['SERVER_NAME'], '127.0.0.1') !== false)));
+$isDevelopment = (getenv('APP_ENV') === 'development');
 
 if ($isDevelopment) {
     // Development mode - tampilkan semua error kecuali deprecated
@@ -97,7 +94,14 @@ define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
 define('DB_PORT', $_ENV['DB_PORT'] ?? '5432');
 define('DB_NAME', $_ENV['DB_NAME'] ?? 'ujian_dinas');
 define('DB_USER', $_ENV['DB_USER'] ?? 'postgres');
-define('DB_PASS', $_ENV['DB_PASS'] ?? 'Ais@#$Jih');
+define('DB_PASS', $_ENV['DB_PASS'] ?? '');
+if (empty(DB_PASS)) {
+    if (php_sapi_name() === 'cli') {
+        die('ERROR: DB_PASS tidak ditemukan di .env file. Jalankan: cp .env.example .env dan isi kredensial.');
+    }
+    http_response_code(503);
+    die('<h3>Sistem dalam pemeliharaan</h3>');
+}
 
 // Application Constants
 define('BASE_URL', $_ENV['BASE_URL'] ?? '/udinu');
@@ -200,13 +204,10 @@ function get_db_connection() {
         } catch (PDOException $e) {
             error_log("[" . date('Y-m-d H:i:s') . "] Database connection failed: " . $e->getMessage());
             
-            // Show user-friendly message
-            if ($GLOBALS['isDevelopment'] ?? false) {
-                die("<h3>Database Connection Error</h3><pre>" . $e->getMessage() . "</pre>");
-            } else {
-                http_response_code(503);
-                die("<h3>Sistem sedang dalam pemeliharaan</h3><p>Silakan coba lagi beberapa saat.</p>");
-            }
+            // Show user-friendly message — NEVER expose DB details even in dev
+            error_log("DB Connection Error: " . $e->getMessage());
+            http_response_code(503);
+            die("<h3>Sistem sedang dalam pemeliharaan</h3><p>Silakan coba lagi beberapa saat.</p>");
         }
     }
     
@@ -226,7 +227,6 @@ function sanitize_input($data) {
     }
     
     $data = trim($data);
-    $data = stripslashes($data);
     $data = htmlspecialchars($data, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     
     return $data;
@@ -494,7 +494,7 @@ function email_exists($email) {
 function get_role_name($role_code) {
     $roles = [
         'USER' => 'Pendaftar',
-        'ADMIN_VERIFIKATOR' => 'Admin Verifikator',
+        'ADMIN_PUSAT' => 'Admin Pusat',
         'ASSESSOR' => 'Asesor',
         'SUPERADMIN' => 'Super Admin'
     ];
@@ -755,18 +755,36 @@ if (!headers_sent()) {
     header('X-Content-Type-Options: nosniff');
     header('Referrer-Policy: strict-origin-when-cross-origin');
     
-    // CORS headers (adjust as needed)
+    // HSTS — only when HTTPS is active
+    if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') {
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+    }
+    
+    // CORS — explicit whitelist, NOT substring matching
+    $allowed_origins = [];
+    if ($isDevelopment) {
+        $allowed_origins = ['http://localhost', 'http://127.0.0.1', 'http://localhost:8080'];
+    }
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-    if ($origin && ($isDevelopment || strpos($origin, 'gurugaruda') !== false)) {
-        header("Access-Control-Allow-Origin: {$origin}");
+    if ($origin && in_array($origin, $allowed_origins, true)) {
+        header('Access-Control-Allow-Origin: ' . $origin);
     }
     header('Access-Control-Allow-Credentials: true');
     header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-CSRF-Token');
     
-    // Content Security Policy (CSP) - strict
-    if (!$isDevelopment) {
-        header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net;");
+    // CSP — always active, use Report-Only in dev to detect issues
+    $csp = "default-src 'self'; "
+         . "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://code.jquery.com; "
+         . "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://fonts.googleapis.com https://use.fontawesome.com; "
+         . "img-src 'self' data: https:; "
+         . "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://use.fontawesome.com; "
+         . "connect-src 'self'; "
+         . "frame-ancestors 'none';";
+    if ($isDevelopment) {
+        header('Content-Security-Policy-Report-Only: ' . $csp);
+    } else {
+        header('Content-Security-Policy: ' . $csp);
     }
 }
 ?>

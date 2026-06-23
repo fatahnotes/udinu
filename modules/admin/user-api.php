@@ -47,6 +47,12 @@ try {
         case 'verify-email':
             verify_user_email($db);
             break;
+        case 'access':
+            get_access_list($db);
+            break;
+        case 'save_access':
+            save_access_list($db);
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Action tidak valid']);
     }
@@ -74,35 +80,32 @@ function get_user_stats($db) {
         $stats['total_inactive'] = $stats['total_users'] - $stats['total_active'];
         
         // Hitung berdasarkan role - gunakan query terpisah yang lebih sederhana
-        // Total Pendaftar (USER) - user tanpa role khusus atau dengan role USER
+        // Total Pendaftar (USER role, no special role)
         $stmt = $db->query("
             SELECT COUNT(*) FROM users u
             WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
-            AND (
-                NOT EXISTS (SELECT 1 FROM user_roles ur2 JOIN roles r2 ON ur2.role_id = r2.id WHERE ur2.user_id = u.id AND r2.role_code IN ('ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'))
-            )
+            AND NOT EXISTS (SELECT 1 FROM user_roles ur JOIN roles r ON ur.role_id = r.id WHERE ur.user_id = u.id AND r.role_code IN ('ADMIN_PUSAT', 'ADMIN_SATKER', 'ASSESSOR', 'SUPERADMIN'))
         ");
         $stats['total_pendaftar'] = (int)$stmt->fetchColumn();
         
-        // Total Admin (ADMIN_VERIFIKATOR + SUPERADMIN)
-        $stmt = $db->query("
-            SELECT COUNT(DISTINCT u.id) FROM users u
-            JOIN user_roles ur ON u.id = ur.user_id
-            JOIN roles r ON ur.role_id = r.id
-            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
-            AND r.role_code IN ('ADMIN_VERIFIKATOR', 'SUPERADMIN')
-        ");
-        $stats['total_admin'] = (int)$stmt->fetchColumn();
+        // Total Admin Verifikator
+        $stmt = $db->query("SELECT COUNT(DISTINCT u.id) FROM users u JOIN user_roles ur ON u.id = ur.user_id JOIN roles r ON ur.role_id = r.id WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL) AND r.role_code = 'ADMIN_PUSAT'");
+        $stats['total_verifikator'] = (int)$stmt->fetchColumn();
         
-        // Total Asesor (ASSESSOR)
-        $stmt = $db->query("
-            SELECT COUNT(DISTINCT u.id) FROM users u
-            JOIN user_roles ur ON u.id = ur.user_id
-            JOIN roles r ON ur.role_id = r.id
-            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
-            AND r.role_code = 'ASSESSOR'
-        ");
+        // Total Admin Satker
+        $stmt = $db->query("SELECT COUNT(DISTINCT u.id) FROM users u JOIN user_roles ur ON u.id = ur.user_id JOIN roles r ON ur.role_id = r.id WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL) AND r.role_code = 'ADMIN_SATKER'");
+        $stats['total_admin_satker'] = (int)$stmt->fetchColumn();
+        
+        // Total Asesor
+        $stmt = $db->query("SELECT COUNT(DISTINCT u.id) FROM users u JOIN user_roles ur ON u.id = ur.user_id JOIN roles r ON ur.role_id = r.id WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL) AND r.role_code = 'ASSESSOR'");
         $stats['total_asesor'] = (int)$stmt->fetchColumn();
+        
+        // Total Superadmin
+        $stmt = $db->query("SELECT COUNT(DISTINCT u.id) FROM users u JOIN user_roles ur ON u.id = ur.user_id JOIN roles r ON ur.role_id = r.id WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL) AND r.role_code = 'SUPERADMIN'");
+        $stats['total_superadmin'] = (int)$stmt->fetchColumn();
+        
+        // Total Admin (all admin-type roles combined)
+        $stats['total_admin'] = $stats['total_verifikator'] + $stats['total_admin_satker'];
         
         echo json_encode(['success' => true, 'data' => $stats]);
     } catch (Exception $e) {
@@ -124,7 +127,7 @@ function get_user_list($db) {
         if (!empty($_GET['role'])) {
             if ($_GET['role'] === 'USER') {
                 // USER = users with role USER OR no role at all
-                $where[] = "(r.role_code = 'USER' OR (r.role_code IS NULL AND u.id NOT IN (SELECT ur3.user_id FROM user_roles ur3 JOIN roles r3 ON ur3.role_id = r3.id WHERE r3.role_code IN ('ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'))))";
+                $where[] = "(r.role_code = 'USER' OR (r.role_code IS NULL AND u.id NOT IN (SELECT ur3.user_id FROM user_roles ur3 JOIN roles r3 ON ur3.role_id = r3.id WHERE r3.role_code IN ('ADMIN_PUSAT', 'ASSESSOR', 'SUPERADMIN'))))";
             } else {
                 $where[] = "r.role_code = ?";
                 $params[] = $_GET['role'];
@@ -250,7 +253,7 @@ function create_user($db) {
         return;
     }
     
-    $valid_roles = ['USER', 'ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'];
+    $valid_roles = ['USER', 'ADMIN_PUSAT', 'ADMIN_SATKER', 'ASSESSOR', 'SUPERADMIN'];
     if (!in_array($role, $valid_roles)) {
         echo json_encode(['success' => false, 'message' => 'Role tidak valid']);
         return;
@@ -326,7 +329,7 @@ function update_user($db) {
         }
 
         // Validasi role (opsional, sesuai kebutuhan aplikasi)
-        $valid_roles = ['USER', 'ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'];
+        $valid_roles = ['USER', 'ADMIN_PUSAT', 'ADMIN_SATKER', 'ASSESSOR', 'SUPERADMIN'];
         if (!in_array($role_name, $valid_roles, true)) {
             echo json_encode(['success' => false, 'message' => 'Role tidak valid']);
             return;
@@ -437,7 +440,8 @@ function delete_user($db) {
 
 function reset_password($db) {
     $id = intval($_POST['id'] ?? 0);
-    $default_password = 'Sos111';
+    // Generate secure random default password instead of hardcoded value
+    $default_password = bin2hex(random_bytes(6)); // 12-char random hex
     $hashed_password = password_hash($default_password, PASSWORD_DEFAULT);
     
     $stmt = $db->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
@@ -447,7 +451,7 @@ function reset_password($db) {
         log_activity('PASSWORD_RESET', "Reset password for user ID: {$id}", $_SESSION['user_id'] ?? null);
     }
     
-    echo json_encode(['success' => true, 'message' => 'Password berhasil direset ke default']);
+    echo json_encode(['success' => true, 'message' => 'Password berhasil direset. Password baru: ' . $default_password]);
 }
 
 function verify_user_email($db) {
@@ -479,6 +483,54 @@ function verify_user_email($db) {
     } catch (Exception $e) {
         error_log("Verify email error: " . $e->getMessage());
         echo json_encode(['success' => false, 'message' => 'Gagal memverifikasi email: ' . $e->getMessage()]);
+    }
+}
+
+/**
+ * Ambil daftar akses per role (dari file JSON atau default)
+ */
+function get_access_list($db) {
+    $access_file = __DIR__ . '/../../storage/role_access.json';
+    $defaults = [
+        'SUPERADMIN' => ['Manajemen User','Manajemen Ujian','Master Data Ujian','Manajemen Unit Kerja','Verifikasi Berkas','Lihat Pendaftar','Input Nilai','Kelola Pengumuman','Lihat Pengumuman','Sertifikat','Daftar Ujian','Edit Profil'],
+        'ADMIN_PUSAT' => ['Verifikasi Berkas','Lihat Pendaftar','Lihat Pengumuman','Edit Profil'],
+        'ADMIN_SATKER' => ['Verifikasi Berkas','Lihat Pendaftar','Lihat Pengumuman','Edit Profil'],
+        'ASSESSOR' => ['Input Nilai','Lihat Pengumuman','Edit Profil'],
+        'USER' => ['Lihat Pengumuman','Sertifikat','Daftar Ujian','Edit Profil'],
+    ];
+    
+    if (file_exists($access_file)) {
+        $saved = json_decode(file_get_contents($access_file), true);
+        if ($saved) $defaults = array_merge($defaults, $saved);
+    }
+    
+    echo json_encode(['success' => true, 'data' => $defaults]);
+}
+
+/**
+ * Simpan konfigurasi akses per role
+ */
+function save_access_list($db) {
+    $permissions = json_decode($_POST['permissions'] ?? '{}', true);
+    if (empty($permissions)) {
+        echo json_encode(['success' => false, 'message' => 'Data kosong']);
+        return;
+    }
+    
+    // SUPERADMIN selalu punya semua akses — tidak bisa diubah
+    $all_features = ['Manajemen User','Manajemen Ujian','Master Data Ujian','Manajemen Unit Kerja','Verifikasi Berkas','Lihat Pendaftar','Input Nilai','Kelola Pengumuman','Lihat Pengumuman','Sertifikat','Daftar Ujian','Edit Profil'];
+    $permissions['SUPERADMIN'] = $all_features;
+    
+    try {
+        $access_file = __DIR__ . '/../../storage/role_access.json';
+        $dir = dirname($access_file);
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
+        file_put_contents($access_file, json_encode($permissions, JSON_PRETTY_PRINT), LOCK_EX);
+        
+        log_activity('ACCESS_UPDATE', 'Updated role access permissions', $_SESSION['user_id'] ?? null);
+        echo json_encode(['success' => true, 'message' => 'Hak akses berhasil disimpan']);
+    } catch (Exception $e) {
+        echo json_encode(['success' => false, 'message' => 'Gagal menyimpan: ' . $e->getMessage()]);
     }
 }
 ?>

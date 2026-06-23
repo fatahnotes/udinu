@@ -65,19 +65,36 @@ INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_o
 (7, 'SUPERADMIN', 'Manajemen Menu', 'bars', '../admin/menu-management.php', 'menu-management', 2),
 (7, 'SUPERADMIN', 'Log Aktivitas', 'history', '../admin/audit-log.php', 'audit-log', 3);
 
--- ========== ADMIN_VERIFIKATOR ==========
+-- ========== ADMIN_PUSAT ==========
 INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
-(NULL, 'ADMIN_VERIFIKATOR', 'Dashboard', 'tachometer-alt', 'dashboard.php', 'dashboard', 1),
-(NULL, 'ADMIN_VERIFIKATOR', 'Verifikasi Berkas', 'check-circle', '#', 'verification', 2),
-(NULL, 'ADMIN_VERIFIKATOR', 'Rekap & Laporan', 'chart-bar', '#', 'reports', 3);
+(NULL, 'ADMIN_PUSAT', 'Dashboard', 'tachometer-alt', 'dashboard.php', 'dashboard', 1),
+(NULL, 'ADMIN_PUSAT', 'Verifikasi Berkas', 'check-circle', '#', 'verification', 2),
+(NULL, 'ADMIN_PUSAT', 'Rekap & Laporan', 'chart-bar', '#', 'reports', 3);
 
 INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
-((SELECT id FROM menus WHERE label='Verifikasi Berkas' AND role_code='ADMIN_VERIFIKATOR'), 'ADMIN_VERIFIKATOR', 'Verifikasi Dokumen', 'check-double', '../verification/verification.php', 'verification', 1),
-((SELECT id FROM menus WHERE label='Verifikasi Berkas' AND role_code='ADMIN_VERIFIKATOR'), 'ADMIN_VERIFIKATOR', 'Daftar Pendaftar', 'users', '../verification/applicant-list.php', 'applicant-list', 2);
+((SELECT id FROM menus WHERE label='Verifikasi Berkas' AND role_code='ADMIN_PUSAT'), 'ADMIN_PUSAT', 'Verifikasi Dokumen', 'check-double', '../verification/verification.php', 'verification', 1),
+((SELECT id FROM menus WHERE label='Verifikasi Berkas' AND role_code='ADMIN_PUSAT'), 'ADMIN_PUSAT', 'Daftar Pendaftar', 'users', '../verification/applicant-list.php', 'applicant-list', 2);
 
 INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
-((SELECT id FROM menus WHERE label='Rekap & Laporan' AND role_code='ADMIN_VERIFIKATOR'), 'ADMIN_VERIFIKATOR', 'Statistik', 'chart-pie', '../verification/statistics.php', 'statistics', 1),
-((SELECT id FROM menus WHERE label='Rekap & Laporan' AND role_code='ADMIN_VERIFIKATOR'), 'ADMIN_VERIFIKATOR', 'Rekap Harian', 'calendar-check', '../verification/daily-report.php', 'daily-report', 2);
+((SELECT id FROM menus WHERE label='Rekap & Laporan' AND role_code='ADMIN_PUSAT'), 'ADMIN_PUSAT', 'Statistik', 'chart-pie', '../verification/statistics.php', 'statistics', 1),
+((SELECT id FROM menus WHERE label='Rekap & Laporan' AND role_code='ADMIN_PUSAT'), 'ADMIN_PUSAT', 'Rekap Harian', 'calendar-check', '../verification/daily-report.php', 'daily-report', 2);
+
+-- ========== ADMIN_SATKER ==========
+INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
+(NULL, 'ADMIN_SATKER', 'Dashboard', 'tachometer-alt', 'dashboard.php', 'dashboard', 1),
+(NULL, 'ADMIN_SATKER', 'Satker Saya', 'building', '#', 'my-satker', 2),
+(NULL, 'ADMIN_SATKER', 'Verifikasi Pendaftar', 'check-circle', '#', 'verification-satker', 3),
+(NULL, 'ADMIN_SATKER', 'Laporan', 'chart-bar', '#', 'reports', 4);
+
+INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
+((SELECT id FROM menus WHERE label='Satker Saya' AND role_code='ADMIN_SATKER'), 'ADMIN_SATKER', 'Lihat Unit Kerja', 'sitemap', '../admin/unit-kerja.php?tab=myunits', 'my-units', 1);
+
+INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
+((SELECT id FROM menus WHERE label='Verifikasi Pendaftar' AND role_code='ADMIN_SATKER'), 'ADMIN_SATKER', 'Verifikasi Berkas', 'check-double', '../verification/verification.php', 'verification', 1),
+((SELECT id FROM menus WHERE label='Verifikasi Pendaftar' AND role_code='ADMIN_SATKER'), 'ADMIN_SATKER', 'Daftar Pendaftar (Satker)', 'users', '../verification/applicant-list.php', 'applicant-list', 2);
+
+INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES
+((SELECT id FROM menus WHERE label='Laporan' AND role_code='ADMIN_SATKER'), 'ADMIN_SATKER', 'Statistik Satker', 'chart-pie', '../verification/statistics.php', 'statistics', 1);
 
 -- ========== ASSESSOR ==========
 INSERT INTO menus (parent_id, role_code, label, icon, url, active_key, display_order) VALUES

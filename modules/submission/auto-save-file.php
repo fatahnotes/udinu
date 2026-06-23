@@ -1,8 +1,5 @@
 <?php
 // modules/submission/auto-save-file.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 
 // Define base path
 $base_path = dirname(__DIR__, 2);

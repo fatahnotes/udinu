@@ -1,7 +1,6 @@
 <?php
 // modules/submission/submission.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Error reporting handled by config.php
 
 $pageTitle = "Status Pendaftaran";
 $activePage = "submission";
@@ -40,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_submission']))
             if (cancel_submission_draft($db, $submission_id, $user_id)) {
                 $success = 'Draft pendaftaran berhasil dihapus.';
                 // Refresh page to update list
-                header("Refresh: 2; url=" . $_SERVER['PHP_SELF']);
+                header("Refresh: 2; url=" . htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'));
             } else {
                 $error = 'Gagal menghapus draft pendaftaran.';
             }

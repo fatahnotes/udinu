@@ -295,23 +295,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
     </div>
 </div>
 
-<style>
-.exam-table { border-collapse: separate; border-spacing: 0; }
-.exam-table thead th { background: #f8fafc; color: #475569; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; padding: 12px 14px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
-.exam-table tbody td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; font-size: 0.87rem; }
-.exam-table tbody tr:hover { background: #f8fafc; }
-.status-chip { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; }
-.status-open { background: #dcfce7; color: #166534; }
-.status-inactive { background: #f1f5f9; color: #64748b; }
-.action-btn { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.8rem; }
-.action-btns { display: flex; gap: 5px; }
-.btn-edit { color: #3b82f6; }
-.btn-delete { color: #ef4444; }
-.action-btn:hover { transform: translateY(-1px); }
-.btn-edit:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
-.btn-delete:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
-code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; color: #1e293b; font-size: 0.78rem; }
-</style>
+<style>/* Shared CSS in modules/assets/css/style.css */</style>
 
 <script>
 function addMenu() {

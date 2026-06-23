@@ -235,7 +235,13 @@ function login_user($email, $password, $remember = false) {
                 date('Y-m-d H:i:s', $expires)
             ]);
             
-            setcookie('remember_token', $token, $expires, '/', '', true, true);
+            setcookie('remember_token', $token, [
+                'expires' => $expires,
+                'path' => '/',
+                'secure' => isset($_SERVER['HTTPS']),
+                'httponly' => true,
+                'samesite' => 'Strict'
+            ]);
         }
         
         log_activity('LOGIN_SUCCESS', "User logged in: {$user['id']}", $user['id']);
@@ -264,7 +270,14 @@ function logout_user() {
         } catch (PDOException $e) {
             error_log("Logout remember token error: " . $e->getMessage());
         }
-        setcookie('remember_token', '', time() - 3600, '/');
+        // Secure cookie deletion with SameSite and HttpOnly
+        setcookie('remember_token', '', [
+            'expires' => time() - 3600,
+            'path' => '/',
+            'secure' => isset($_SERVER['HTTPS']),
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
     }
     
     $user_id = $_SESSION['user_id'] ?? null;
@@ -285,7 +298,7 @@ function logout_user() {
  */
 function require_login($redirect_to = 'modules/auth/login.php') {
     if (!isset($_SESSION['user_id'])) {
-        $_SESSION['redirect_url'] = $_SERVER['REQUEST_URI'];
+        $_SESSION['redirect_url'] = strtok($_SERVER['REQUEST_URI'], '?'); // Store path only, no query params
         header("Location: " . base_url($redirect_to));
         exit();
     }
@@ -366,7 +379,13 @@ function check_remember_token() {
                 
                 // Update session expiration
                 $expires = time() + 30 * 24 * 3600;
-                setcookie('remember_token', $_COOKIE['remember_token'], $expires, '/', '', true, true);
+                setcookie('remember_token', $_COOKIE['remember_token'], [
+                    'expires' => $expires,
+                    'path' => '/',
+                    'secure' => isset($_SERVER['HTTPS']),
+                    'httponly' => true,
+                    'samesite' => 'Strict'
+                ]);
                 
                 log_activity('REMEMBER_LOGIN', "Auto login via remember token", $user['user_id']);
                 return true;

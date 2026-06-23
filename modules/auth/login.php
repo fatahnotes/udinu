@@ -48,10 +48,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             
             // Redirect berdasarkan kelengkapan profil
             if ($result['profile_complete']) {
-                // Redirect ke URL sebelumnya jika ada
-                $redirect_url = $_SESSION['redirect_url'] ?? base_url('modules/dashboard/dashboard.php');
+                // Redirect ke URL sebelumnya jika ada — bersihkan dari base_url() duplikasi
+                $redirect_url = $_SESSION['redirect_url'] ?? 'modules/dashboard/dashboard.php';
                 unset($_SESSION['redirect_url']);
-                header("Location: " . $redirect_url);
+                // Pastikan redirect_url tidak mengandung base_url prefix ganda
+                $base = rtrim(BASE_URL, '/');
+                $redirect_url = str_replace($base . '/', '', $redirect_url);
+                $redirect_url = ltrim($redirect_url, '/');
+                if (empty($redirect_url)) $redirect_url = 'modules/dashboard/dashboard.php';
+                header("Location: " . base_url($redirect_url));
             } else {
                 header("Location: " . base_url('modules/profile/profile.php'));
             }

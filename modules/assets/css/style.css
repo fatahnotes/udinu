@@ -1,0 +1,446 @@
+/* ============================================================
+   STYLE.CSS — Central Design System
+   Sistem Pendaftaran Ujian Dinas (UDIN) & UPKP
+   ============================================================ */
+
+/* =============================================================
+   1. ROOT VARIABLES & BASE
+   ============================================================= */
+:root {
+    --primary: #1a3a5c;
+    --primary-light: #2c5f8a;
+    --accent: #0d6efd;
+    --success: #166534;
+    --success-bg: #dcfce7;
+    --danger: #991b1b;
+    --danger-bg: #fee2e2;
+    --warning: #854d0e;
+    --warning-bg: #fef9c3;
+    --info: #1e40af;
+    --info-bg: #dbeafe;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --sidebar-bg: linear-gradient(180deg, #0a2463 0%, #123499 30%, #0d6efd 100%);
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow: 0 2px 12px rgba(0,0,0,0.06);
+    --shadow-md: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* =============================================================
+   2. TYPOGRAPHY
+   ============================================================= */
+body {
+    font-family: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--gray-800);
+    background: #f4f7fc;
+}
+.text-muted { color: var(--gray-500) !important; }
+.text-dark  { color: var(--gray-800) !important; }
+code {
+    background: var(--gray-100);
+    color: var(--gray-800);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+}
+
+/* =============================================================
+   3. DASHBOARD CARDS — used globally
+   ============================================================= */
+.dashboard-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 24px;
+}
+
+/* =============================================================
+   4. TAB NAVIGATION — card-style tabs (uniform across all pages)
+   ============================================================= */
+/* Pill tabs (used in vacancy-management, unit-kerja) */
+.nav-pills .nav-link {
+    color: var(--gray-500);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+.nav-pills .nav-link:hover { background: var(--gray-100); color: var(--gray-800); }
+.nav-pills .nav-link.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+}
+
+/* Card tabs (used in user-management) */
+.tab-cards { display: flex; gap: 10px; flex-wrap: wrap; }
+.tab-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: var(--radius);
+    background: #fff; border: 2px solid var(--gray-200);
+    text-decoration: none; color: var(--gray-500);
+    font-weight: 500; font-size: 0.9rem;
+    transition: all 0.2s; flex: 0 0 auto;
+}
+.tab-card:hover { border-color: #cbd5e1; color: var(--gray-700); text-decoration: none; }
+.tab-card.active {
+    border-color: #4f46e5; color: var(--gray-800); font-weight: 600;
+    box-shadow: 0 2px 8px rgba(79,70,229,0.15);
+}
+.tab-card .tab-icon {
+    width: 36px; height: 36px; border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem; flex-shrink: 0;
+}
+.tab-card .tab-label { white-space: nowrap; }
+
+/* =============================================================
+   5. TABLES — uniform styling for all data tables
+   ============================================================= */
+.exam-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.exam-table thead th {
+    background: var(--gray-50);
+    color: var(--gray-500);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 14px 16px;
+    border-bottom: 2px solid var(--gray-200);
+    white-space: nowrap;
+}
+.exam-table tbody td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+    font-size: 0.87rem;
+}
+.exam-table tbody tr:hover { background: var(--gray-50); }
+.exam-table tbody tr:last-child td { border-bottom: none; }
+
+/* Generic table overrides for consistency */
+.table th {
+    font-weight: 600;
+    color: #495057;
+    background-color: var(--gray-50);
+    border-bottom: 2px solid var(--gray-200);
+}
+.table td { vertical-align: middle; }
+
+/* =============================================================
+   6. STATUS CHIPS — uniform status indicators
+   ============================================================= */
+.status-chip {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: var(--radius-xl);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+.status-open      { background: var(--success-bg); color: var(--success); }
+.status-closed    { background: var(--danger-bg);  color: var(--danger);  }
+.status-upcoming  { background: var(--warning-bg); color: var(--warning); }
+.status-inactive  { background: var(--gray-100);   color: var(--gray-500); }
+
+/* =============================================================
+   7. BADGES — role & type indicators
+   ============================================================= */
+.badge { font-weight: 500; letter-spacing: 0.2px; }
+
+/* Role badges */
+.badge-user         { background: #6c757d; color: #fff; }
+.badge-admin        { background: #0d6efd; color: #fff; }
+.badge-admin-satker { background: #7c3aed; color: #fff; }
+.badge-asesor       { background: #f59e0b; color: #000; }
+.badge-superadmin   { background: #dc3545; color: #fff; }
+
+/* Exam type badges */
+.exam-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: var(--radius-xl);
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+.exam-type-badge i { font-size: 0.7rem; }
+
+/* =============================================================
+   8. ACTION BUTTONS — uniform icon buttons
+   ============================================================= */
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px; height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid var(--gray-200);
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+.action-btns { display: flex; gap: 6px; }
+
+.btn-view  { color: var(--gray-500); }
+.btn-edit  { color: #3b82f6; }
+.btn-delete { color: #ef4444; }
+
+.action-btn:hover { transform: translateY(-1px); }
+.btn-view:hover  { background: var(--gray-100); border-color: var(--gray-400); color: var(--gray-700); }
+.btn-edit:hover  { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+.btn-delete:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+
+/* =============================================================
+   9. FORMS — unified input & select styles
+   ============================================================= */
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 0.2rem rgba(44,95,138,0.15);
+}
+.form-label { font-weight: 600; color: #495057; }
+.form-switch .form-check-input:checked {
+    background-color: #198754;
+    border-color: #198754;
+}
+.form-switch .form-check-input {
+    width: 3em; height: 1.5em; cursor: pointer;
+}
+
+/* =============================================================
+   10. BUTTONS — gradient & primary
+   ============================================================= */
+.btn-primary {
+    background: var(--accent);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.25s;
+}
+.btn-primary:hover {
+    background: #0b5ed7;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(13,110,253,0.3);
+}
+.btn-light { background: #fff; color: var(--primary); font-weight: 600; border: none; }
+.btn-light:hover { background: #e2e8f0; }
+
+/* Gradient button (for auth pages) */
+.btn-grad {
+    background: linear-gradient(135deg, #F9DA00, #FF9133);
+    border: none;
+    color: #000 !important;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.btn-grad:hover {
+    background: linear-gradient(135deg, #FF9133, #F9DA00);
+    color: #000 !important;
+}
+
+/* =============================================================
+   11. ACCORDION
+   ============================================================= */
+.accordion-button:not(.collapsed) {
+    background: #f0f7ff !important;
+    color: var(--primary) !important;
+    box-shadow: none !important;
+}
+.accordion-button:focus {
+    box-shadow: none !important;
+    border-color: transparent !important;
+}
+
+/* =============================================================
+   12. LIST GROUP
+   ============================================================= */
+.list-group-item { border-color: var(--gray-100); }
+
+/* =============================================================
+   13. EXAM TABLE COLUMNS (vacancy-management specific)
+   ============================================================= */
+.col-kode   { width: 125px; }
+.col-judul  { min-width: 200px; }
+.col-jenis  { width: 195px; }
+.col-tahun  { width: 80px; text-align: center; }
+.col-periode { width: 210px; }
+.col-peserta { width: 80px; }
+.col-status { width: 120px; }
+.col-aksi   { width: 120px; }
+
+.exam-code {
+    display: inline-block;
+    background: var(--gray-100);
+    color: var(--gray-700);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+.exam-title {
+    color: var(--gray-800);
+    font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    margin-bottom: 3px;
+}
+.exam-desc {
+    color: var(--gray-500);
+    font-size: 0.78rem;
+    line-height: 1.5;
+}
+.exam-year {
+    color: var(--gray-700);
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.period-range {
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+}
+.period-date {
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.period-arrow {
+    color: var(--gray-400);
+    font-size: 0.7rem;
+}
+
+.participant-count {
+    display: inline-flex;
+    align-items: center; justify-content: center;
+    background: var(--gray-100);
+    color: var(--gray-500);
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-width: 42px; height: 34px;
+    padding: 0 10px;
+    border-radius: 17px;
+}
+
+/* =============================================================
+   14. ACCESS TABLE TOGGLES (user-management)
+   ============================================================= */
+.access-toggle { width: 44px; height: 24px; cursor: pointer; }
+.access-toggle:checked { background-color: #16a34a; border-color: #16a34a; }
+.access-row:hover { background: #f0f9ff !important; }
+.access-row td:first-child { font-weight: 600; color: var(--gray-800); }
+
+/* =============================================================
+   15. STAT CARDS (dashboard & user-management)
+   ============================================================= */
+.stat-card {
+    background: #fff;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: all 0.3s ease;
+    border: 1px solid #edf2f9;
+    height: 100%;
+    display: flex; flex-direction: column;
+}
+.stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.1); }
+.stat-card-body { padding: 20px 22px; display: flex; align-items: center; gap: 16px; flex: 1; }
+.stat-icon {
+    width: 52px; height: 52px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; flex-shrink: 0;
+}
+.stat-card-primary .stat-icon { background: #eef3ff; color: #0d6efd; }
+.stat-card-success .stat-icon { background: #eafaf1; color: #198754; }
+.stat-card-warning .stat-icon { background: #fff8e6; color: #f0a000; }
+.stat-card-info .stat-icon    { background: #e8f7fa; color: #0dcaf0; }
+.stat-info { flex: 1; min-width: 0; }
+.stat-value { font-size: 1.6rem; font-weight: 700; color: var(--gray-800); margin: 0; line-height: 1.2; }
+.stat-label { font-size: 0.82rem; color: var(--gray-500); margin: 2px 0 0; }
+.stat-card-footer { padding: 10px 22px; border-top: 1px solid var(--gray-100); background: #fafbfc; }
+.stat-link { font-size: 0.8rem; font-weight: 600; color: var(--accent); text-decoration: none; display: flex; align-items: center; transition: all 0.2s; }
+.stat-link:hover { color: #0a58ca; }
+
+/* =============================================================
+   16. QUICK ACTION CARDS
+   ============================================================= */
+.quick-action-card {
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    padding: 20px 16px; border-radius: var(--radius);
+    background: var(--gray-50); border: 1px solid #edf2f9;
+    transition: all 0.25s ease; cursor: pointer;
+    color: var(--gray-700); font-size: 0.85rem; font-weight: 600; text-align: center;
+}
+.quick-action-card:hover {
+    background: #fff; border-color: var(--gray-200);
+    transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+.quick-action-icon {
+    width: 48px; height: 48px; border-radius: var(--radius);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; transition: all 0.25s ease;
+}
+.quick-action-card:hover .quick-action-icon { transform: scale(1.1); }
+.bg-primary-light { background: #eef3ff; }
+.bg-success-light { background: #eafaf1; }
+.bg-warning-light { background: #fff8e6; }
+.bg-info-light    { background: #e8f7fa; }
+
+/* =============================================================
+   17. ALERTS
+   ============================================================= */
+.alert { border: none; border-left: 4px solid; }
+.alert-success { border-left-color: #198754; }
+.alert-danger  { border-left-color: #dc3545; }
+.alert-warning { border-left-color: #ffc107; }
+.alert-info    { border-left-color: #17a2b8; }
+.dashboard-alert {
+    border-radius: 10px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+}
+
+/* =============================================================
+   18. MODALS
+   ============================================================= */
+.modal-content { border: none; border-radius: var(--radius-lg); overflow: hidden; }
+
+/* =============================================================
+   19. PAGINATION
+   ============================================================= */
+.pagination { margin-top: 20px; }
+
+/* =============================================================
+   20. RESPONSIVE
+   ============================================================= */
+@media (max-width: 768px) {
+    .col-kode, .col-jenis, .col-tahun, .col-peserta, .col-periode { width: auto; }
+    .exam-table thead th { font-size: 0.7rem; padding: 10px 8px; }
+    .exam-table tbody td { padding: 10px 8px; }
+    .period-range { flex-direction: column; gap: 2px; align-items: flex-start; }
+    .period-arrow { display: none; }
+    .tab-card { padding: 10px 14px; font-size: 0.82rem; }
+    .tab-card .tab-icon { width: 30px; height: 30px; font-size: 0.75rem; }
+}

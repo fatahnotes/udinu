@@ -121,16 +121,28 @@ function get_fallback_menu($user_role) {
                         ['icon' => 'certificate', 'label' => 'Sertifikat', 'url' => '../announcement/certificate.php', 'active' => 'certificate'],
                     ]
                 ],
+                [
+                    'icon' => 'cog', 'label' => 'Pengaturan Sistem', 'url' => '#', 'active' => 'settings', 'children' => [
+                        ['icon' => 'sitemap', 'label' => 'Manajemen Unit Kerja', 'url' => '../admin/unit-kerja.php', 'active' => 'unit-kerja'],
+                        ['icon' => 'wrench', 'label' => 'Konfigurasi Umum', 'url' => '../admin/configuration.php', 'active' => 'configuration'],
+                        ['icon' => 'bars', 'label' => 'Manajemen Menu', 'url' => '../admin/menu-management.php', 'active' => 'menu-management'],
+                    ]
+                ],
             ];
             break;
             
-        case 'ADMIN_VERIFIKATOR':
+        case 'ADMIN_PUSAT':
             $menu = [
                 ['icon' => 'tachometer-alt', 'label' => 'Dashboard', 'url' => 'dashboard.php', 'active' => 'dashboard', 'children' => []],
                 [
                     'icon' => 'check-circle', 'label' => 'Verifikasi Berkas', 'url' => '#', 'active' => 'verification', 'children' => [
                         ['icon' => 'check-double', 'label' => 'Verifikasi Dokumen', 'url' => '../verification/verification.php', 'active' => 'verification'],
-                        ['icon' => 'users', 'label' => 'Daftar Pendaftar', 'url' => '../verification/applicant-list.php', 'active' => 'applicant-list'],
+                        ['icon' => 'users', 'label' => 'Daftar Pendaftar (Nasional)', 'url' => '../verification/applicant-list.php', 'active' => 'applicant-list'],
+                    ]
+                ],
+                [
+                    'icon' => 'sitemap', 'label' => 'Unit Kerja', 'url' => '#', 'active' => 'my-unit', 'children' => [
+                        ['icon' => 'building', 'label' => 'Lihat Unit Kerja', 'url' => '../admin/unit-kerja.php?tab=myunits', 'active' => 'my-units'],
                     ]
                 ],
                 [
@@ -148,6 +160,28 @@ function get_fallback_menu($user_role) {
                     'icon' => 'star', 'label' => 'Penilaian', 'url' => '#', 'active' => 'scoring', 'children' => [
                         ['icon' => 'pen', 'label' => 'Input Nilai', 'url' => '../scoring/scoring.php', 'active' => 'scoring'],
                         ['icon' => 'clipboard-check', 'label' => 'Hasil Penilaian', 'url' => '../scoring/results.php', 'active' => 'scoring-results'],
+                    ]
+                ],
+            ];
+            break;
+            
+        case 'ADMIN_SATKER':
+            $menu = [
+                ['icon' => 'tachometer-alt', 'label' => 'Dashboard', 'url' => 'dashboard.php', 'active' => 'dashboard', 'children' => []],
+                [
+                    'icon' => 'building', 'label' => 'Satker Saya', 'url' => '#', 'active' => 'my-satker', 'children' => [
+                        ['icon' => 'sitemap', 'label' => 'Lihat Unit Kerja', 'url' => '../admin/unit-kerja.php?tab=myunits', 'active' => 'my-units'],
+                    ]
+                ],
+                [
+                    'icon' => 'check-circle', 'label' => 'Verifikasi Pendaftar', 'url' => '#', 'active' => 'verification-satker', 'children' => [
+                        ['icon' => 'check-double', 'label' => 'Verifikasi Berkas', 'url' => '../verification/verification.php', 'active' => 'verification'],
+                        ['icon' => 'users', 'label' => 'Daftar Pendaftar', 'url' => '../verification/applicant-list.php', 'active' => 'applicant-list'],
+                    ]
+                ],
+                [
+                    'icon' => 'chart-bar', 'label' => 'Laporan', 'url' => '#', 'active' => 'reports', 'children' => [
+                        ['icon' => 'chart-pie', 'label' => 'Statistik Satker', 'url' => '../verification/statistics.php', 'active' => 'statistics'],
                     ]
                 ],
             ];

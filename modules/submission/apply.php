@@ -1,7 +1,6 @@
 <?php
 // modules/submission/apply.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Error reporting handled by config.php
 
 // Define base path for includes
 $base_path = dirname(__DIR__, 2);

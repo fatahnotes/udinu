@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // === ADD DEFAULT DOCUMENT ===
     if ($action === 'add_document') {
-        $templateId = intval($_POST['template_vacancy_id']);
+        $typeId = intval($_POST['vacancy_type_id']);
         $name = trim($_POST['document_name']);
         $code = trim($_POST['document_code']);
         $required = isset($_POST['is_required']) ? 1 : 0;
@@ -90,13 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (empty($name) || empty($code)) {
             $error = 'Nama dan kode dokumen harus diisi';
-        } elseif ($templateId <= 0) {
-            $error = 'Tidak ada ujian aktif untuk jenis ini. Buat ujian terlebih dahulu.';
+        } elseif ($typeId <= 0) {
+            $error = 'Jenis ujian tidak valid.';
         } else {
             try {
-                $stmt = $db->prepare("INSERT INTO vacancy_documents (vacancy_id, document_name, document_code, is_required, display_order) VALUES (?,?,?,?,?)");
-                $stmt->execute([$templateId, $name, $code, $required, $order]);
-                $success = 'Dokumen berhasil ditambahkan';
+                $stmt = $db->prepare("INSERT INTO vacancy_documents (vacancy_type_id, document_name, document_code, is_required, display_order) VALUES (?,?,?,?,?)");
+                $stmt->execute([$typeId, $name, $code, $required, $order]);
+                $success = 'Dokumen default berhasil ditambahkan';
             } catch (Exception $e) {
                 $error = 'Gagal: ' . $e->getMessage();
             }
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // === ADD DEFAULT REQUIREMENT ===
     if ($action === 'add_requirement') {
-        $templateId = intval($_POST['template_vacancy_id']);
+        $typeId = intval($_POST['vacancy_type_id']);
         $rtype = trim($_POST['requirement_type']);
         $rtext = trim($_POST['requirement_text']);
         $rinput = trim($_POST['input_type']);
@@ -144,13 +144,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (empty($rtext)) {
             $error = 'Teks persyaratan harus diisi';
-        } elseif ($templateId <= 0) {
-            $error = 'Tidak ada ujian aktif untuk jenis ini. Buat ujian terlebih dahulu.';
+        } elseif ($typeId <= 0) {
+            $error = 'Jenis ujian tidak valid.';
         } else {
             try {
-                $stmt = $db->prepare("INSERT INTO vacancy_requirements (vacancy_id, requirement_type, requirement_text, input_type, is_required, display_order) VALUES (?,?,?,?,?,?)");
-                $stmt->execute([$templateId, $rtype, $rtext, $rinput, $rrequired, $rorder]);
-                $success = 'Persyaratan berhasil ditambahkan';
+                $stmt = $db->prepare("INSERT INTO vacancy_requirements (vacancy_type_id, requirement_type, requirement_text, input_type, is_required, display_order) VALUES (?,?,?,?,?,?)");
+                $stmt->execute([$typeId, $rtype, $rtext, $rinput, $rrequired, $rorder]);
+                $success = 'Persyaratan default berhasil ditambahkan';
             } catch (Exception $e) {
                 $error = 'Gagal: ' . $e->getMessage();
             }
@@ -182,33 +182,24 @@ if (!$selected_type_id && !empty($exam_types)) {
 $type_documents = [];
 $type_requirements = [];
 $selected_type = null;
-$template_vacancy_id = 0; // ID vacancy yg jadi template untuk add
 
 if ($selected_type_id) {
     $stmt = $db->prepare("SELECT * FROM vacancy_types WHERE id = ?");
     $stmt->execute([$selected_type_id]);
     $selected_type = $stmt->fetch();
     
-    // Cari vacancy aktif untuk dijadikan template
-    $stmt = $db->prepare("SELECT id FROM vacancies WHERE vacancy_type_id = ? AND is_active = TRUE ORDER BY id LIMIT 1");
-    $stmt->execute([$selected_type_id]);
-    $tv = $stmt->fetch();
-    if ($tv) $template_vacancy_id = (int)$tv['id'];
+    if ($tab === 'documents') {
+        // Get template documents for this type (vacancy_id IS NULL)
+        $stmt = $db->prepare("SELECT * FROM vacancy_documents WHERE vacancy_type_id = ? AND vacancy_id IS NULL ORDER BY display_order");
+        $stmt->execute([$selected_type_id]);
+        $type_documents = $stmt->fetchAll();
+    }
     
-    if ($tab === 'documents' || $tab === 'requirements') {
-        // Get documents from template vacancy
-        if ($template_vacancy_id) {
-            $stmt = $db->prepare("SELECT * FROM vacancy_documents WHERE vacancy_id = ? ORDER BY display_order");
-            $stmt->execute([$template_vacancy_id]);
-            $type_documents = $stmt->fetchAll();
-        }
-        
-        // Get requirements from template vacancy
-        if ($template_vacancy_id) {
-            $stmt = $db->prepare("SELECT * FROM vacancy_requirements WHERE vacancy_id = ? ORDER BY requirement_type, display_order");
-            $stmt->execute([$template_vacancy_id]);
-            $type_requirements = $stmt->fetchAll();
-        }
+    if ($tab === 'requirements') {
+        // Get template requirements for this type (vacancy_id IS NULL)
+        $stmt = $db->prepare("SELECT * FROM vacancy_requirements WHERE vacancy_type_id = ? AND vacancy_id IS NULL ORDER BY requirement_type, display_order");
+        $stmt->execute([$selected_type_id]);
+        $type_requirements = $stmt->fetchAll();
     }
 }
 
@@ -413,13 +404,9 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
     </p>
     
     <div class="d-flex justify-content-end mb-2">
-        <?php if ($template_vacancy_id): ?>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDocModal">
             <i class="fas fa-plus me-1"></i>Tambah Dokumen
         </button>
-        <?php else: ?>
-        <span class="text-muted small"><i class="fas fa-exclamation-triangle me-1"></i>Buat ujian aktif untuk jenis ini terlebih dahulu agar bisa menambah dokumen</span>
-        <?php endif; ?>
     </div>
     
     <div class="table-responsive">
@@ -483,7 +470,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="action" value="add_document">
-                    <input type="hidden" name="template_vacancy_id" value="<?php echo $template_vacancy_id; ?>">
+                    <input type="hidden" name="vacancy_type_id" value="<?php echo $selected_type_id; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Nama Dokumen <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" name="document_name" placeholder="Contoh: Surat Usulan Pimpinan" required>
@@ -579,13 +566,9 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
     </p>
     
     <div class="d-flex justify-content-end mb-2">
-        <?php if ($template_vacancy_id): ?>
         <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addReqModal">
             <i class="fas fa-plus me-1"></i>Tambah Persyaratan
         </button>
-        <?php else: ?>
-        <span class="text-muted small"><i class="fas fa-exclamation-triangle me-1"></i>Buat ujian aktif untuk jenis ini terlebih dahulu agar bisa menambah persyaratan</span>
-        <?php endif; ?>
     </div>
     
     <?php
@@ -690,7 +673,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                 </div>
                 <div class="modal-body">
                     <input type="hidden" name="action" value="add_requirement">
-                    <input type="hidden" name="template_vacancy_id" value="<?php echo $template_vacancy_id; ?>">
+                    <input type="hidden" name="vacancy_type_id" value="<?php echo $selected_type_id; ?>">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Tipe Persyaratan</label>
                         <select class="form-select" name="requirement_type" required>
@@ -839,29 +822,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
 
 <?php endif; ?>
 
-<style>
-/* Shared table & component styles (same as vacancy-management) */
-.exam-table { border-collapse: separate; border-spacing: 0; }
-.exam-table thead th { background: #f8fafc; color: #475569; font-weight: 700; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.6px; padding: 14px 16px; border-bottom: 2px solid #e2e8f0; white-space: nowrap; }
-.exam-table tbody td { padding: 14px 16px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
-.exam-table tbody tr:hover { background: #f8fafc; }
-.exam-table tbody tr:last-child td { border-bottom: none; }
-.status-chip { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2px; white-space: nowrap; }
-.status-open { background: #dcfce7; color: #166534; }
-.status-inactive { background: #f1f5f9; color: #64748b; }
-.exam-year { color: #334155; font-weight: 700; font-size: 0.95rem; }
-.action-btn { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 8px; border: 1.5px solid #e2e8f0; background: #fff; cursor: pointer; transition: all 0.2s; font-size: 0.85rem; text-decoration: none; }
-.action-btns { display: flex; gap: 6px; }
-.btn-edit { color: #3b82f6; }
-.btn-delete { color: #ef4444; }
-.action-btn:hover { transform: translateY(-1px); }
-.btn-edit:hover { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
-.btn-delete:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
-.nav-pills .nav-link { color: #475569; border-radius: 8px; padding: 10px 20px; font-weight: 500; transition: all 0.2s; }
-.nav-pills .nav-link:hover { background: #f1f5f9; color: #1e293b; }
-.nav-pills .nav-link.active { background: #1a3a5c; color: #fff; }
-code { background: #f1f5f9; padding: 2px 8px; border-radius: 4px; color: #1e293b; font-size: 0.82rem; }
-</style>
+<style>/* Shared CSS in modules/assets/css/style.css */</style>
 
 <script>
 function editType(id, code, name, desc, active) {

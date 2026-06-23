@@ -3,17 +3,19 @@
 -- Insert roles
 INSERT INTO roles (role_code, role_name, description) VALUES
 ('SUPERADMIN', 'Super Administrator', 'Full system administrator with all privileges'),
-('ADMIN_VERIFIKATOR', 'Admin Verifikator', 'Administrator untuk verifikasi berkas pendaftaran'),
+('ADMIN_PUSAT', 'Admin Pusat', 'Administrator untuk verifikasi berkas pendaftaran'),
+('ADMIN_SATKER', 'Admin Satker', 'Administrator satker — otomatis memverifikasi pendaftar di satkernya sendiri'),
 ('ASSESSOR', 'Asesor', 'Penilai seleksi Guru Garuda'),
-('USER', 'PNS/Pendaftar', 'Pegawai Negeri Sipil pendaftar ujian'),
+('USER', 'PNS/Pendaftar', 'Pegawai Negeri Sipil pendaftar ujian')
+ON CONFLICT (role_code) DO NOTHING;
 
 -- Insert superadmin user (password: Cint4$#@566)
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
 ('superadmin@gurugaruda.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'Super Administrator', TRUE, TRUE);
 
--- Insert admin verifikator user
+-- Insert Admin Pusat user
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
-('admin@gurugaruda.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'Admin Verifikator', TRUE, TRUE);
+('admin@gurugaruda.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'Admin Pusat', TRUE, TRUE);
 
 -- Insert assessor user
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
@@ -26,7 +28,7 @@ INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active
 -- Assign roles to users
 INSERT INTO user_roles (user_id, role_id, assigned_by) VALUES
 (1, (SELECT id FROM roles WHERE role_code = 'SUPERADMIN'), 1),
-(2, (SELECT id FROM roles WHERE role_code = 'ADMIN_VERIFIKATOR'), 1),
+(2, (SELECT id FROM roles WHERE role_code = 'ADMIN_PUSAT'), 1),
 (3, (SELECT id FROM roles WHERE role_code = 'ASSESSOR'), 1),
 (4, (SELECT id FROM roles WHERE role_code = 'USER'), 1);
 

@@ -93,7 +93,7 @@ function get_vacancy_details($db, $vacancy_id) {
     
     if (!$vacancy) return null;
     
-    // Ambil persyaratan
+    // Ambil persyaratan (hanya yang per-vacancy, bukan template)
     $stmt = $db->prepare("
         SELECT * FROM vacancy_requirements 
         WHERE vacancy_id = ? 
@@ -102,7 +102,7 @@ function get_vacancy_details($db, $vacancy_id) {
     $stmt->execute([$vacancy_id]);
     $vacancy['requirements'] = $stmt->fetchAll();
     
-    // Ambil dokumen yang diperlukan
+    // Ambil dokumen yang diperlukan (hanya yang per-vacancy)
     $stmt = $db->prepare("
         SELECT * FROM vacancy_documents 
         WHERE vacancy_id = ? 
@@ -161,18 +161,11 @@ function create_vacancy($db, $data, $user_id) {
             throw new Exception("Gagal mendapatkan ID ujian baru");
         }
         
-        // Tambahkan persyaratan default
+        // Copy persyaratan & dokumen dari template jenis ujian
         try {
-            add_default_requirements($db, $vacancy_id, $data['vacancy_type_id']);
+            copy_type_templates($db, $vacancy_id, $data['vacancy_type_id']);
         } catch (Exception $e) {
-            throw new Exception("Gagal menambahkan persyaratan default: " . $e->getMessage());
-        }
-        
-        // Tambahkan dokumen default
-        try {
-            add_default_documents($db, $vacancy_id, $data['vacancy_type_id']);
-        } catch (Exception $e) {
-            throw new Exception("Gagal menambahkan dokumen default: " . $e->getMessage());
+            throw new Exception("Gagal menyalin template: " . $e->getMessage());
         }
         
         $db->commit();
@@ -265,145 +258,39 @@ function delete_vacancy($db, $vacancy_id, $user_id) {
 }
 
 /**
- * Tambahkan persyaratan default berdasarkan jenis ujian
+ * Copy template documents & requirements dari jenis ujian ke vacancy baru
  */
-function add_default_requirements($db, $vacancy_id, $type_id) {
-    $stmt = $db->prepare("SELECT type_code FROM vacancy_types WHERE id = ?");
-    $stmt->execute([$type_id]);
-    $type_code = $stmt->fetchColumn();
+function copy_type_templates($db, $vacancy_id, $type_id) {
+    // Copy dokumen dari template
+    $stmt = $db->prepare("
+        INSERT INTO vacancy_documents (vacancy_id, vacancy_type_id, document_name, document_code, is_required, display_order)
+        SELECT ?, vacancy_type_id, document_name, document_code, is_required, display_order
+        FROM vacancy_documents
+        WHERE vacancy_type_id = ? AND vacancy_id IS NULL
+    ");
+    $stmt->execute([$vacancy_id, $type_id]);
     
-    if (!$type_code) return;
-    
-    // Persyaratan default untuk setiap jenis ujian
-    $default_requirements = [
-        'UD1' => [
-            // Ujian Dinas Tingkat I: II/d → III/a
-            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
-            ['umum', 'Memiliki pangkat Pengatur Tingkat I / golongan ruang II/d', 'validation', true, null, 2],
-            ['umum', 'Telah 1 (satu) tahun dalam pangkat/golongan ruang II/d', 'validation', true, null, 3],
-            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 4],
-            ['umum', 'Surat Keputusan Kenaikan Pangkat II/d terakhir', 'file', true, null, 5],
-            ['umum', 'Tidak sedang diberhentikan sementara / menerima uang tunggu / cuti di luar tanggungan negara', 'radio', true, '{"options": ["Ya (Tidak Sedang)", "Tidak"]}', 6],
-            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 7],
-            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 8],
-            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 9],
-        ],
-        'UD2' => [
-            // Ujian Dinas Tingkat II: III/d → IV/a
-            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
-            ['umum', 'Memiliki pangkat Penata Tingkat I / golongan ruang III/d', 'validation', true, null, 2],
-            ['umum', 'Menduduki Jabatan Struktural Administrator', 'radio', true, '{"options": ["Ya", "Tidak"]}', 3],
-            ['umum', 'Belum mengikuti Pelatihan Kepemimpinan Administrator (PKA)', 'radio', true, '{"options": ["Ya (Belum)", "Sudah"]}', 4],
-            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 5],
-            ['umum', 'Surat Keputusan Kenaikan Pangkat III/d terakhir', 'file', true, null, 6],
-            ['umum', 'Tidak sedang diberhentikan sementara / menerima uang tunggu / cuti di luar tanggungan negara', 'radio', true, '{"options": ["Ya (Tidak Sedang)", "Tidak"]}', 7],
-            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 8],
-            ['khusus', 'Naskah Makalah karya tulis ilmiah sesuai TUPOKSI unit kerja', 'file', true, null, 9],
-            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 10],
-            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 11],
-        ],
-        'UPKP' => [
-            // UPKP: Penyesuaian Kenaikan Pangkat
-            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
-            ['umum', 'Telah memperoleh ijazah lebih tinggi dari jenjang pangkat dan golongan ruang saat ini', 'validation', true, null, 2],
-            ['umum', 'Ijazah dari sekolah/perguruan tinggi negeri atau swasta yang terakreditasi', 'file', true, null, 3],
-            ['umum', 'Surat Keterangan Memiliki Pendidikan Lebih Tinggi (SKMPLT) jika ada', 'file', false, null, 4],
-            ['umum', 'Surat Keputusan Tugas Belajar (SK Tugas Belajar) jika ada', 'file', false, null, 5],
-            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 6],
-            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 7],
-            ['khusus', 'Transkrip nilai ijazah terakhir', 'file', true, null, 8],
-            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 9],
-            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 10],
-        ]
-    ];
-    
-    if (isset($default_requirements[$type_code])) {
-        $stmt = $db->prepare("
-            INSERT INTO vacancy_requirements 
-            (vacancy_id, requirement_type, requirement_text, input_type, is_required, options, display_order)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-        ");
-        
-        foreach ($default_requirements[$type_code] as $req) {
-            $is_required = $req[3] ? 1 : 0;
-            $stmt->execute([
-                $vacancy_id,
-                $req[0], $req[1], $req[2],
-                $is_required,
-                $req[4] !== null ? $req[4] : null,
-                $req[5]
-            ]);
-        }
-    }
+    // Copy persyaratan dari template
+    $stmt = $db->prepare("
+        INSERT INTO vacancy_requirements (vacancy_id, vacancy_type_id, requirement_type, requirement_text, input_type, is_required, options, display_order)
+        SELECT ?, vacancy_type_id, requirement_type, requirement_text, input_type, is_required, options, display_order
+        FROM vacancy_requirements
+        WHERE vacancy_type_id = ? AND vacancy_id IS NULL
+    ");
+    $stmt->execute([$vacancy_id, $type_id]);
 }
 
 /**
- * Tambahkan dokumen default
+ * [DEPRECATED] — kept for backward compatibility during migration
  */
-function add_default_documents($db, $vacancy_id, $type_id) {
-    $stmt = $db->prepare("SELECT type_code FROM vacancy_types WHERE id = ?");
-    $stmt->execute([$type_id]);
-    $type_code = $stmt->fetchColumn();
-    
-    if (!$type_code) return;
-    
-    $default_documents = [
-        'UD1' => [
-            ['Surat Usulan Pimpinan', 'surat_usulan', true],
-            ['SK Pangkat II/d Terakhir', 'sk_pangkat', true],
-            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
-            ['KTP Elektronik', 'ktp', true],
-            ['Kartu Pegawai / NIP', 'karpeg', true],
-            ['Ijazah Terakhir (Legalized)', 'ijazah', true],
-            ['Surat Keterangan Sehat', 'surat_sehat', true],
-            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
-            ['Surat Pernyataan Tidak Sedang Diberhentikan', 'surat_pernyataan', true],
-        ],
-        'UD2' => [
-            ['Surat Usulan Pimpinan', 'surat_usulan', true],
-            ['SK Pangkat III/d Terakhir', 'sk_pangkat', true],
-            ['SK Jabatan Struktural Administrator', 'sk_jabatan', true],
-            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
-            ['KTP Elektronik', 'ktp', true],
-            ['Kartu Pegawai / NIP', 'karpeg', true],
-            ['Ijazah Terakhir (Legalized)', 'ijazah', true],
-            ['Naskah Makalah Karya Tulis Ilmiah', 'makalah', true],
-            ['Surat Keterangan Sehat', 'surat_sehat', true],
-            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
-            ['Surat Pernyataan Tidak Sedang Diberhentikan', 'surat_pernyataan', true],
-        ],
-        'UPKP' => [
-            ['Surat Usulan Pimpinan', 'surat_usulan', true],
-            ['Ijazah Baru yang Lebih Tinggi (Legalized)', 'ijazah_baru', true],
-            ['Transkrip Nilai Ijazah Baru', 'transkrip', true],
-            ['SK Tugas Belajar (jika ada)', 'sk_tugas_belajar', false],
-            ['SKMPLT (jika ada)', 'skmplt', false],
-            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
-            ['KTP Elektronik', 'ktp', true],
-            ['Kartu Pegawai / NIP', 'karpeg', true],
-            ['Surat Keterangan Sehat', 'surat_sehat', true],
-            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
-        ]
-    ];
-    
-    if (isset($default_documents[$type_code])) {
-        $stmt = $db->prepare("
-            INSERT INTO vacancy_documents 
-            (vacancy_id, document_name, document_code, is_required, display_order)
-            VALUES (?, ?, ?, ?, ?)
-        ");
-        
-        $order = 1;
-        foreach ($default_documents[$type_code] as $doc) {
-            $is_required = $doc[2] ? 1 : 0;
-            $stmt->execute([
-                $vacancy_id,
-                $doc[0], $doc[1],
-                $is_required,
-                $order++
-            ]);
-        }
-    }
+function add_default_requirements($db, $vacancy_id, $type_id) {
+    copy_type_templates($db, $vacancy_id, $type_id);
 }
 
+/**
+ * [DEPRECATED] — kept for backward compatibility during migration
+ */
+function add_default_documents($db, $vacancy_id, $type_id) {
+    // Already handled by copy_type_templates above
+}
 ?>
