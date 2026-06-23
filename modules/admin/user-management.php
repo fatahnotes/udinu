@@ -390,24 +390,51 @@ function loadStats() {
         url: 'user-api.php?action=stats',
         type: 'GET',
         dataType: 'json',
+        timeout: 10000,
         success: function(response) {
             console.log('Stats API Response:', response);
             if (response.success) {
-                $('#totalUsers').text(response.data.total_users);
-                $('#totalPendaftar').text(response.data.total_pendaftar);
-                $('#totalAdmin').text(response.data.total_admin);
-                $('#totalAsesor').text(response.data.total_asesor);
+                $('#totalUsers').text(response.data.total_users || 0);
+                $('#totalPendaftar').text(response.data.total_pendaftar || 0);
+                $('#totalAdmin').text(response.data.total_admin || 0);
+                $('#totalAsesor').text(response.data.total_asesor || 0);
                 console.log('Stats updated successfully');
             } else {
-                console.error('Error loading stats:', response.message);
-                alert('Error loading stats: ' + response.message);
+                console.error('Server error loading stats:', response.message);
+                showStatsError('Server error: ' + (response.message || 'Unknown error'));
             }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX error loading stats:', error, xhr.responseText);
-            alert('Failed to load stats. Check console.');
+            console.error('AJAX error loading stats - status:', status, 'error:', error);
+            console.error('HTTP status:', xhr.status, 'Response:', xhr.responseText);
+            
+            var errorMsg = 'Gagal memuat statistik. ';
+            if (xhr.status === 0) {
+                errorMsg += 'Tidak dapat terhubung ke server. Periksa koneksi.';
+            } else if (xhr.status === 403) {
+                errorMsg += 'Akses ditolak. Silakan login ulang.';
+            } else if (xhr.status === 500) {
+                errorMsg += 'Server error (500). Cek response: ' + xhr.responseText.substring(0, 200);
+            } else {
+                errorMsg += 'HTTP ' + xhr.status + ': ' + error;
+            }
+            showStatsError(errorMsg);
         }
     });
+}
+
+function showStatsError(message) {
+    // Tampilkan error tapi jangan pakai alert
+    console.error('Stats Error:', message);
+    $('#totalUsers').text('⚠️');
+    $('#totalPendaftar').text('⚠️');
+    $('#totalAdmin').text('⚠️');
+    $('#totalAsesor').text('⚠️');
+    
+    // Tampilkan toast jika showToast tersedia
+    if (typeof window.showToast === 'function') {
+        window.showToast(message, 'danger');
+    }
 }
 
 function loadUsers(page = 1) {
@@ -439,6 +466,7 @@ function loadUsers(page = 1) {
         url: 'user-api.php?action=list&' + $.param(params),
         type: 'GET',
         dataType: 'json',
+        timeout: 15000,
         success: function(response) {
             console.log('Users API Response:', response);
             
@@ -447,27 +475,41 @@ function loadUsers(page = 1) {
                 renderPagination(response.data.pagination);
                 console.log('Users rendered successfully');
             } else {
-                $('#userTableBody').html(`
-                    <tr>
-                        <td colspan="6" class="text-center text-danger py-4">
-                            <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
-                            <p>Error: ${response.message}</p>
-                        </td>
-                    </tr>
-                `);
+                $('#userTableBody').html(
+                    '<tr>' +
+                    '<td colspan="7" class="text-center text-danger py-4">' +
+                    '<i class="fas fa-exclamation-triangle fa-2x mb-3"></i>' +
+                    '<p>Error: ' + escapeHtml(response.message || 'Unknown error') + '</p>' +
+                    '</td>' +
+                    '</tr>'
+                );
             }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX error loading users:', error, xhr.responseText);
-            $('#userTableBody').html(`
-                <tr>
-                    <td colspan="6" class="text-center text-danger py-4">
-                        <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
-                        <p>Failed to load data. Check console for details.</p>
-                        <small>Error: ${error}</small>
-                    </td>
-                </tr>
-            `);
+            console.error('AJAX error loading users - status:', status, 'error:', error);
+            console.error('HTTP status:', xhr.status, 'Response:', xhr.responseText);
+            
+            var errorMsg = 'Gagal memuat data user. ';
+            if (xhr.status === 0) {
+                errorMsg += 'Tidak dapat terhubung ke server.';
+            } else if (xhr.status === 403) {
+                errorMsg += 'Akses ditolak. Silakan login ulang.';
+            } else if (xhr.status === 500) {
+                errorMsg += 'Server error. Detail: ' + (xhr.responseText ? xhr.responseText.substring(0, 150) : 'N/A');
+            } else {
+                errorMsg += 'HTTP ' + xhr.status + ': ' + error;
+            }
+            
+            $('#userTableBody').html(
+                '<tr>' +
+                '<td colspan="7" class="text-center text-danger py-4">' +
+                '<i class="fas fa-exclamation-triangle fa-2x mb-3"></i>' +
+                '<p>' + escapeHtml(errorMsg) + '</p>' +
+                '<button class="btn btn-outline-primary btn-sm mt-2" onclick="loadUsers()">' +
+                '<i class="fas fa-redo me-1"></i>Coba Lagi</button>' +
+                '</td>' +
+                '</tr>'
+            );
         }
     });
 }

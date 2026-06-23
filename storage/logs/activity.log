@@ -767,3 +767,87 @@
 [2026-06-17 11:40:55] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
 [2026-06-17 11:40:55] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
 [2026-06-17 12:24:39] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:21:25] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-22 14:21:25] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:31:31] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:31:47] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:31:54] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:31:55] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:33:39] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 14:40:13] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:45:05] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-22 20:45:06] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:53:10] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:53:29] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:53:50] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:54:03] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-22 20:54:12] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-22 20:54:12] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:54:24] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 20:54:48] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:02:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:02:13] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:02:17] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:03:55] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:04:06] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-22 21:21:39] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-22 21:21:40] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:24:51] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:24:54] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-22 21:25:35] ACTION: REGISTER_SUCCESS | USER: 21 | DETAILS: New user registered: hadad@gmail.com | IP: ::1
+[2026-06-22 21:25:45] ACTION: LOGIN_SUCCESS | USER: 21 | DETAILS: User logged in: 21 | IP: ::1
+[2026-06-22 21:27:33] ACTION: PROFILE_UPDATE | USER: 21 | DETAILS: Profile updated for user: 21 | IP: ::1
+[2026-06-22 21:27:47] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:28:14] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:28:52] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:00] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: 2026permenpanrb008.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:05] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:10] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:16] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:22] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:26] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:31] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:40] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:44] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:49] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:54] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:29:59] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:30:03] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 59 | IP: ::1
+[2026-06-22 21:30:38] ACTION: LOGOUT | USER: 21 | DETAILS: User logged out: Hadad Mustofa | IP: ::1
+[2026-06-22 21:31:00] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-22 21:31:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:32:23] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:33:02] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:33:03] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:50:23] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:50:28] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:51:25] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:51:31] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:51:34] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 21:59:50] ACTION: EXAM_CREATE | USER: 1 | DETAILS: Membuat ujian: KPS-2026-f94a | IP: ::1
+[2026-06-22 22:05:44] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-22 22:20:37] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:45:15] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 05:45:15] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:45:55] ACTION: EXAM_CREATE | USER: 1 | DETAILS: Membuat ujian: KPS-2026-907d | IP: ::1
+[2026-06-23 05:46:00] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-23 05:46:52] ACTION: LOGIN_SUCCESS | USER: 21 | DETAILS: User logged in: 21 | IP: ::1
+[2026-06-23 05:46:52] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:54:47] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:54:48] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:54:51] ACTION: LOGOUT | USER: 21 | DETAILS: User logged out: Hadad Mustofa | IP: ::1
+[2026-06-23 05:55:01] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 05:55:01] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:56:00] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-23 05:56:10] ACTION: LOGIN_SUCCESS | USER: 21 | DETAILS: User logged in: 21 | IP: ::1
+[2026-06-23 05:56:10] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:56:39] ACTION: FILE_UPLOADED | USER: 21 | DETAILS: User uploaded file: Panduan Mendaftar Kelas PPG - Baru.pdf for submission ID: 61 | IP: ::1
+[2026-06-23 05:56:47] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:57:09] ACTION: DASHBOARD_ACCESS | USER: 21 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 05:57:19] ACTION: LOGOUT | USER: 21 | DETAILS: User logged out: Hadad Mustofa | IP: ::1
+[2026-06-23 05:57:29] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 05:57:29] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 06:07:05] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 06:52:43] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 06:52:45] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 06:53:57] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1

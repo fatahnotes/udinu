@@ -5,7 +5,7 @@ INSERT INTO roles (role_code, role_name, description) VALUES
 ('SUPERADMIN', 'Super Administrator', 'Full system administrator with all privileges'),
 ('ADMIN_VERIFIKATOR', 'Admin Verifikator', 'Administrator untuk verifikasi berkas pendaftaran'),
 ('ASSESSOR', 'Asesor', 'Penilai seleksi Guru Garuda'),
-('USER', 'Guru/Pendaftar', 'Pengguna guru yang mendaftar seleksi');
+('USER', 'PNS/Pendaftar', 'Pegawai Negeri Sipil pendaftar ujian'),
 
 -- Insert superadmin user (password: Cint4$#@566)
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
@@ -19,9 +19,9 @@ INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
 ('assessor@gurugaruda.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'Assessor Penilai', TRUE, TRUE);
 
--- Insert sample user
+-- Insert sample user (PNS)
 INSERT INTO users (email, password_hash, full_name, is_email_verified, is_active) VALUES
-('guru.contoh@sekolah.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'Guru Contoh', TRUE, TRUE);
+('pns.contoh@kemdiktisaintek.go.id', '$2y$10$6XWwQxhrHvYBmF.y2LWuce3e/vbU8gSJ2rwbM1GA2Tzjog2CIr21S', 'PNS Contoh', TRUE, TRUE);
 
 -- Assign roles to users
 INSERT INTO user_roles (user_id, role_id, assigned_by) VALUES
@@ -34,28 +34,25 @@ INSERT INTO user_roles (user_id, role_id, assigned_by) VALUES
 INSERT INTO profiles (user_id, gender, phone, address, birth_year, last_education, major, institution, is_profile_complete) VALUES
 (4, 'Laki-laki', '081234567890', 'Jl. Pendidikan No. 123, Jakarta', 1985, 'S2', 'Pendidikan Matematika', 'Universitas Pendidikan Indonesia', TRUE);
 
--- Insert vacancies
-INSERT INTO vacancies (vacancy_code, title, description, requirements, open_date, close_date, max_applicants, is_active) VALUES
-('GG-KS-2024', 'Seleksi Kepala Sekolah Garuda', 'Program seleksi kepala sekolah berprestasi untuk sekolah-sekolah unggulan nasional.', 
- '1. Minimal S2 Pendidikan
-2. Pengalaman minimal 5 tahun sebagai guru
-3. Memiliki sertifikat kepala sekolah
-4. Usia maksimal 55 tahun',
- '2024-01-01', '2024-12-31', 100, TRUE),
+-- Insert ujian types (vacancy_types)
+INSERT INTO vacancy_types (type_code, type_name, description, is_active) VALUES
+('UD1', 'Ujian Dinas Tingkat I', 'Ujian bagi PNS pangkat Pengatur Tingkat I (II/d) naik ke Penata Muda (III/a). Materi: TWK, TKP, TSI menggunakan CAT.', TRUE),
+('UD2', 'Ujian Dinas Tingkat II', 'Ujian bagi PNS pangkat Penata Tingkat I (III/d) naik ke Pembina (IV/a). Materi: CAT + Makalah.', TRUE),
+('UPKP', 'UPKP', 'Ujian Penyesuaian Kenaikan Pangkat bagi PNS dengan ijazah lebih tinggi dari jenjang pangkat saat ini.', TRUE);
 
-('GG-GS-2024', 'Seleksi Guru Sekolah Garuda', 'Program seleksi guru berprestasi untuk mengajar di sekolah-sekolah Garuda.',
- '1. Minimal S1 Pendidikan sesuai bidang
-2. Memiliki sertifikat pendidik
-3. Pengalaman mengajar minimal 3 tahun
-4. Usia maksimal 50 tahun',
- '2024-01-01', '2024-12-31', 200, TRUE),
+-- Insert vacancies (ujian)
+INSERT INTO vacancies (vacancy_code, vacancy_type_id, title, description, tahun_angkatan, open_date, close_date, max_applicants, is_active) VALUES
+('UD1-2025-4a7b', (SELECT id FROM vacancy_types WHERE type_code = 'UD1'), 'Ujian Dinas Tingkat I TA 2025', 
+ 'Ujian Dinas Tingkat I bagi PNS Kemdiktisaintek yang memenuhi syarat kenaikan pangkat dari Pengatur Tingkat I (II/d) ke Penata Muda (III/a). Materi: TWK, TKP, TSI (100 soal CAT).',
+ 2025, '2025-01-01', '2025-12-31', 500, TRUE),
 
-('GG-TK-2024', 'Seleksi Tenaga Kependidikan Garuda', 'Program seleksi tenaga kependidikan untuk mendukung administrasi sekolah Garuda.',
- '1. Minimal D3 semua jurusan
-2. Menguasai komputer dan administrasi
-3. Pengalaman kerja minimal 2 tahun
-4. Usia maksimal 45 tahun',
- '2024-01-01', '2024-12-31', 50, TRUE);
+('UD2-2025-8c9d', (SELECT id FROM vacancy_types WHERE type_code = 'UD2'), 'Ujian Dinas Tingkat II TA 2025',
+ 'Ujian Dinas Tingkat II bagi PNS Kemdiktisaintek dari Penata Tingkat I (III/d) ke Pembina (IV/a). Materi: CAT + Penilaian Makalah.',
+ 2025, '2025-01-01', '2025-12-31', 300, TRUE),
+
+('UPKP-2025-1e2f', (SELECT id FROM vacancy_types WHERE type_code = 'UPKP'), 'UPKP TA 2025',
+ 'Ujian Penyesuaian Kenaikan Pangkat bagi PNS Kemdiktisaintek dengan ijazah lebih tinggi.',
+ 2025, '2025-01-01', '2025-12-31', 200, TRUE);
 
 -- Insert sample submission
 INSERT INTO submissions (user_id, vacancy_id, status, submission_date) VALUES
@@ -69,44 +66,41 @@ INSERT INTO submission_files (submission_id, file_name, file_path, file_type, fi
 
 -- Insert general announcements
 INSERT INTO announcements (title, content, announcement_type, is_published, published_at, created_by) VALUES
-('Pembukaan Pendaftaran Guru Garuda 2024', 
- 'Dengan ini diumumkan bahwa pendaftaran seleksi Guru Garuda tahun 2024 telah dibuka. 
-  Pendaftaran dapat dilakukan melalui sistem ini mulai tanggal 1 Januari 2024 hingga 31 Desember 2024.
-  
-  Persyaratan:
-  1. Memenuhi kualifikasi pendidikan
-  2. Memiliki pengalaman mengajar
-  3. Bersedia ditempatkan di seluruh Indonesia
-  
-  Informasi lebih lanjut dapat menghubungi helpdesk kami.',
+('Pembukaan Pendaftaran Ujian Dinas & UPKP 2025', 
+ 'Dengan ini diumumkan bahwa pendaftaran Ujian Dinas Tingkat I, Ujian Dinas Tingkat II, dan UPKP tahun 2025 telah dibuka.\n\n'
+ . 'Pendaftaran dapat dilakukan melalui sistem ini mulai tanggal 1 Januari 2025 hingga 31 Desember 2025.\n\n'
+ . 'Jenis Ujian:\n'
+ . '1. Ujian Dinas Tingkat I (II/d ke III/a) - TWK, TKP, TSI (100 soal CAT)\n'
+ . '2. Ujian Dinas Tingkat II (III/d ke IV/a) - CAT + Makalah\n'
+ . '3. UPKP - Penyesuaian Kenaikan Pangkat (ijazah lebih tinggi)\n\n'
+ . 'Informasi lebih lanjut dapat menghubungi helpdesk.',
  'general', TRUE, CURRENT_TIMESTAMP, 1),
 
-('Jadwal Seleksi Tahap 1', 
- 'Berikut jadwal seleksi tahap 1:
-  - 1-31 Januari: Pendaftaran
-  - 1-15 Februari: Verifikasi Berkas
-  - 16-29 Februari: Seleksi Administrasi
-  - 1-15 Maret: Pengumuman Tahap 1
-  
-  Peserta yang lolos tahap 1 akan dihubungi untuk tahap selanjutnya.',
+('Jadwal Pelaksanaan Ujian 2025', 
+ 'Berikut jadwal pelaksanaan ujian tahun 2025:\n'
+ . '1 Jan - 31 Mar: Pendaftaran\n'
+ . '1 Apr - 30 Apr: Verifikasi Berkas\n'
+ . '1 Mei - 31 Mei: Pelaksanaan Ujian CAT\n'
+ . '1 Jun - 30 Jun: Penilaian Makalah (UD2)\n'
+ . '1 Jul - 31 Jul: Pengumuman Hasil\n\n'
+ . 'Peserta mohon mempersiapkan diri dengan baik.',
  'selection', TRUE, CURRENT_TIMESTAMP, 1),
 
-('Perbaikan Sistem Upload', 
- 'Perhatian untuk semua peserta:
-  
-  Telah dilakukan perbaikan pada sistem upload berkas. Pastikan:
-  1. File berformat PDF/JPG/PNG
-  2. Ukuran maksimal 5MB per file
-  3. Nama file jelas dan sesuai
-  
-  Jika mengalami kendala, silakan hubungi tim teknis.',
+('Petunjuk Teknis Upload Berkas', 
+ 'Perhatian untuk semua peserta:\n\n'
+ . '1. File berformat PDF/JPG/PNG\n'
+ . '2. Ukuran maksimal 5MB per file\n'
+ . '3. Pastikan dokumen terbaca dengan jelas\n'
+ . '4. Ijazah wajib dilegalisir\n'
+ . '5. Gunakan scanner, bukan foto kamera\n\n'
+ . 'Jika mengalami kendala, hubungi tim teknis.',
  'technical', TRUE, CURRENT_TIMESTAMP, 1);
 
 -- Insert sample audit logs
 INSERT INTO audit_logs (user_id, action, table_name, record_id, ip_address, user_agent) VALUES
-(1, 'LOGIN', 'users', 1, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'),
-(4, 'REGISTER', 'users', 4, '192.168.1.100', 'Mozilla/5.0 (Android 10; Mobile)'),
-(4, 'SUBMISSION_CREATE', 'submissions', 1, '192.168.1.100', 'Mozilla/5.0 (Android 10; Mobile)');
+(1, 'LOGIN', 'users', 1, '127.0.0.1', 'Mozilla/5.0'),
+(4, 'REGISTER', 'users', 4, '192.168.1.100', 'Mozilla/5.0'),
+(4, 'EXAM_REGISTER', 'submissions', 1, '192.168.1.100', 'Mozilla/5.0');
 
 -- Update current applicants count
 UPDATE vacancies 

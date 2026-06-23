@@ -1,5 +1,7 @@
 <?php
 // modules/admin/user-api.php
+// Start output buffering BEFORE any includes
+ob_start();
 
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../auth/functions-auth.php';
@@ -7,8 +9,11 @@ require_once __DIR__ . '/../auth/functions-auth.php';
 // Hanya SUPERADMIN yang bisa mengakses
 require_login();
 if ($_SESSION['user_role'] !== 'SUPERADMIN') {
+    ob_clean();
     http_response_code(403);
+    header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'Akses ditolak']);
+    ob_end_flush();
     exit;
 }
 
@@ -16,7 +21,7 @@ header('Content-Type: application/json');
 $db = get_db_connection();
 $action = $_GET['action'] ?? '';
 
-// Cegah output sebelum JSON
+// Bersihkan output dari includes sebelum mengirim JSON
 ob_clean();
 
 try {
@@ -41,53 +46,69 @@ try {
             break;
         case 'verify-email':
             verify_user_email($db);
-        break;
+            break;
         default:
             echo json_encode(['success' => false, 'message' => 'Action tidak valid']);
     }
 } catch (Exception $e) {
     error_log("User API error: " . $e->getMessage());
+    ob_clean();
     echo json_encode(['success' => false, 'message' => 'Terjadi kesalahan sistem']);
 }
+
+ob_end_flush();
 
 function get_user_stats($db) {
     $stats = [];
     
-    // Total users
-    $stmt = $db->query("SELECT COUNT(*) FROM users WHERE (is_deleted = FALSE OR is_deleted IS NULL)");
-    $stats['total_users'] = (int)$stmt->fetchColumn();
-    
-    // Total active users
-    $stmt = $db->query("SELECT COUNT(*) FROM users WHERE is_active = TRUE AND (is_deleted = FALSE OR is_deleted IS NULL)");
-    $stats['total_active'] = (int)$stmt->fetchColumn();
-    
-    // Total inactive users
-    $stats['total_inactive'] = $stats['total_users'] - $stats['total_active'];
-    
-    // Hitung berdasarkan role
-    $roles = ['USER', 'ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'];
-    foreach ($roles as $role) {
-        $stmt = $db->prepare("
-            SELECT COUNT(DISTINCT u.id)
-            FROM users u
-            LEFT JOIN user_roles ur ON u.id = ur.user_id
-            LEFT JOIN roles r ON ur.role_id = r.id
-            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
-            AND (r.role_code = ? OR (? = 'USER' AND r.role_code IS NULL))
-        ");
-        $stmt->execute([$role, $role]);
-        $count = (int)$stmt->fetchColumn();
+    try {
+        // Total users (not deleted)
+        $stmt = $db->query("SELECT COUNT(*) FROM users WHERE is_deleted = FALSE OR is_deleted IS NULL");
+        $stats['total_users'] = (int)$stmt->fetchColumn();
         
-        if ($role === 'USER') {
-            $stats['total_pendaftar'] = $count;
-        } elseif ($role === 'ADMIN_VERIFIKATOR' || $role === 'SUPERADMIN') {
-            $stats['total_admin'] = isset($stats['total_admin']) ? $stats['total_admin'] + $count : $count;
-        } elseif ($role === 'ASSESSOR') {
-            $stats['total_asesor'] = $count;
-        }
+        // Total active users
+        $stmt = $db->query("SELECT COUNT(*) FROM users WHERE is_active = TRUE AND (is_deleted = FALSE OR is_deleted IS NULL)");
+        $stats['total_active'] = (int)$stmt->fetchColumn();
+        
+        // Total inactive users
+        $stats['total_inactive'] = $stats['total_users'] - $stats['total_active'];
+        
+        // Hitung berdasarkan role - gunakan query terpisah yang lebih sederhana
+        // Total Pendaftar (USER) - user tanpa role khusus atau dengan role USER
+        $stmt = $db->query("
+            SELECT COUNT(*) FROM users u
+            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
+            AND (
+                NOT EXISTS (SELECT 1 FROM user_roles ur2 JOIN roles r2 ON ur2.role_id = r2.id WHERE ur2.user_id = u.id AND r2.role_code IN ('ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'))
+            )
+        ");
+        $stats['total_pendaftar'] = (int)$stmt->fetchColumn();
+        
+        // Total Admin (ADMIN_VERIFIKATOR + SUPERADMIN)
+        $stmt = $db->query("
+            SELECT COUNT(DISTINCT u.id) FROM users u
+            JOIN user_roles ur ON u.id = ur.user_id
+            JOIN roles r ON ur.role_id = r.id
+            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
+            AND r.role_code IN ('ADMIN_VERIFIKATOR', 'SUPERADMIN')
+        ");
+        $stats['total_admin'] = (int)$stmt->fetchColumn();
+        
+        // Total Asesor (ASSESSOR)
+        $stmt = $db->query("
+            SELECT COUNT(DISTINCT u.id) FROM users u
+            JOIN user_roles ur ON u.id = ur.user_id
+            JOIN roles r ON ur.role_id = r.id
+            WHERE (u.is_deleted = FALSE OR u.is_deleted IS NULL)
+            AND r.role_code = 'ASSESSOR'
+        ");
+        $stats['total_asesor'] = (int)$stmt->fetchColumn();
+        
+        echo json_encode(['success' => true, 'data' => $stats]);
+    } catch (Exception $e) {
+        error_log("Stats query error: " . $e->getMessage());
+        echo json_encode(['success' => false, 'message' => 'Gagal mengambil statistik: ' . $e->getMessage()]);
     }
-    
-    echo json_encode(['success' => true, 'data' => $stats]);
 }
 
 function get_user_list($db) {
@@ -101,8 +122,13 @@ function get_user_list($db) {
         
         // Filter by role
         if (!empty($_GET['role'])) {
-            $where[] = "r.role_code = ?";
-            $params[] = $_GET['role'];
+            if ($_GET['role'] === 'USER') {
+                // USER = users with role USER OR no role at all
+                $where[] = "(r.role_code = 'USER' OR (r.role_code IS NULL AND u.id NOT IN (SELECT ur3.user_id FROM user_roles ur3 JOIN roles r3 ON ur3.role_id = r3.id WHERE r3.role_code IN ('ADMIN_VERIFIKATOR', 'ASSESSOR', 'SUPERADMIN'))))";
+            } else {
+                $where[] = "r.role_code = ?";
+                $params[] = $_GET['role'];
+            }
         }
         
         // Filter by status

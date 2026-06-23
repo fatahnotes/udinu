@@ -78,7 +78,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                 <h2 class="mb-0">Status Pendaftaran</h2>
                 <?php if (!$active_submission): ?>
                 <a href="<?php echo base_url('modules/dashboard/dashboard.php'); ?>" class="btn-dashboard">
-                    <i class="fas fa-plus me-2"></i>Daftar Lowongan Baru
+                    <i class="fas fa-plus me-2"></i>Daftar Ujian Baru
                 </a>
                 <?php endif; ?>
             </div>
@@ -267,7 +267,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                         <?php endif; ?>
                         
                         <div class="date-item mb-2">
-                            <small class="text-muted">Periode Lowongan</small>
+                            <small class="text-muted">Periode Ujian</small>
                             <p class="mb-0">
                                 <?php echo date('d M Y', strtotime($active_submission['open_date'])); ?> - 
                                 <?php echo date('d M Y', strtotime($active_submission['close_date'])); ?>
@@ -276,7 +276,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                         
                         <?php if ($active_submission['status'] !== 'draft'): ?>
                         <div class="date-item">
-                            <small class="text-muted">Status Lowongan</small>
+                            <small class="text-muted">Status Ujian</small>
                             <p class="mb-0">
                                 <?php 
                                 $today = date('Y-m-d');
@@ -371,7 +371,7 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
             <thead>
                 <tr>
                     <th width="15%">Tanggal</th>
-                    <th width="30%">Lowongan</th>
+                    <th width="30%">Ujian</th>
                     <th width="15%">Kode</th>
                     <th width="15%">Status</th>
                     <th width="25%">Aksi</th>

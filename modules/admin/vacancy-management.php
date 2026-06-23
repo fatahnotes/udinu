@@ -1,9 +1,6 @@
 <?php
-// modules/admin/vacancy-management.php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-$pageTitle = "Manajemen Lowongan";
+// modules/admin/vacancy-management.php - Manajemen Ujian
+$pageTitle = "Manajemen Ujian";
 $activePage = "vacancy-management";
 $customCSS = "";
 $customJS = "";
@@ -11,7 +8,7 @@ $customJS = "";
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../auth/functions-auth.php';
 
-// Hanya SUPERADMIN yang bisa mengakses
+// Hanya SUPERADMIN
 require_login();
 if ($_SESSION['user_role'] !== 'SUPERADMIN') {
     header('Location: ' . base_url('modules/dashboard/dashboard.php'));
@@ -26,16 +23,8 @@ $success = '';
 $action = $_GET['action'] ?? 'list';
 $id = $_GET['id'] ?? 0;
 
-// Debug: cek data yang diterima
-error_log("=== VACANCY MANAGEMENT DEBUG ===");
-error_log("Action: $action");
-error_log("ID: $id");
-error_log("Request Method: " . $_SERVER['REQUEST_METHOD']);
-
 // Handle actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    error_log("POST Data: " . print_r($_POST, true));
-    
     if (isset($_POST['save_vacancy'])) {
         $data = [
             'vacancy_type_id' => intval($_POST['vacancy_type_id']),
@@ -48,110 +37,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'is_active' => isset($_POST['is_active']) ? 1 : 0
         ];
         
-        // Validasi
         $errors = [];
-        
-        if (empty($data['title'])) {
-            $errors[] = 'Judul lowongan harus diisi';
-        }
-        
-        if (empty($data['vacancy_type_id'])) {
-            $errors[] = 'Jenis lowongan harus dipilih';
-        } else {
-            // Cek apakah jenis lowongan valid
-            $vacancy_type = get_vacancy_type_by_id($db, $data['vacancy_type_id']);
-            if (!$vacancy_type) {
-                $errors[] = 'Jenis lowongan tidak valid';
-            }
-        }
-        
-        if ($data['open_date'] >= $data['close_date']) {
-            $errors[] = 'Tanggal tutup harus setelah tanggal buka';
-        }
-        
-        if ($data['tahun_angkatan'] < date('Y')) {
-            $errors[] = 'Tahun angkatan tidak valid';
-        }
-        
-        // Kumpulkan data formasi
-        $formations = [];
-        if (isset($_POST['formations']) && is_array($_POST['formations'])) {
-            foreach ($_POST['formations'] as $index => $formation) {
-                if (!empty($formation['name']) && !empty($formation['jumlah']) && $formation['jumlah'] > 0) {
-                    $formations[] = [
-                        'type' => $formation['type'] ?? 'umum',
-                        'name' => trim($formation['name']),
-                        'jumlah' => intval($formation['jumlah'])
-                    ];
-                }
-            }
-        }
-        
-        error_log("Formations data: " . print_r($formations, true));
+        if (empty($data['title'])) $errors[] = 'Judul ujian harus diisi';
+        if (empty($data['vacancy_type_id'])) $errors[] = 'Jenis ujian harus dipilih';
+        if ($data['open_date'] >= $data['close_date']) $errors[] = 'Tanggal tutup harus setelah tanggal buka';
+        if ($data['tahun_angkatan'] < date('Y')) $errors[] = 'Tahun pelaksanaan tidak valid';
         
         if (empty($errors)) {
             if (isset($_POST['vacancy_id']) && $_POST['vacancy_id'] > 0) {
-                // Update
-                $result = update_vacancy($db, $_POST['vacancy_id'], $data, $_SESSION['user_id'], $formations);
-                if ($result) {
-                    $success = 'Lowongan berhasil diperbarui';
-                    $action = 'list';
-                } else {
-                    $error = 'Gagal memperbarui lowongan. Silakan coba lagi.';
-                }
+                $result = update_vacancy($db, $_POST['vacancy_id'], $data, $_SESSION['user_id']);
+                if ($result) { $success = 'Ujian berhasil diperbarui'; $action = 'list'; }
+                else { $error = 'Gagal memperbarui ujian.'; }
             } else {
-                // Create
-                $vacancy_id = create_vacancy($db, $data, $_SESSION['user_id'], $formations);
-                if ($vacancy_id) {
-                    $success = 'Lowongan berhasil dibuat';
-                    $action = 'list';
-                } else {
-                    $error = 'Gagal membuat lowongan. Pastikan data jenis lowongan valid dan cek log error.';
-                }
+                $vacancy_id = create_vacancy($db, $data, $_SESSION['user_id']);
+                if ($vacancy_id) { $success = 'Ujian berhasil dibuat'; $action = 'list'; }
+                else { $error = 'Gagal membuat ujian. Periksa log error.'; }
             }
         } else {
             $error = implode('<br>', $errors);
         }
     } elseif (isset($_POST['delete_vacancy'])) {
         $result = delete_vacancy($db, $_POST['vacancy_id'], $_SESSION['user_id']);
-        if ($result) {
-            $success = 'Lowongan berhasil dihapus';
-        } else {
-            $error = 'Gagal menghapus lowongan';
-        }
+        $success = $result ? 'Ujian berhasil dihapus' : '';
+        $error = $result ? '' : 'Gagal menghapus ujian';
         $action = 'list';
     }
 }
 
-// Ambil data berdasarkan action
+// Ambil data
 if ($action === 'edit' && $id > 0) {
     $vacancy = get_vacancy_details($db, $id);
-    if (!$vacancy) {
-        $error = 'Lowongan tidak ditemukan';
-        $action = 'list';
-    }
+    if (!$vacancy) { $error = 'Ujian tidak ditemukan'; $action = 'list'; }
 } elseif ($action === 'view' && $id > 0) {
     $vacancy = get_vacancy_details($db, $id);
-    if (!$vacancy) {
-        $error = 'Lowongan tidak ditemukan';
-        $action = 'list';
-    }
+    if (!$vacancy) { $error = 'Ujian tidak ditemukan'; $action = 'list'; }
 }
 
-// Ambil daftar jenis lowongan untuk dropdown
 $vacancy_types = get_vacancy_types($db);
-error_log("Vacancy types count: " . count($vacancy_types));
 
 include __DIR__ . '/../dashboard/header-dashboard.php';
 ?>
 
+<!-- Header -->
 <div class="row mb-4">
     <div class="col-12">
-        <div class="dashboard-card">
+        <div class="dashboard-card" style="background: linear-gradient(135deg, #1a3a5c 0%, #2c5f8a 100%); color: white;">
             <div class="d-flex justify-content-between align-items-center">
-                <h2 class="mb-0">Manajemen Lowongan</h2>
-                <a href="?action=add" class="btn-dashboard">
-                    <i class="fas fa-plus me-2"></i>Tambah Lowongan
+                <div>
+                    <h2 class="mb-1"><i class="fas fa-file-alt me-2"></i>Manajemen Ujian</h2>
+                    <p class="mb-0 opacity-75">Kelola Ujian Dinas Tingkat I, Ujian Dinas Tingkat II, dan UPKP</p>
+                </div>
+                <a href="?action=add" class="btn btn-light fw-semibold px-4" style="color:#1a3a5c;">
+                    <i class="fas fa-plus me-2"></i>Tambah Ujian
                 </a>
             </div>
         </div>
@@ -160,536 +97,792 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
 
 <!-- Alerts -->
 <?php if ($error): ?>
-    <div class="alert alert-danger dashboard-alert alert-dismissible fade show" role="alert">
-        <i class="fas fa-exclamation-circle me-2"></i><?php echo htmlspecialchars($error); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
+    <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 <?php endif; ?>
-
 <?php if ($success): ?>
-    <div class="alert alert-success dashboard-alert alert-dismissible fade show" role="alert">
-        <i class="fas fa-check-circle me-2"></i><?php echo htmlspecialchars($success); ?>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
+<div class="alert alert-success alert-dismissible fade show border-0 shadow-sm" role="alert">
+    <i class="fas fa-check-circle me-2"></i><?php echo $success; ?>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
 <?php endif; ?>
 
 <?php if ($action === 'list' || $action === ''): ?>
-    <!-- List Lowongan -->
-    <div class="dashboard-card">
-        <div class="card-header">
-            <h4><i class="fas fa-list me-2"></i>Daftar Lowongan</h4>
-        </div>
-        
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Kode</th>
-                        <th>Judul</th>
-                        <th>Jenis</th>
-                        <th>Tahun</th>
-                        <th>Periode</th>
-                        <th>Pendaftar</th>
-                        <th>Status</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $vacancies = get_all_vacancies($db);
-                    if (empty($vacancies)): ?>
-                        <tr>
-                            <td colspan="8" class="text-center text-muted py-4">
-                                <i class="fas fa-inbox fa-2x mb-3"></i><br>
-                                Belum ada lowongan yang dibuat
-                            </td>
-                        </tr>
-                    <?php else:
-                    foreach ($vacancies as $vac): 
-                        $status_class = $vac['is_active'] ? 'success' : 'secondary';
-                        $status_text = $vac['is_active'] ? 'Aktif' : 'Nonaktif';
-                        
-                        // Check if open
-                        $today = date('Y-m-d');
-                        $open_class = ($today >= $vac['open_date'] && $today <= $vac['close_date']) ? 'info' : 'warning';
-                        $open_text = ($today >= $vac['open_date'] && $today <= $vac['close_date']) ? 'Buka' : 'Tutup';
-                    ?>
-                    <tr>
-                        <td><strong><?php echo htmlspecialchars($vac['vacancy_code']); ?></strong></td>
-                        <td>
-                            <div class="fw-bold"><?php echo htmlspecialchars($vac['title']); ?></div>
-                            <small class="text-muted"><?php echo substr(htmlspecialchars($vac['description']), 0, 100); ?>...</small>
-                        </td>
-                        <td>
-                            <span class="badge bg-primary"><?php echo htmlspecialchars($vac['type_name']); ?></span>
-                        </td>
-                        <td><?php echo htmlspecialchars($vac['tahun_angkatan']); ?></td>
-                        <td>
-                            <small><?php echo date('d/m/Y', strtotime($vac['open_date'])); ?></small><br>
-                            <small><?php echo date('d/m/Y', strtotime($vac['close_date'])); ?></small>
-                        </td>
-                        <td class="text-center">
-                            <span class="badge bg-secondary"><?php echo $vac['total_applicants']; ?></span>
-                        </td>
-                        <td>
-                            <span class="badge bg-<?php echo $status_class; ?>"><?php echo $status_text; ?></span><br>
-                            <span class="badge bg-<?php echo $open_class; ?>"><?php echo $open_text; ?></span>
-                        </td>
-                        <td>
-                            <div class="btn-group btn-group-sm">
-                                <a href="?action=view&id=<?php echo $vac['id']; ?>" class="btn btn-outline-primary" title="Lihat">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a href="?action=edit&id=<?php echo $vac['id']; ?>" class="btn btn-outline-warning" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <button type="button" class="btn btn-outline-danger delete-btn" 
-                                        data-id="<?php echo $vac['id']; ?>" 
-                                        data-title="<?php echo htmlspecialchars($vac['title']); ?>"
-                                        title="Hapus">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <?php endforeach; endif; ?>
-                </tbody>
-            </table>
-        </div>
+<!-- Daftar Ujian -->
+<div class="dashboard-card border-0 shadow-sm">
+    <div class="card-header bg-transparent border-bottom-0 pb-0">
+        <h4 class="mb-0"><i class="fas fa-list me-2"></i>Daftar Ujian</h4>
     </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Apakah Anda yakin ingin menghapus lowongan <strong id="deleteTitle"></strong>?</p>
-                    <p class="text-danger"><small>Tindakan ini tidak dapat dibatalkan.</small></p>
-                </div>
-                <div class="modal-footer">
-                    <form method="POST" id="deleteForm">
-                        <input type="hidden" name="vacancy_id" id="deleteId">
-                        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-                        <input type="hidden" name="delete_vacancy" value="1">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-<?php elseif ($action === 'add' || $action === 'edit'): ?>
-    <!-- Form Lowongan -->
-    <div class="dashboard-card">
-        <div class="card-header">
-            <h4>
-                <i class="fas fa-<?php echo $action === 'add' ? 'plus' : 'edit'; ?> me-2"></i>
-                <?php echo $action === 'add' ? 'Tambah Lowongan Baru' : 'Edit Lowongan'; ?>
-            </h4>
-        </div>
-        
-        <form method="POST" action="" id="vacancyForm">
-            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
-            <input type="hidden" name="save_vacancy" value="1">
-            <?php if (isset($vacancy['id'])): ?>
-                <input type="hidden" name="vacancy_id" value="<?php echo $vacancy['id']; ?>">
-            <?php endif; ?>
-            
-            <div class="row">
-                <!-- Jenis Lowongan -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="vacancy_type_id" class="form-label">Jenis Lowongan <span class="text-danger">*</span></label>
-                        <select class="form-select" id="vacancy_type_id" name="vacancy_type_id" required 
-                            <?php echo isset($vacancy['id']) ? 'disabled' : ''; ?>>
-                            <option value="">Pilih Jenis Lowongan</option>
-                            <?php foreach ($vacancy_types as $type): ?>
-                                <option value="<?php echo $type['id']; ?>"
-                                        data-type-code="<?php echo htmlspecialchars($type['type_code']); ?>"
-                                    <?php echo (isset($vacancy['vacancy_type_id']) && $vacancy['vacancy_type_id'] == $type['id']) ? 'selected' : ''; ?>>
-                                    <?php echo htmlspecialchars($type['type_name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-                        <?php if (isset($vacancy['id'])): ?>
-                            <input type="hidden" name="vacancy_type_id" value="<?php echo $vacancy['vacancy_type_id']; ?>">
-                            <div class="form-text">Jenis lowongan tidak dapat diubah setelah dibuat</div>
+    <div class="table-responsive">
+        <table class="table align-middle mb-0 exam-table">
+            <thead>
+                <tr>
+                    <th class="col-kode">Kode Ujian</th>
+                    <th class="col-judul">Judul Ujian</th>
+                    <th class="col-jenis">Jenis</th>
+                    <th class="col-tahun">Tahun</th>
+                    <th class="col-periode">Periode Pendaftaran</th>
+                    <th class="col-peserta">Peserta</th>
+                    <th class="col-status">Status</th>
+                    <th class="col-aksi">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $vacancies = get_all_vacancies($db);
+                if (empty($vacancies)): ?>
+                <tr>
+                    <td colspan="8" class="text-center py-5">
+                        <div class="text-muted">
+                            <i class="fas fa-inbox fa-3x mb-3 d-block" style="opacity:0.25"></i>
+                            <span>Belum ada ujian yang dibuat</span>
+                        </div>
+                    </td>
+                </tr>
+                <?php else:
+                foreach ($vacancies as $vac):
+                    $is_active = $vac['is_active'];
+                    $today = date('Y-m-d');
+                    $is_open = ($today >= $vac['open_date'] && $today <= $vac['close_date'] && $is_active);
+                    $is_closed = ($today > $vac['close_date']);
+                    
+                    // Warna per jenis ujian — pastikan kontras tinggi
+                    $typeStyle = [
+                        'UD1' => ['bg' => '#dbeafe', 'text' => '#1e40af', 'icon' => 'level-up-alt'],
+                        'UD2' => ['bg' => '#ffedd5', 'text' => '#9a3412', 'icon' => 'arrow-up'],
+                        'UPKP' => ['bg' => '#dcfce7', 'text' => '#166534', 'icon' => 'exchange-alt'],
+                    ];
+                    $ts = $typeStyle[$vac['type_code']] ?? ['bg' => '#f1f5f9', 'text' => '#475569', 'icon' => 'file-alt'];
+                ?>
+                <tr>
+                    <!-- Kode -->
+                    <td class="col-kode">
+                        <span class="exam-code"><?php echo htmlspecialchars($vac['vacancy_code']); ?></span>
+                    </td>
+                    
+                    <!-- Judul -->
+                    <td class="col-judul">
+                        <div class="exam-title"><?php echo htmlspecialchars($vac['title']); ?></div>
+                        <?php if (!empty($vac['description'])): ?>
+                        <div class="exam-desc"><?php echo mb_substr(htmlspecialchars($vac['description']), 0, 70); ?>...</div>
                         <?php endif; ?>
-                    </div>
-                </div>
-                
-                <!-- Tahun Angkatan -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="tahun_angkatan" class="form-label">Tahun Angkatan <span class="text-danger">*</span></label>
-                        <input type="number" class="form-control" id="tahun_angkatan" name="tahun_angkatan" 
-                               min="<?php echo date('Y'); ?>" max="<?php echo date('Y') + 5; ?>"
-                               value="<?php echo isset($vacancy['tahun_angkatan']) ? $vacancy['tahun_angkatan'] : date('Y'); ?>" required>
-                    </div>
-                </div>
-                
-                <!-- Judul -->
-                <div class="col-12">
-                    <div class="form-group mb-3">
-                        <label for="title" class="form-label">Judul Lowongan <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" id="title" name="title" 
-                               placeholder="Contoh: Seleksi Kepala Sekolah Garuda 2025"
-                               value="<?php echo isset($vacancy['title']) ? htmlspecialchars($vacancy['title']) : ''; ?>" required>
-                    </div>
-                </div>
-                
-                <!-- Deskripsi -->
-                <div class="col-12">
-                    <div class="form-group mb-3">
-                        <label for="description" class="form-label">Deskripsi Lowongan</label>
-                        <textarea class="form-control" id="description" name="description" rows="4" 
-                                  placeholder="Deskripsi lengkap tentang lowongan ini..."><?php echo isset($vacancy['description']) ? htmlspecialchars($vacancy['description']) : ''; ?></textarea>
-                    </div>
-                </div>
-                
-                <!-- Tanggal Buka -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="open_date" class="form-label">Tanggal Buka <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" id="open_date" name="open_date" 
-                               value="<?php echo isset($vacancy['open_date']) ? $vacancy['open_date'] : date('Y-m-d'); ?>" required>
-                    </div>
-                </div>
-                
-                <!-- Tanggal Tutup -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="close_date" class="form-label">Tanggal Tutup <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" id="close_date" name="close_date" 
-                               value="<?php echo isset($vacancy['close_date']) ? $vacancy['close_date'] : date('Y-m-d', strtotime('+30 days')); ?>" required>
-                    </div>
-                </div>
-                
-                <!-- Maksimal Pendaftar -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label for="max_applicants" class="form-label">Maksimal Pendaftar (Opsional)</label>
-                        <input type="number" class="form-control" id="max_applicants" name="max_applicants" 
-                               min="1" 
-                               value="<?php echo isset($vacancy['max_applicants']) ? $vacancy['max_applicants'] : ''; ?>"
-                               placeholder="Kosongkan untuk tidak terbatas">
-                        <div class="form-text">Biarkan kosong jika tidak ada batasan</div>
-                    </div>
-                </div>
-                
-                <!-- Status Aktif -->
-                <div class="col-md-6">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Status</label>
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="is_active" name="is_active" 
-                                   value="1" <?php echo (!isset($vacancy['is_active']) || $vacancy['is_active']) ? 'checked' : ''; ?>>
-                            <label class="form-check-label" for="is_active">Aktif</label>
+                    </td>
+                    
+                    <!-- Jenis -->
+                    <td class="col-jenis">
+                        <span class="exam-type-badge" style="background:<?php echo $ts['bg']; ?>;color:<?php echo $ts['text']; ?>">
+                            <i class="fas fa-<?php echo $ts['icon']; ?>"></i>
+                            <?php echo htmlspecialchars($vac['type_name']); ?>
+                        </span>
+                    </td>
+                    
+                    <!-- Tahun -->
+                    <td class="col-tahun">
+                        <span class="exam-year"><?php echo htmlspecialchars($vac['tahun_angkatan']); ?></span>
+                    </td>
+                    
+                    <!-- Periode -->
+                    <td class="col-periode">
+                        <div class="period-range">
+                            <span class="period-date"><?php echo date('d/m/Y', strtotime($vac['open_date'])); ?></span>
+                            <i class="fas fa-long-arrow-alt-right period-arrow"></i>
+                            <span class="period-date"><?php echo date('d/m/Y', strtotime($vac['close_date'])); ?></span>
                         </div>
-                        <div class="form-text">Nonaktifkan untuk menyembunyikan dari pendaftar</div>
-                    </div>
-                </div>
-                
-                <!-- Formasi Section -->
-                <div class="col-12">
-                    <div class="dashboard-card mb-3" id="formasi-section" style="display: none;">
-                        <div class="card-header">
-                            <h5 class="mb-0">
-                                <i class="fas fa-list me-2"></i>Formasi Lowongan
-                                <small class="text-muted fs-6 ms-2">(Akan ditampilkan sesuai jenis lowongan)</small>
-                            </h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="formasi-container">
-                                <!-- Formasi akan ditambahkan dinamis di sini -->
-                            </div>
-                            <button type="button" class="btn btn-sm btn-outline-primary mt-3" id="add-formasi-btn">
-                                <i class="fas fa-plus me-1"></i>Tambah Formasi
+                    </td>
+                    
+                    <!-- Peserta -->
+                    <td class="col-peserta text-center">
+                        <span class="participant-count"><?php echo (int)$vac['total_applicants']; ?></span>
+                    </td>
+                    
+                    <!-- Status -->
+                    <td class="col-status">
+                        <?php if (!$is_active): ?>
+                            <span class="status-chip status-inactive">Nonaktif</span>
+                        <?php elseif ($is_open): ?>
+                            <span class="status-chip status-open">Sedang Buka</span>
+                        <?php elseif ($is_closed): ?>
+                            <span class="status-chip status-closed">Ditutup</span>
+                        <?php else: ?>
+                            <span class="status-chip status-upcoming">Akan Dibuka</span>
+                        <?php endif; ?>
+                    </td>
+                    
+                    <!-- Aksi -->
+                    <td class="col-aksi">
+                        <div class="action-btns">
+                            <a href="?action=view&id=<?php echo $vac['id']; ?>" class="action-btn btn-view" title="Lihat Detail">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                            <a href="?action=edit&id=<?php echo $vac['id']; ?>" class="action-btn btn-edit" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button type="button" class="action-btn btn-delete"
+                                    onclick="confirmDelete(<?php echo $vac['id']; ?>,'<?php echo htmlspecialchars(addslashes($vac['title'])); ?>')" title="Hapus">
+                                <i class="fas fa-trash"></i>
                             </button>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Submit Buttons -->
-                <div class="col-12">
-                    <div class="d-flex gap-3">
-                        <button type="submit" class="btn-dashboard">
-                            <i class="fas fa-save me-2"></i>Simpan
-                        </button>
-                        <a href="?" class="btn-outline-dashboard btn">
-                            <i class="fas fa-arrow-left me-2"></i>Kembali
-                        </a>
-                    </div>
+                    </td>
+                </tr>
+                <?php endforeach; endif; ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body py-4">
+                <p class="mb-1">Apakah Anda yakin ingin menghapus ujian:</p>
+                <p class="fw-bold mb-0" id="deleteTitle"></p>
+                <small class="text-danger"><i class="fas fa-info-circle me-1"></i>Tindakan ini tidak dapat dibatalkan.</small>
+            </div>
+            <div class="modal-footer border-0">
+                <form method="POST" id="deleteForm">
+                    <input type="hidden" name="vacancy_id" id="deleteId">
+                    <input type="hidden" name="delete_vacancy" value="1">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash me-1"></i>Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php elseif ($action === 'add' || $action === 'edit'): ?>
+<!-- Form Ujian -->
+<div class="dashboard-card border-0 shadow-sm">
+    <div class="card-header bg-transparent border-bottom pb-3">
+        <h4 class="mb-0">
+            <i class="fas fa-<?php echo $action === 'add' ? 'plus-circle' : 'edit'; ?> me-2 text-primary"></i>
+            <?php echo $action === 'add' ? 'Tambah Ujian Baru' : 'Edit Ujian'; ?>
+        </h4>
+    </div>
+    
+    <form method="POST" id="examForm">
+        <input type="hidden" name="save_vacancy" value="1">
+        <?php if (isset($vacancy['id'])): ?>
+            <input type="hidden" name="vacancy_id" value="<?php echo $vacancy['id']; ?>">
+        <?php endif; ?>
+        
+        <div class="row p-4">
+            <!-- Jenis Ujian -->
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-tag me-1 text-primary"></i>Jenis Ujian <span class="text-danger">*</span>
+                </label>
+                <select class="form-select form-select-lg" name="vacancy_type_id" required
+                    <?php echo isset($vacancy['id']) ? 'disabled' : ''; ?>>
+                    <option value="">-- Pilih Jenis Ujian --</option>
+                    <?php foreach ($vacancy_types as $type): ?>
+                        <option value="<?php echo $type['id']; ?>"
+                            <?php echo (isset($vacancy['vacancy_type_id']) && $vacancy['vacancy_type_id'] == $type['id']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($type['type_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <?php if (isset($vacancy['id'])): ?>
+                    <input type="hidden" name="vacancy_type_id" value="<?php echo $vacancy['vacancy_type_id']; ?>">
+                    <div class="form-text"><i class="fas fa-info-circle me-1"></i>Jenis ujian tidak dapat diubah setelah dibuat</div>
+                <?php endif; ?>
+            </div>
+            
+            <!-- Tahun Pelaksanaan -->
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-calendar-alt me-1 text-primary"></i>Tahun Pelaksanaan <span class="text-danger">*</span>
+                </label>
+                <input type="number" class="form-control form-control-lg" name="tahun_angkatan" 
+                       min="<?php echo date('Y'); ?>" max="<?php echo date('Y') + 5; ?>"
+                       value="<?php echo isset($vacancy['tahun_angkatan']) ? $vacancy['tahun_angkatan'] : date('Y'); ?>" required>
+            </div>
+            
+            <!-- Judul Ujian -->
+            <div class="col-12 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-heading me-1 text-primary"></i>Judul Ujian <span class="text-danger">*</span>
+                </label>
+                <input type="text" class="form-control form-control-lg" name="title" 
+                       placeholder="Contoh: Ujian Dinas Tingkat I Tahun Anggaran 2025"
+                       value="<?php echo isset($vacancy['title']) ? htmlspecialchars($vacancy['title']) : ''; ?>" required>
+            </div>
+            
+            <!-- Deskripsi -->
+            <div class="col-12 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-align-left me-1 text-primary"></i>Deskripsi Ujian
+                </label>
+                <textarea class="form-control" name="description" rows="6" 
+                          placeholder="Deskripsikan ujian ini: persyaratan peserta, materi ujian (TWK, TKP, TSI), metode CAT, ketentuan Makalah (untuk UD2), dan informasi penting lainnya..."><?php echo isset($vacancy['description']) ? htmlspecialchars($vacancy['description']) : ''; ?></textarea>
+            </div>
+            
+            <!-- Tanggal Buka & Tutup -->
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-calendar-check me-1 text-success"></i>Tanggal Pendaftaran Dibuka <span class="text-danger">*</span>
+                </label>
+                <input type="date" class="form-control form-control-lg" name="open_date" 
+                       value="<?php echo isset($vacancy['open_date']) ? $vacancy['open_date'] : date('Y-m-d'); ?>" required>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-calendar-times me-1 text-danger"></i>Tanggal Pendaftaran Ditutup <span class="text-danger">*</span>
+                </label>
+                <input type="date" class="form-control form-control-lg" name="close_date" 
+                       value="<?php echo isset($vacancy['close_date']) ? $vacancy['close_date'] : date('Y-m-d', strtotime('+30 days')); ?>" required>
+            </div>
+            
+            <!-- Maksimal Peserta & Status -->
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-users me-1 text-primary"></i>Maksimal Peserta
+                </label>
+                <input type="number" class="form-control form-control-lg" name="max_applicants" 
+                       min="1" placeholder="Kosongkan = tidak dibatasi"
+                       value="<?php echo isset($vacancy['max_applicants']) ? $vacancy['max_applicants'] : ''; ?>">
+                <div class="form-text">Biarkan kosong jika tidak ada batasan jumlah peserta</div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <label class="form-label fw-semibold">
+                    <i class="fas fa-toggle-on me-1 text-primary"></i>Status Ujian
+                </label>
+                <div class="form-check form-switch mt-2">
+                    <input class="form-check-input" type="checkbox" name="is_active" value="1" 
+                           id="isActiveSwitch" style="width:3em;height:1.5em;cursor:pointer"
+                           <?php echo (!isset($vacancy['is_active']) || $vacancy['is_active']) ? 'checked' : ''; ?>>
+                    <label class="form-check-label ms-2 fw-semibold" for="isActiveSwitch" id="isActiveLabel">
+                        <?php echo (!isset($vacancy['is_active']) || $vacancy['is_active']) ? 'Aktif - Peserta dapat mendaftar' : 'Nonaktif - Tersembunyi dari peserta'; ?>
+                    </label>
                 </div>
             </div>
-        </form>
-    </div>
+            
+            <!-- Tombol -->
+            <div class="col-12 pt-3 border-top">
+                <button type="submit" class="btn btn-primary btn-lg px-4 me-3 shadow-sm">
+                    <i class="fas fa-save me-2"></i>Simpan Ujian
+                </button>
+                <a href="?" class="btn btn-outline-secondary btn-lg px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Kembali
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
 
 <?php elseif ($action === 'view'): ?>
-    <!-- View Lowongan -->
-    <div class="dashboard-card">
-        <div class="card-header">
-            <div class="d-flex justify-content-between align-items-center">
-                <h4 class="mb-0">
-                    <i class="fas fa-eye me-2"></i>Detail Lowongan
-                </h4>
+<!-- Detail Ujian -->
+<?php
+$typeStyle = [
+    'UD1' => ['bg' => '#e8f0fe', 'color' => '#1a56db', 'border' => '#1a56db', 'label' => 'Ujian Dinas Tingkat I'],
+    'UD2' => ['bg' => '#fef3e2', 'color' => '#b45309', 'border' => '#b45309', 'label' => 'Ujian Dinas Tingkat II'],
+    'UPKP' => ['bg' => '#e8f5e9', 'color' => '#2e7d32', 'border' => '#2e7d32', 'label' => 'UPKP'],
+];
+$ts = $typeStyle[$vacancy['type_code']] ?? ['bg' => '#f3f4f6', 'color' => '#6b7280', 'border' => '#6b7280', 'label' => $vacancy['type_name']];
+$is_active = $vacancy['is_active'];
+$today = date('Y-m-d');
+$is_open = ($today >= $vacancy['open_date'] && $today <= $vacancy['close_date'] && $is_active);
+?>
+
+<div class="row">
+    <div class="col-lg-8">
+        <!-- Header Detail -->
+        <div class="dashboard-card border-0 shadow-sm mb-4">
+            <div class="d-flex justify-content-between align-items-start mb-3">
                 <div>
-                    <a href="?action=edit&id=<?php echo $vacancy['id']; ?>" class="btn btn-warning btn-sm">
-                        <i class="fas fa-edit me-1"></i>Edit
+                    <span class="badge px-3 py-2 mb-2" style="background:<?php echo $ts['bg']; ?>;color:<?php echo $ts['color']; ?>;font-weight:600;font-size:0.85rem">
+                        <?php echo htmlspecialchars($vacancy['type_name']); ?>
+                    </span>
+                    <h3 class="mt-2 mb-1"><?php echo htmlspecialchars($vacancy['title']); ?></h3>
+                    <p class="text-muted mb-0">Tahun Pelaksanaan <?php echo htmlspecialchars($vacancy['tahun_angkatan']); ?></p>
+                </div>
+                <div>
+                    <a href="?action=edit&id=<?php echo $vacancy['id']; ?>" class="btn btn-primary shadow-sm">
+                        <i class="fas fa-edit me-1"></i>Edit Ujian
                     </a>
                 </div>
             </div>
+            
+            <?php if (!empty($vacancy['description'])): ?>
+            <div class="p-3 rounded-3 mb-0" style="background:#f8fafc;border-left:4px solid <?php echo $ts['border']; ?>">
+                <h6 class="fw-semibold mb-2">Deskripsi Ujian</h6>
+                <p class="mb-0" style="line-height:1.8;color:#475569"><?php echo nl2br(htmlspecialchars($vacancy['description'])); ?></p>
+            </div>
+            <?php endif; ?>
         </div>
         
-        <div class="row">
-            <div class="col-md-8">
-                <!-- Informasi Utama -->
-                <div class="mb-4">
-                    <h5><?php echo htmlspecialchars($vacancy['title']); ?></h5>
-                    <div class="d-flex gap-3 mb-3">
-                        <span class="badge bg-primary"><?php echo htmlspecialchars($vacancy['type_name']); ?></span>
-                        <span class="badge bg-info">Tahun <?php echo htmlspecialchars($vacancy['tahun_angkatan']); ?></span>
-                        <span class="badge bg-<?php echo $vacancy['is_active'] ? 'success' : 'secondary'; ?>">
-                            <?php echo $vacancy['is_active'] ? 'Aktif' : 'Nonaktif'; ?>
-                        </span>
-                    </div>
-                    
-                    <div class="card bg-light">
-                        <div class="card-body">
-                            <h6 class="card-title">Deskripsi</h6>
-                            <p class="card-text"><?php echo nl2br(htmlspecialchars($vacancy['description'])); ?></p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Periode Pendaftaran -->
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h6 class="card-title text-muted">Tanggal Buka</h6>
-                                <h4 class="text-primary"><?php echo date('d M Y', strtotime($vacancy['open_date'])); ?></h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card">
-                            <div class="card-body text-center">
-                                <h6 class="card-title text-muted">Tanggal Tutup</h6>
-                                <h4 class="text-primary"><?php echo date('d M Y', strtotime($vacancy['close_date'])); ?></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Formasi -->
-                <?php if (!empty($vacancy['formations'])): ?>
-                <div class="mb-4">
-                    <h5>Formasi Lowongan</h5>
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th width="5%">No</th>
-                                    <th width="60%">Nama Formasi</th>
-                                    <th width="20%">Jenis</th>
-                                    <th width="15%">Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1; foreach ($vacancy['formations'] as $formasi): ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><?php echo htmlspecialchars($formasi['formation_name']); ?></td>
-                                    <td>
-                                        <span class="badge bg-info">
-                                            <?php echo htmlspecialchars($formasi['formation_type']); ?>
-                                        </span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="badge bg-secondary"><?php echo $formasi['jumlah']; ?> orang</span>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <?php endif; ?>
-                
-                <!-- Persyaratan -->
-                <div class="mb-4">
-                    <h5>Persyaratan</h5>
-                    
-                    <div class="accordion" id="requirementsAccordion">
-                        <!-- Persyaratan Umum -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#umumCollapse">
-                                    <i class="fas fa-clipboard-list me-2"></i>Persyaratan Umum
-                                </button>
-                            </h2>
-                            <div id="umumCollapse" class="accordion-collapse collapse show">
-                                <div class="accordion-body">
-                                    <ul class="list-group">
-                                        <?php foreach ($vacancy['requirements'] as $req): 
-                                            if ($req['requirement_type'] === 'umum'): ?>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span><?php echo htmlspecialchars($req['requirement_text']); ?></span>
-                                                <small class="d-block text-muted">
-                                                    Input: <?php echo htmlspecialchars($req['input_type']); ?> | 
-                                                    Wajib: <?php echo $req['is_required'] ? 'Ya' : 'Tidak'; ?>
-                                                </small>
-                                            </div>
-                                            <?php if ($req['options']): ?>
-                                                <span class="badge bg-info">Pilihan: <?php echo htmlspecialchars($req['options']); ?></span>
-                                            <?php endif; ?>
-                                        </li>
-                                        <?php endif; endforeach; ?>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Persyaratan Khusus -->
-                        <div class="accordion-item">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#khususCollapse">
-                                    <i class="fas fa-star me-2"></i>Persyaratan Khusus
-                                </button>
-                            </h2>
-                            <div id="khususCollapse" class="accordion-collapse collapse">
-                                <div class="accordion-body">
-                                    <ul class="list-group">
-                                        <?php foreach ($vacancy['requirements'] as $req): 
-                                            if ($req['requirement_type'] === 'khusus'): ?>
-                                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                                            <div>
-                                                <span><?php echo htmlspecialchars($req['requirement_text']); ?></span>
-                                                <small class="d-block text-muted">
-                                                    Input: <?php echo htmlspecialchars($req['input_type']); ?> | 
-                                                    Wajib: <?php echo $req['is_required'] ? 'Ya' : 'Tidak'; ?>
-                                                </small>
-                                            </div>
-                                            <?php if ($req['options']): ?>
-                                                <span class="badge bg-info">Pilihan: <?php echo htmlspecialchars($req['options']); ?></span>
-                                            <?php endif; ?>
-                                        </li>
-                                        <?php endif; endforeach; ?>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+        <!-- Periode Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-sm-4">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body py-4">
+                        <i class="fas fa-calendar-check fa-2x text-success mb-2"></i>
+                        <div class="text-muted small text-uppercase">Dibuka</div>
+                        <div class="fw-bold fs-5"><?php echo date('d M Y', strtotime($vacancy['open_date'])); ?></div>
                     </div>
                 </div>
             </div>
-            
-            <div class="col-md-4">
-                <!-- Dokumen yang Diperlukan -->
-                <div class="dashboard-card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-file-alt me-2"></i>Dokumen Wajib</h5>
+            <div class="col-sm-4">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body py-4">
+                        <i class="fas fa-calendar-times fa-2x text-danger mb-2"></i>
+                        <div class="text-muted small text-uppercase">Ditutup</div>
+                        <div class="fw-bold fs-5"><?php echo date('d M Y', strtotime($vacancy['close_date'])); ?></div>
                     </div>
-                    <div class="list-group list-group-flush">
-                        <?php foreach ($vacancy['documents'] as $doc): ?>
-                        <div class="list-group-item d-flex justify-content-between align-items-center">
-                            <span><?php echo htmlspecialchars($doc['document_name']); ?></span>
-                            <span class="badge bg-<?php echo $doc['is_required'] ? 'danger' : 'warning'; ?>">
-                                <?php echo $doc['is_required'] ? 'Wajib' : 'Opsional'; ?>
-                            </span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="card border-0 shadow-sm text-center h-100">
+                    <div class="card-body py-4">
+                        <?php if ($is_open): ?>
+                            <i class="fas fa-lock-open fa-2x text-success mb-2"></i>
+                            <div class="text-muted small text-uppercase">Status</div>
+                            <div class="fw-bold fs-5 text-success">Sedang Buka</div>
+                        <?php elseif (!$is_active): ?>
+                            <i class="fas fa-ban fa-2x text-secondary mb-2"></i>
+                            <div class="text-muted small text-uppercase">Status</div>
+                            <div class="fw-bold fs-5 text-secondary">Nonaktif</div>
+                        <?php elseif ($today > $vacancy['close_date']): ?>
+                            <i class="fas fa-lock fa-2x text-danger mb-2"></i>
+                            <div class="text-muted small text-uppercase">Status</div>
+                            <div class="fw-bold fs-5 text-danger">Ditutup</div>
+                        <?php else: ?>
+                            <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                            <div class="text-muted small text-uppercase">Status</div>
+                            <div class="fw-bold fs-5 text-warning">Akan Dibuka</div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Informasi Spesifik Jenis Ujian -->
+        <?php
+        // Data spesifik per jenis ujian
+        $examInfo = [
+            'UD1' => [
+                'title' => 'Ujian Dinas Tingkat I',
+                'pangkat_asal' => 'Pengatur Tingkat I (II/d)',
+                'pangkat_tujuan' => 'Penata Muda (III/a)',
+                'min_tahun' => '1 tahun dalam pangkat II/d',
+                'materi' => [
+                    ['icon' => 'flag', 'label' => 'Tes Wawasan Kebangsaan (TWK)'],
+                    ['icon' => 'book', 'label' => 'Tes Pengetahuan Umum (TKP)'],
+                    ['icon' => 'building', 'label' => 'Tes Substansi Instansi (TSI)'],
+                ],
+                'metode' => 'Computer Assisted Test (CAT) — 100 soal',
+                'catatan' => 'PNS yang tidak dikecualikan sesuai ketentuan perundang-undangan. Diusulkan oleh Pejabat Pimpinan Tinggi Pratama.',
+            ],
+            'UD2' => [
+                'title' => 'Ujian Dinas Tingkat II',
+                'pangkat_asal' => 'Penata Tingkat I (III/d)',
+                'pangkat_tujuan' => 'Pembina (IV/a)',
+                'min_tahun' => 'Menduduki Jabatan Struktural Administrator',
+                'materi' => [
+                    ['icon' => 'laptop', 'label' => 'Computer Assisted Test (CAT)'],
+                    ['icon' => 'file-alt', 'label' => 'Penilaian Makalah Karya Tulis Ilmiah'],
+                ],
+                'metode' => 'CAT + Penilaian Makalah oleh Pejabat Pimpinan Tinggi Pratama',
+                'catatan' => 'Belum mengikuti Pelatihan Kepemimpinan Administrator (PKA). Makalah sesuai TUPOKSI unit kerja.',
+            ],
+            'UPKP' => [
+                'title' => 'Ujian Penyesuaian Kenaikan Pangkat (UPKP)',
+                'pangkat_asal' => 'Sesuai pangkat/golongan saat ini',
+                'pangkat_tujuan' => 'Disesuaikan dengan ijazah baru',
+                'min_tahun' => 'Memiliki ijazah lebih tinggi dari jenjang saat ini',
+                'materi' => [
+                    ['icon' => 'graduation-cap', 'label' => 'Verifikasi Ijazah & Transkrip'],
+                    ['icon' => 'file-contract', 'label' => 'SK Tugas Belajar / SKMPLT (jika ada)'],
+                ],
+                'metode' => 'Penyesuaian administratif berdasarkan ijazah lebih tinggi',
+                'catatan' => 'Ijazah dari sekolah/perguruan tinggi terakreditasi. Diusulkan oleh Pejabat Pimpinan Tinggi Pratama.',
+            ],
+        ];
+        $ei = $examInfo[$vacancy['type_code']] ?? null;
+        ?>
+        
+        <?php if ($ei): ?>
+        <!-- Kartu Informasi Spesifik Ujian -->
+        <div class="dashboard-card border-0 shadow-sm mb-4" style="border-left:5px solid <?php echo $ts['border']; ?>">
+            <div class="d-flex align-items-start gap-3 mb-3">
+                <div class="exam-info-icon" style="background:<?php echo $ts['bg']; ?>;color:<?php echo $ts['color']; ?>;width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">
+                    <i class="fas fa-info-circle"></i>
+                </div>
+                <div>
+                    <h5 class="mb-1" style="color:<?php echo $ts['color']; ?>"><?php echo $ei['title']; ?></h5>
+                    <p class="text-muted mb-0 small">Informasi spesifik jenis ujian</p>
+                </div>
+            </div>
+            
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3" style="background:#f8fafc">
+                        <div class="mb-3">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;letter-spacing:0.5px">Pangkat Asal</small>
+                            <span class="fw-semibold text-dark"><?php echo $ei['pangkat_asal']; ?></span>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;letter-spacing:0.5px">Pangkat Tujuan</small>
+                            <span class="fw-semibold text-success"><?php echo $ei['pangkat_tujuan']; ?></span>
+                        </div>
+                        <div>
+                            <small class="text-muted d-block text-uppercase" style="font-size:0.7rem;letter-spacing:0.5px">Syarat Khusus</small>
+                            <span class="text-dark"><?php echo $ei['min_tahun']; ?></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 rounded-3" style="background:#f8fafc">
+                        <small class="text-muted d-block text-uppercase mb-2" style="font-size:0.7rem;letter-spacing:0.5px">Materi Ujian</small>
+                        <?php foreach ($ei['materi'] as $m): ?>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <i class="fas fa-<?php echo $m['icon']; ?> text-muted" style="width:18px;font-size:0.8rem"></i>
+                            <span class="text-dark" style="font-size:0.87rem"><?php echo $m['label']; ?></span>
                         </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
-                
-                <!-- Informasi Sistem -->
-                <div class="dashboard-card">
-                    <div class="card-header">
-                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informasi Sistem</h5>
+            </div>
+            
+            <div class="mt-3 p-3 rounded-3" style="background:<?php echo $ts['bg']; ?>;color:<?php echo $ts['color']; ?>;font-size:0.85rem">
+                <i class="fas fa-lightbulb me-2"></i><strong>Metode:</strong> <?php echo $ei['metode']; ?>
+            </div>
+            
+            <?php if (!empty($ei['catatan'])): ?>
+            <div class="mt-2">
+                <small class="text-muted"><i class="fas fa-sticky-note me-1"></i><?php echo $ei['catatan']; ?></small>
+            </div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+        
+        <!-- Persyaratan Peserta -->
+        <?php if (!empty($vacancy['requirements'])): ?>
+        <div class="dashboard-card border-0 shadow-sm mb-4">
+            <h5 class="mb-3"><i class="fas fa-clipboard-list me-2 text-primary"></i>Persyaratan Peserta</h5>
+            <?php
+            $umum = array_filter($vacancy['requirements'], fn($r) => $r['requirement_type'] === 'umum');
+            $khusus = array_filter($vacancy['requirements'], fn($r) => $r['requirement_type'] === 'khusus');
+            ?>
+            <div class="accordion" id="reqAccordion">
+                <div class="accordion-item border mb-2" style="border-radius:10px;overflow:hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button shadow-none fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#umumPanel" style="background:#f0f7ff">
+                            <i class="fas fa-list-check me-2 text-primary"></i>Persyaratan Umum
+                            <span class="badge bg-primary ms-2 rounded-pill"><?php echo count($umum); ?></span>
+                        </button>
+                    </h2>
+                    <div id="umumPanel" class="accordion-collapse collapse show">
+                        <div class="accordion-body pt-2">
+                            <ul class="list-group list-group-flush">
+                                <?php $no = 1; foreach ($umum as $req): ?>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                                    <div>
+                                        <span class="text-secondary me-2 small fw-bold"><?php echo $no++; ?>.</span>
+                                        <span class="text-dark"><?php echo htmlspecialchars($req['requirement_text']); ?></span>
+                                    </div>
+                                    <span class="badge bg-<?php echo $req['is_required'] ? 'danger' : 'secondary'; ?> rounded-pill ms-2 flex-shrink-0">
+                                        <?php echo $req['is_required'] ? 'Wajib' : 'Opsional'; ?>
+                                    </span>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Kode Lowongan</span>
-                            <code><?php echo htmlspecialchars($vacancy['vacancy_code']); ?></code>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Dibuat Oleh</span>
-                            <span><?php echo htmlspecialchars($vacancy['created_by_name'] ?? 'System'); ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Tanggal Dibuat</span>
-                            <span><?php echo date('d/m/Y H:i', strtotime($vacancy['created_at'])); ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Status</span>
-                            <span class="badge bg-<?php echo $vacancy['is_active'] ? 'success' : 'secondary'; ?>">
-                                <?php echo $vacancy['is_active'] ? 'Aktif' : 'Nonaktif'; ?>
-                            </span>
-                        </li>
-                        <?php if (!empty($vacancy['formations'])): ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>Total Formasi</span>
-                            <span class="badge bg-primary">
-                                <?php 
-                                $total = array_sum(array_column($vacancy['formations'], 'jumlah'));
-                                echo $total . ' orang';
-                                ?>
-                            </span>
-                        </li>
-                        <?php endif; ?>
-                    </ul>
                 </div>
+                <?php if (!empty($khusus)): ?>
+                <div class="accordion-item border" style="border-radius:10px;overflow:hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed shadow-none fw-semibold" type="button" data-bs-toggle="collapse" data-bs-target="#khususPanel" style="background:#fff8f0">
+                            <i class="fas fa-star me-2 text-warning"></i>Persyaratan Khusus
+                            <span class="badge bg-warning text-dark ms-2 rounded-pill"><?php echo count($khusus); ?></span>
+                        </button>
+                    </h2>
+                    <div id="khususPanel" class="accordion-collapse collapse">
+                        <div class="accordion-body pt-2">
+                            <ul class="list-group list-group-flush">
+                                <?php $no = 1; foreach ($khusus as $req): ?>
+                                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                                    <div>
+                                        <span class="text-secondary me-2 small fw-bold"><?php echo $no++; ?>.</span>
+                                        <span class="text-dark"><?php echo htmlspecialchars($req['requirement_text']); ?></span>
+                                    </div>
+                                    <span class="badge bg-<?php echo $req['is_required'] ? 'danger' : 'secondary'; ?> rounded-pill ms-2 flex-shrink-0">
+                                        <?php echo $req['is_required'] ? 'Wajib' : 'Opsional'; ?>
+                                    </span>
+                                </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
             </div>
         </div>
+        <?php endif; ?>
     </div>
+    
+    <!-- Right Sidebar -->
+    <div class="col-lg-4">
+        <!-- Informasi -->
+        <div class="dashboard-card border-0 shadow-sm mb-4">
+            <h5 class="mb-3"><i class="fas fa-info-circle me-2 text-primary"></i>Informasi Ujian</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Kode</span>
+                    <code class="fw-bold"><?php echo htmlspecialchars($vacancy['vacancy_code']); ?></code>
+                </li>
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Dibuat Oleh</span>
+                    <span class="text-dark"><?php echo htmlspecialchars($vacancy['created_by_name'] ?? 'System'); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Dibuat Tanggal</span>
+                    <span class="text-dark"><?php echo date('d/m/Y H:i', strtotime($vacancy['created_at'])); ?></span>
+                </li>
+                <?php if ($vacancy['max_applicants']): ?>
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Kuota</span>
+                    <span class="fw-bold text-dark"><?php echo number_format($vacancy['max_applicants']); ?> peserta</span>
+                </li>
+                <?php else: ?>
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Kuota</span>
+                    <span class="text-success fw-bold">Tidak Terbatas</span>
+                </li>
+                <?php endif; ?>
+                <li class="list-group-item d-flex justify-content-between px-0 py-2">
+                    <span class="text-muted">Status</span>
+                    <?php if ($vacancy['is_active']): ?>
+                    <span class="status-chip status-open">Aktif</span>
+                    <?php else: ?>
+                    <span class="status-chip status-inactive">Nonaktif</span>
+                    <?php endif; ?>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Dokumen -->
+        <?php if (!empty($vacancy['documents'])): ?>
+        <div class="dashboard-card border-0 shadow-sm">
+            <h5 class="mb-3"><i class="fas fa-file-alt me-2 text-primary"></i>Dokumen Wajib</h5>
+            <ul class="list-group list-group-flush">
+                <?php foreach ($vacancy['documents'] as $doc): ?>
+                <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                    <span class="text-dark">
+                        <i class="fas fa-<?php echo $doc['is_required'] ? 'file-alt text-danger' : 'file text-muted'; ?> me-2"></i>
+                        <?php echo htmlspecialchars($doc['document_name']); ?>
+                    </span>
+                    <span class="badge bg-<?php echo $doc['is_required'] ? 'danger' : 'secondary'; ?> rounded-pill ms-2 flex-shrink-0">
+                        <?php echo $doc['is_required'] ? 'Wajib' : 'Opsional'; ?>
+                    </span>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <?php endif; ?>
+    </div>
+</div>
 <?php endif; ?>
 
 <style>
-.accordion-button {
+/* ===== UX Polish ===== */
+.dashboard-card { background: #fff; border-radius: 14px; padding: 24px; }
+.accordion-button:not(.collapsed) { background: #f0f7ff !important; color: #1a3a5c !important; box-shadow: none !important; }
+.accordion-button:focus { box-shadow: none !important; border-color: transparent !important; }
+.form-control:focus, .form-select:focus { border-color: #2c5f8a; box-shadow: 0 0 0 0.2rem rgba(44,95,138,0.15); }
+.form-switch .form-check-input:checked { background-color: #198754; border-color: #198754; }
+.list-group-item { border-color: #f1f5f9; }
+
+/* ===== TABEL UJIAN ===== */
+.exam-table { border-collapse: separate; border-spacing: 0; }
+.exam-table thead th {
+    background: #f8fafc;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 14px 16px;
+    border-bottom: 2px solid #e2e8f0;
+    white-space: nowrap;
+}
+.exam-table tbody td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+.exam-table tbody tr:hover { background: #f8fafc; }
+.exam-table tbody tr:last-child td { border-bottom: none; }
+
+/* Kolom Kode */
+.col-kode { width: 125px; }
+.exam-code {
+    display: inline-block;
+    background: #f1f5f9;
+    color: #334155;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+}
+
+/* Kolom Judul */
+.col-judul { min-width: 200px; }
+.exam-title {
+    color: #1e293b;
     font-weight: 600;
+    font-size: 0.92rem;
+    line-height: 1.4;
+    margin-bottom: 3px;
+}
+.exam-desc {
+    color: #64748b;
+    font-size: 0.78rem;
+    line-height: 1.5;
 }
 
-.list-group-item {
-    border-left: none;
-    border-right: none;
+/* Kolom Jenis */
+.col-jenis { width: 195px; }
+.exam-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    letter-spacing: 0.2px;
+}
+.exam-type-badge i { font-size: 0.7rem; }
+
+/* Kolom Tahun */
+.col-tahun { width: 80px; text-align: center; }
+.exam-year {
+    color: #334155;
+    font-weight: 700;
+    font-size: 0.95rem;
 }
 
-.badge {
-    font-size: 0.8em;
+/* Kolom Periode */
+.col-periode { width: 210px; }
+.period-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+.period-date {
+    color: #475569;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.period-arrow {
+    color: #94a3b8;
+    font-size: 0.7rem;
 }
 
-.form-switch .form-check-input {
-    width: 3em;
-    height: 1.5em;
+/* Kolom Peserta */
+.col-peserta { width: 80px; }
+.participant-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 700;
+    font-size: 0.9rem;
+    min-width: 42px;
+    height: 34px;
+    padding: 0 10px;
+    border-radius: 17px;
 }
 
-.formasi-row {
-    border-bottom: 1px solid #dee2e6;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+/* Kolom Status — CHIPS */
+.col-status { width: 120px; }
+.status-chip {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
 }
+.status-open      { background: #dcfce7; color: #166534; }
+.status-closed    { background: #fee2e2; color: #991b1b; }
+.status-upcoming  { background: #fef9c3; color: #854d0e; }
+.status-inactive  { background: #f1f5f9; color: #64748b; }
 
-.formasi-row:last-child {
-    border-bottom: none;
+/* Kolom Aksi */
+.col-aksi { width: 120px; }
+.action-btns {
+    display: flex;
+    gap: 6px;
+}
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+.btn-view  { color: #64748b; }
+.btn-edit  { color: #3b82f6; }
+.btn-delete { color: #ef4444; }
+.action-btn:hover { transform: translateY(-1px); }
+.btn-view:hover  { background: #f1f5f9; border-color: #94a3b8; color: #334155; }
+.btn-edit:hover  { background: #eff6ff; border-color: #93c5fd; color: #1d4ed8; }
+.btn-delete:hover { background: #fef2f2; border-color: #fca5a5; color: #dc2626; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .col-kode, .col-jenis, .col-tahun, .col-peserta, .col-periode { width: auto; }
+    .exam-table thead th { font-size: 0.7rem; padding: 10px 8px; }
+    .exam-table tbody td { padding: 10px 8px; }
+    .period-range { flex-direction: column; gap: 2px; align-items: flex-start; }
+    .period-arrow { display: none; }
 }
 </style>
 
-<?php
-// Sertakan file JavaScript
-echo '<script src="' . base_url('modules/admin/js-vacancy-management.js') . '"></script>';
-
-// Inisialisasi data formasi untuk JavaScript
-if ($action === 'edit' || $action === 'add') {
-    echo '<script>';
-    echo 'window.existingFormations = ' . (isset($vacancy['formations']) ? json_encode($vacancy['formations']) : '[]') . ';';
-    echo '</script>';
+<script>
+function confirmDelete(id, title) {
+    document.getElementById('deleteId').value = id;
+    document.getElementById('deleteTitle').textContent = title;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
+document.getElementById('isActiveSwitch')?.addEventListener('change', function() {
+    var label = document.getElementById('isActiveLabel');
+    if (label) label.textContent = this.checked ? 'Aktif - Peserta dapat mendaftar' : 'Nonaktif - Tersembunyi dari peserta';
+});
+document.addEventListener('DOMContentLoaded', function() {
+    var openDate = document.querySelector('input[name="open_date"]');
+    var closeDate = document.querySelector('input[name="close_date"]');
+    if (openDate && closeDate) {
+        openDate.min = new Date().toISOString().split('T')[0];
+        openDate.addEventListener('change', function() {
+            closeDate.min = this.value;
+            if (closeDate.value < this.value) closeDate.value = this.value;
+        });
+    }
+});
+</script>
 
-include __DIR__ . '/../dashboard/footer-dashboard.php';
-?>
+<?php include __DIR__ . '/../dashboard/footer-dashboard.php'; ?>

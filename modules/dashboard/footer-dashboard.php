@@ -16,26 +16,8 @@
     <script>
         // Remove spinner when page is loaded
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('spinner').style.display = 'none';
-            
-            // Sidebar toggle for mobile
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebar = document.getElementById('sidebar');
-            
-            if (sidebarToggle && sidebar) {
-                sidebarToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('active');
-                });
-                
-                // Close sidebar when clicking outside on mobile
-                document.addEventListener('click', function(event) {
-                    if (window.innerWidth <= 768) {
-                        if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-                            sidebar.classList.remove('active');
-                        }
-                    }
-                });
-            }
+            var spinner = document.getElementById('spinner');
+            if (spinner) spinner.style.display = 'none';
             
             // Auto-dismiss alerts after 5 seconds
             setTimeout(function() {
@@ -47,9 +29,9 @@
             }, 5000);
             
             // Session timeout warning
-            let lastActivity = Date.now();
-            const SESSION_TIMEOUT = 3600 * 1000; // 1 hour
-            const WARNING_TIME = 5 * 60 * 1000; // 5 minutes
+            var lastActivity = Date.now();
+            var SESSION_TIMEOUT = 3600 * 1000; // 1 hour
+            var WARNING_TIME = 5 * 60 * 1000; // 5 minutes
             
             function checkSession() {
                 const now = Date.now();

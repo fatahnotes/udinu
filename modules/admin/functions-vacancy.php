@@ -1,15 +1,16 @@
 <?php
 // modules/admin/functions-vacancy.php
+// Fungsi-fungsi untuk Manajemen Ujian (Ujian Dinas & UPKP)
 
 /**
- * Fungsi untuk membuat kode lowongan unik
+ * Fungsi untuk membuat kode ujian unik
  */
 function generate_vacancy_code($type_code, $tahun_angkatan) {
     return $type_code . '-' . $tahun_angkatan . '-' . substr(md5(uniqid()), 0, 4);
 }
 
 /**
- * Ambil semua jenis lowongan
+ * Ambil semua jenis ujian
  */
 function get_vacancy_types($db) {
     $stmt = $db->prepare("SELECT * FROM vacancy_types WHERE is_active = TRUE ORDER BY type_name");
@@ -18,7 +19,7 @@ function get_vacancy_types($db) {
 }
 
 /**
- * Ambil jenis lowongan berdasarkan ID
+ * Ambil jenis ujian berdasarkan ID
  */
 function get_vacancy_type_by_id($db, $type_id) {
     $stmt = $db->prepare("SELECT * FROM vacancy_types WHERE id = ?");
@@ -27,7 +28,7 @@ function get_vacancy_type_by_id($db, $type_id) {
 }
 
 /**
- * Ambil semua lowongan
+ * Ambil semua ujian
  */
 function get_all_vacancies($db, $filters = []) {
     $where = [];
@@ -72,10 +73,10 @@ function get_all_vacancies($db, $filters = []) {
 }
 
 /**
- * Ambil detail lowongan
+ * Ambil detail ujian
  */
 function get_vacancy_details($db, $vacancy_id) {
-    // Ambil data lowongan
+    // Ambil data ujian
     $stmt = $db->prepare("
         SELECT 
             v.*,
@@ -110,39 +111,29 @@ function get_vacancy_details($db, $vacancy_id) {
     $stmt->execute([$vacancy_id]);
     $vacancy['documents'] = $stmt->fetchAll();
     
-    // Ambil formasi
-    $stmt = $db->prepare("
-        SELECT * FROM vacancy_formations 
-        WHERE vacancy_id = ? 
-        ORDER BY id
-    ");
-    $stmt->execute([$vacancy_id]);
-    $vacancy['formations'] = $stmt->fetchAll();
-    
     return $vacancy;
 }
 
 /**
- * Tambah lowongan baru
+ * Tambah ujian baru
  */
-function create_vacancy($db, $data, $user_id, $formations = []) {
+function create_vacancy($db, $data, $user_id) {
     try {
         $db->beginTransaction();
         
-        // Generate kode lowongan
+        // Generate kode ujian
         $type_stmt = $db->prepare("SELECT type_code FROM vacancy_types WHERE id = ?");
         $type_stmt->execute([$data['vacancy_type_id']]);
         $type = $type_stmt->fetch();
         
         if (!$type) {
-            throw new Exception("Jenis lowongan tidak ditemukan di database. ID: " . $data['vacancy_type_id']);
+            throw new Exception("Jenis ujian tidak ditemukan di database. ID: " . $data['vacancy_type_id']);
         }
         
         $type_code = $type['type_code'];
-        
         $vacancy_code = generate_vacancy_code($type_code, $data['tahun_angkatan']);
         
-        // Insert lowongan
+        // Insert ujian
         $stmt = $db->prepare("
             INSERT INTO vacancies 
             (vacancy_code, vacancy_type_id, title, description, tahun_angkatan, 
@@ -167,10 +158,10 @@ function create_vacancy($db, $data, $user_id, $formations = []) {
         $vacancy_id = $stmt->fetchColumn();
         
         if (!$vacancy_id) {
-            throw new Exception("Gagal mendapatkan ID lowongan baru");
+            throw new Exception("Gagal mendapatkan ID ujian baru");
         }
         
-        // Tambahkan persyaratan default berdasarkan jenis lowongan
+        // Tambahkan persyaratan default
         try {
             add_default_requirements($db, $vacancy_id, $data['vacancy_type_id']);
         } catch (Exception $e) {
@@ -184,28 +175,10 @@ function create_vacancy($db, $data, $user_id, $formations = []) {
             throw new Exception("Gagal menambahkan dokumen default: " . $e->getMessage());
         }
         
-        // Tambahkan formasi jika ada
-        if (!empty($formations)) {
-            foreach ($formations as $formation) {
-                $stmt = $db->prepare("
-                    INSERT INTO vacancy_formations 
-                    (vacancy_id, formation_type, formation_name, jumlah, created_at)
-                    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-                ");
-                $stmt->execute([
-                    $vacancy_id,
-                    $formation['type'],
-                    $formation['name'],
-                    $formation['jumlah']
-                ]);
-            }
-        }
-        
         $db->commit();
         
-        // Log aktivitas
         if (function_exists('log_activity')) {
-            log_activity('VACANCY_CREATE', "Created vacancy: {$vacancy_code}", $user_id);
+            log_activity('EXAM_CREATE', "Membuat ujian: {$vacancy_code}", $user_id);
         }
         
         return $vacancy_id;
@@ -214,16 +187,16 @@ function create_vacancy($db, $data, $user_id, $formations = []) {
         if ($db->inTransaction()) {
             $db->rollBack();
         }
-        error_log("Create vacancy error: " . $e->getMessage());
+        error_log("Create exam error: " . $e->getMessage());
         error_log("Error trace: " . $e->getTraceAsString());
         return false;
     }
 }
 
 /**
- * Update lowongan
+ * Update ujian
  */
-function update_vacancy($db, $vacancy_id, $data, $user_id, $formations = []) {
+function update_vacancy($db, $vacancy_id, $data, $user_id) {
     try {
         $db->beginTransaction();
         
@@ -246,31 +219,10 @@ function update_vacancy($db, $vacancy_id, $data, $user_id, $formations = []) {
             $vacancy_id
         ]);
         
-        // Hapus formasi lama dan tambahkan yang baru
-        $stmt = $db->prepare("DELETE FROM vacancy_formations WHERE vacancy_id = ?");
-        $stmt->execute([$vacancy_id]);
-        
-        // Tambahkan formasi baru
-        if (!empty($formations)) {
-            foreach ($formations as $formation) {
-                $stmt = $db->prepare("
-                    INSERT INTO vacancy_formations 
-                    (vacancy_id, formation_type, formation_name, jumlah, created_at)
-                    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-                ");
-                $stmt->execute([
-                    $vacancy_id,
-                    $formation['type'],
-                    $formation['name'],
-                    $formation['jumlah']
-                ]);
-            }
-        }
-        
         $db->commit();
         
         if (function_exists('log_activity')) {
-            log_activity('VACANCY_UPDATE', "Updated vacancy ID: {$vacancy_id}", $user_id);
+            log_activity('EXAM_UPDATE', "Memperbarui ujian ID: {$vacancy_id}", $user_id);
         }
         
         return true;
@@ -279,107 +231,89 @@ function update_vacancy($db, $vacancy_id, $data, $user_id, $formations = []) {
         if ($db->inTransaction()) {
             $db->rollBack();
         }
-        error_log("Update vacancy error: " . $e->getMessage());
+        error_log("Update exam error: " . $e->getMessage());
         return false;
     }
 }
 
 /**
- * Hapus lowongan (soft delete dengan mengubah is_active)
+ * Hapus ujian (soft delete)
  */
 function delete_vacancy($db, $vacancy_id, $user_id) {
-    // Cek apakah ada pendaftar
+    // Cek apakah ada peserta
     $stmt = $db->prepare("SELECT COUNT(*) FROM submissions WHERE vacancy_id = ?");
     $stmt->execute([$vacancy_id]);
     $applicant_count = $stmt->fetchColumn();
     
     if ($applicant_count > 0) {
-        // Jika ada pendaftar, ubah status menjadi tidak aktif
+        // Jika ada peserta, nonaktifkan saja
         $stmt = $db->prepare("UPDATE vacancies SET is_active = FALSE WHERE id = ?");
         $result = $stmt->execute([$vacancy_id]);
         $action = 'DEACTIVATED';
     } else {
-        // Jika tidak ada pendaftar, hapus permanen
-        // Hapus formasi terlebih dahulu
-        $stmt = $db->prepare("DELETE FROM vacancy_formations WHERE vacancy_id = ?");
-        $stmt->execute([$vacancy_id]);
-        
-        // Hapus lowongan
+        // Jika tidak ada peserta, hapus permanen
         $stmt = $db->prepare("DELETE FROM vacancies WHERE id = ?");
         $result = $stmt->execute([$vacancy_id]);
         $action = 'DELETED';
     }
     
     if ($result && function_exists('log_activity')) {
-        log_activity('VACANCY_' . $action, "{$action} vacancy ID: {$vacancy_id}", $user_id);
+        log_activity('EXAM_' . $action, "{$action} exam ID: {$vacancy_id}", $user_id);
     }
     
     return $result;
 }
 
 /**
- * Tambahkan persyaratan default berdasarkan jenis lowongan
+ * Tambahkan persyaratan default berdasarkan jenis ujian
  */
 function add_default_requirements($db, $vacancy_id, $type_id) {
-    // Ambil template persyaratan berdasarkan jenis lowongan
     $stmt = $db->prepare("SELECT type_code FROM vacancy_types WHERE id = ?");
     $stmt->execute([$type_id]);
     $type_code = $stmt->fetchColumn();
     
     if (!$type_code) return;
     
-    // Definisikan persyaratan default untuk setiap jenis
+    // Persyaratan default untuk setiap jenis ujian
     $default_requirements = [
-        'KPS' => [
-            // Persyaratan Umum
-            ['umum', 'Guru Pegawai Negeri Sipil', 'radio', true, '{"options": ["PNS", "Bukan PNS"]}', 1],
-            ['umum', 'Berusia paling tinggi 50 (lima puluh) tahun', 'validation', true, null, 2],
-            ['umum', 'Memiliki sertifikat pendidik', 'file', true, null, 3],
-            ['umum', 'Diutamakan memiliki kualifikasi pendidikan magister atau magister terapan', 'text', false, null, 4],
-            ['umum', 'Diutamakan memiliki sertifikat kompetensi tambahan dalam bidang manajemen dan kepemimpinan sekolah', 'file', false, null, 5],
-            ['umum', 'Memiliki pengalaman memimpin satuan pendidikan paling singkat 3 (tiga) tahun', 'text', true, null, 6],
-            ['umum', 'Menguasai manajemen sekolah, pengembangan kurikulum, dan kepemimpinan pendidikan', 'text', true, null, 7],
-            ['umum', 'Mampu merancang strategi peningkatan mutu sekolah dan membina guru serta tenaga kependidikan', 'text', true, null, 8],
-            ['umum', 'Sehat jasmani dan rohani, dibuktikan dengan surat keterangan resmi dari rumah sakit pemerintah', 'file', true, null, 9],
-            ['umum', 'Tidak pernah diberhentikan dengan hormat tidak atas permintaan sendiri atau tidak dengan hormat sebagai ASN/TNI/POLRI', 'radio', true, '{"options": ["Ya", "Tidak"]}', 10],
-            ['umum', 'Tidak menjadi anggota atau pengurus partai politik serta tidak terlibat dalam aktivitas politik praktis', 'radio', true, '{"options": ["Ya", "Tidak"]}', 11],
-            ['umum', 'Bersedia mengikuti seluruh proses seleksi dan penempatan di seluruh wilayah Indonesia', 'radio', true, '{"options": ["Ya", "Tidak"]}', 12],
-            ['umum', 'Bersih dari narkotika, psikotropika, dan zat adiktif lainnya (NAPZA)', 'file', true, null, 13],
-            // Persyaratan Khusus
-            ['khusus', 'Memiliki kemampuan Bahasa Inggris aktif (lisan dan tulisan)', 'file', true, null, 14],
-            ['khusus', 'Bersedia tinggal di lingkungan sekolah berasrama', 'radio', true, '{"options": ["Ya", "Tidak"]}', 15]
+        'UD1' => [
+            // Ujian Dinas Tingkat I: II/d → III/a
+            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
+            ['umum', 'Memiliki pangkat Pengatur Tingkat I / golongan ruang II/d', 'validation', true, null, 2],
+            ['umum', 'Telah 1 (satu) tahun dalam pangkat/golongan ruang II/d', 'validation', true, null, 3],
+            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 4],
+            ['umum', 'Surat Keputusan Kenaikan Pangkat II/d terakhir', 'file', true, null, 5],
+            ['umum', 'Tidak sedang diberhentikan sementara / menerima uang tunggu / cuti di luar tanggungan negara', 'radio', true, '{"options": ["Ya (Tidak Sedang)", "Tidak"]}', 6],
+            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 7],
+            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 8],
+            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 9],
         ],
-        'GP' => [
-            // Persyaratan untuk Guru
-            ['umum', 'Warga Negara Indonesia (WNI)', 'validation', true, null, 1],
-            ['umum', 'Memiliki Sertifikat Pendidik melalui PPG', 'file', true, null, 2],
-            ['umum', 'Pendidikan minimal S1 yang linier dengan mata pelajaran', 'validation', true, null, 3],
-            ['umum', 'Usia maksimal 35 tahun (reguler) atau 45 tahun (mutasi)', 'validation', true, null, 4],
-            ['umum', 'Sehat jasmani dan rohani', 'file', true, null, 5],
-            ['umum', 'Tidak pernah dijatuhi hukuman pidana penjara', 'radio', true, '{"options": ["Ya", "Tidak"]}', 6],
-            ['umum', 'Tidak pernah diberhentikan dengan hormat tidak atas permintaan sendiri', 'radio', true, '{"options": ["Ya", "Tidak"]}', 7],
-            ['umum', 'Tidak sedang terikat kontrak kerja tetap dengan instansi lain', 'radio', true, '{"options": ["Ya", "Tidak"]}', 8],
-            ['umum', 'Tidak menjadi anggota atau pengurus partai politik', 'radio', true, '{"options": ["Ya", "Tidak"]}', 9],
-            ['umum', 'Bersedia mengikuti seluruh proses seleksi dan penempatan', 'radio', true, '{"options": ["Ya", "Tidak"]}', 10],
-            ['umum', 'Bersih dari NAPZA', 'file', true, null, 11],
-            // Persyaratan Khusus
-            ['khusus', 'Memiliki IPK minimal 3.25', 'validation', true, null, 12],
-            ['khusus', 'Bersedia tinggal di lingkungan sekolah berasrama', 'radio', true, '{"options": ["Ya", "Tidak"]}', 13],
-            ['khusus', 'Memiliki kemampuan merancang pembelajaran berbasis teknologi', 'text', true, null, 14],
-            ['khusus', 'Memiliki sertifikat kompetensi tambahan nasional/internasional', 'file', false, null, 15],
-            ['khusus', 'Memiliki kemampuan implementasi STEAM', 'text', true, null, 16],
-            ['khusus', 'Memiliki sertifikat IELTS minimal 6.5', 'file', true, null, 17]
+        'UD2' => [
+            // Ujian Dinas Tingkat II: III/d → IV/a
+            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
+            ['umum', 'Memiliki pangkat Penata Tingkat I / golongan ruang III/d', 'validation', true, null, 2],
+            ['umum', 'Menduduki Jabatan Struktural Administrator', 'radio', true, '{"options": ["Ya", "Tidak"]}', 3],
+            ['umum', 'Belum mengikuti Pelatihan Kepemimpinan Administrator (PKA)', 'radio', true, '{"options": ["Ya (Belum)", "Sudah"]}', 4],
+            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 5],
+            ['umum', 'Surat Keputusan Kenaikan Pangkat III/d terakhir', 'file', true, null, 6],
+            ['umum', 'Tidak sedang diberhentikan sementara / menerima uang tunggu / cuti di luar tanggungan negara', 'radio', true, '{"options": ["Ya (Tidak Sedang)", "Tidak"]}', 7],
+            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 8],
+            ['khusus', 'Naskah Makalah karya tulis ilmiah sesuai TUPOKSI unit kerja', 'file', true, null, 9],
+            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 10],
+            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 11],
         ],
-        'TKD' => [
-            // Persyaratan untuk Tendik
-            ['umum', 'Warga Negara Indonesia (WNI)', 'validation', true, null, 1],
-            ['umum', 'Sehat jasmani dan rohani', 'file', true, null, 2],
-            ['umum', 'Tidak pernah dijatuhi hukuman pidana penjara', 'radio', true, '{"options": ["Ya", "Tidak"]}', 3],
-            ['umum', 'Tidak pernah diberhentikan dengan hormat tidak atas permintaan sendiri', 'radio', true, '{"options": ["Ya", "Tidak"]}', 4],
-            ['umum', 'Tidak sedang terikat kontrak kerja tetap dengan instansi lain', 'radio', true, '{"options": ["Ya", "Tidak"]}', 5],
-            ['umum', 'Tidak menjadi anggota atau pengurus partai politik', 'radio', true, '{"options": ["Ya", "Tidak"]}', 6],
-            ['umum', 'Bersedia mengikuti seluruh proses seleksi dan penempatan', 'radio', true, '{"options": ["Ya", "Tidak"]}', 7],
-            ['umum', 'Bersih dari NAPZA', 'file', true, null, 8]
+        'UPKP' => [
+            // UPKP: Penyesuaian Kenaikan Pangkat
+            ['umum', 'Pegawai Negeri Sipil di lingkungan Kemdiktisaintek', 'radio', true, '{"options": ["Ya", "Tidak"]}', 1],
+            ['umum', 'Telah memperoleh ijazah lebih tinggi dari jenjang pangkat dan golongan ruang saat ini', 'validation', true, null, 2],
+            ['umum', 'Ijazah dari sekolah/perguruan tinggi negeri atau swasta yang terakreditasi', 'file', true, null, 3],
+            ['umum', 'Surat Keterangan Memiliki Pendidikan Lebih Tinggi (SKMPLT) jika ada', 'file', false, null, 4],
+            ['umum', 'Surat Keputusan Tugas Belajar (SK Tugas Belajar) jika ada', 'file', false, null, 5],
+            ['umum', 'Penilaian Prestasi Kerja 2 tahun terakhir minimal "Baik"', 'file', true, null, 6],
+            ['umum', 'Diusulkan oleh Pejabat Pimpinan Tinggi Pratama unit kerja', 'file', true, null, 7],
+            ['khusus', 'Transkrip nilai ijazah terakhir', 'file', true, null, 8],
+            ['khusus', 'Surat Keterangan Sehat Jasmani dan Rohani dari Dokter Pemerintah', 'file', true, null, 9],
+            ['khusus', 'Pas foto terbaru latar merah ukuran 4x6', 'file', true, null, 10],
         ]
     ];
     
@@ -391,17 +325,13 @@ function add_default_requirements($db, $vacancy_id, $type_id) {
         ");
         
         foreach ($default_requirements[$type_code] as $req) {
-            // Konversi boolean ke integer untuk PostgreSQL
             $is_required = $req[3] ? 1 : 0;
-            
             $stmt->execute([
                 $vacancy_id,
-                $req[0], // requirement_type
-                $req[1], // requirement_text
-                $req[2], // input_type
-                $is_required, // is_required sebagai integer (1/0)
-                $req[4] !== null ? $req[4] : null, // options, pastikan null jika kosong
-                $req[5]  // display_order
+                $req[0], $req[1], $req[2],
+                $is_required,
+                $req[4] !== null ? $req[4] : null,
+                $req[5]
             ]);
         }
     }
@@ -418,43 +348,41 @@ function add_default_documents($db, $vacancy_id, $type_id) {
     if (!$type_code) return;
     
     $default_documents = [
-        'KPS' => [
-            ['Surat Lamaran', 'surat_lamaran', true],
-            ['Curriculum Vitae', 'cv', true],
-            ['KTP', 'ktp', true],
-            ['Ijazah S1', 'ijazah_s1', true],
-            ['Ijazah S2', 'ijazah_s2', false],
-            ['Sertifikat Pendidik', 'sertifikat_pendidik', true],
-            ['Transkrip Nilai S1', 'transkrip_s1', true],
-            ['Transkrip Nilai S2', 'transkrip_s2', false],
-            ['Sertifikat Bahasa Inggris', 'sertifikat_bahasa', true],
-            ['Surat Bebas Narkoba', 'bebas_narkoba', true],
-            ['Sertifikat Keahlian', 'sertifikat_keahlian', false],
-            ['Sertifikat Internasional', 'sertifikat_internasional', false],
-            ['Surat Pernyataan Netralitas', 'pernyataan_netralitas', true],
-            ['Surat Pernyataan Penempatan', 'pernyataan_penempatan', true]
+        'UD1' => [
+            ['Surat Usulan Pimpinan', 'surat_usulan', true],
+            ['SK Pangkat II/d Terakhir', 'sk_pangkat', true],
+            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
+            ['KTP Elektronik', 'ktp', true],
+            ['Kartu Pegawai / NIP', 'karpeg', true],
+            ['Ijazah Terakhir (Legalized)', 'ijazah', true],
+            ['Surat Keterangan Sehat', 'surat_sehat', true],
+            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
+            ['Surat Pernyataan Tidak Sedang Diberhentikan', 'surat_pernyataan', true],
         ],
-        'GP' => [
-            ['Surat Lamaran', 'surat_lamaran', true],
-            ['Curriculum Vitae', 'cv', true],
-            ['KTP', 'ktp', true],
-            ['Ijazah S1', 'ijazah_s1', true],
-            ['Sertifikat Pendidik', 'sertifikat_pendidik', true],
-            ['Transkrip Nilai', 'transkrip', true],
-            ['Surat Sehat', 'surat_sehat', true],
-            ['Surat Bebas Narkoba', 'bebas_narkoba', true],
-            ['Sertifikat IELTS', 'ielts', true],
-            ['Sertifikat Kompetensi', 'sertifikat_kompetensi', false],
-            ['Surat Pernyataan', 'pernyataan', true]
+        'UD2' => [
+            ['Surat Usulan Pimpinan', 'surat_usulan', true],
+            ['SK Pangkat III/d Terakhir', 'sk_pangkat', true],
+            ['SK Jabatan Struktural Administrator', 'sk_jabatan', true],
+            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
+            ['KTP Elektronik', 'ktp', true],
+            ['Kartu Pegawai / NIP', 'karpeg', true],
+            ['Ijazah Terakhir (Legalized)', 'ijazah', true],
+            ['Naskah Makalah Karya Tulis Ilmiah', 'makalah', true],
+            ['Surat Keterangan Sehat', 'surat_sehat', true],
+            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
+            ['Surat Pernyataan Tidak Sedang Diberhentikan', 'surat_pernyataan', true],
         ],
-        'TKD' => [
-            ['Surat Lamaran', 'surat_lamaran', true],
-            ['Curriculum Vitae', 'cv', true],
-            ['KTP', 'ktp', true],
-            ['Ijazah', 'ijazah', true],
-            ['Surat Sehat', 'surat_sehat', true],
-            ['Surat Bebas Narkoba', 'bebas_narkoba', true],
-            ['Surat Pernyataan', 'pernyataan', true]
+        'UPKP' => [
+            ['Surat Usulan Pimpinan', 'surat_usulan', true],
+            ['Ijazah Baru yang Lebih Tinggi (Legalized)', 'ijazah_baru', true],
+            ['Transkrip Nilai Ijazah Baru', 'transkrip', true],
+            ['SK Tugas Belajar (jika ada)', 'sk_tugas_belajar', false],
+            ['SKMPLT (jika ada)', 'skmplt', false],
+            ['Penilaian Prestasi Kerja 2 Tahun', 'ppk', true],
+            ['KTP Elektronik', 'ktp', true],
+            ['Kartu Pegawai / NIP', 'karpeg', true],
+            ['Surat Keterangan Sehat', 'surat_sehat', true],
+            ['Pas Foto 4x6 Latar Merah', 'pas_foto', true],
         ]
     ];
     
@@ -467,14 +395,11 @@ function add_default_documents($db, $vacancy_id, $type_id) {
         
         $order = 1;
         foreach ($default_documents[$type_code] as $doc) {
-            // Konversi boolean ke integer untuk PostgreSQL
             $is_required = $doc[2] ? 1 : 0;
-            
             $stmt->execute([
                 $vacancy_id,
-                $doc[0],
-                $doc[1],
-                $is_required, // Konversi true/false ke 1/0
+                $doc[0], $doc[1],
+                $is_required,
                 $order++
             ]);
         }

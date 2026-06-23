@@ -165,62 +165,123 @@ include __DIR__ . '/header-dashboard.php';
 
 <?php if ($user_role === 'SUPERADMIN'): ?>
 <!-- Superadmin Stats -->
+<div class="row g-3 mb-4">
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card stat-card-primary">
+            <div class="stat-card-body">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value"><?php echo number_format($stats['total_users'] ?? 0); ?></h3>
+                    <p class="stat-label">Total User</p>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="stat-link">Kelola User <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card stat-card-success">
+            <div class="stat-card-body">
+                <div class="stat-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></h3>
+                    <p class="stat-label">Total Ujian</p>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="stat-link">Kelola Ujian <i class="fas fa-arrow-right ms-1"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card stat-card-warning">
+            <div class="stat-card-body">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value"><?php echo number_format($stats['total_submissions'] ?? 0); ?></h3>
+                    <p class="stat-label">Total Pendaftaran</p>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <span class="stat-link text-muted">Semua Submission</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6">
+        <div class="stat-card stat-card-info">
+            <div class="stat-card-body">
+                <div class="stat-icon">
+                    <i class="fas fa-bullhorn"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 class="stat-value"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></h3>
+                    <p class="stat-label">Ujian Aktif</p>
+                </div>
+            </div>
+            <div class="stat-card-footer">
+                <span class="stat-link text-muted">Sedang Berjalan</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SUPERADMIN Quick Actions -->
 <div class="row mb-4">
-    <div class="col-md-3 col-sm-6 mb-3">
+    <div class="col-12">
         <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-users fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['total_users'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Total User</p>
-                </div>
+            <div class="card-header">
+                <h4><i class="fas fa-bolt me-2"></i>Aksi Cepat</h4>
             </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-briefcase fa-2x"></i>
+            <div class="row g-3">
+                <div class="col-md-3 col-sm-6">
+                    <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="quick-action-card text-decoration-none">
+                        <div class="quick-action-icon bg-primary-light">
+                            <i class="fas fa-plus-circle text-primary"></i>
+                        </div>
+                        <span>Tambah Ujian</span>
+                    </a>
                 </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['total_vacancies'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Total Lowongan</p>
+                <div class="col-md-3 col-sm-6">
+                    <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="quick-action-card text-decoration-none">
+                        <div class="quick-action-icon bg-success-light">
+                            <i class="fas fa-user-plus text-success"></i>
+                        </div>
+                        <span>Tambah User</span>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-file-alt fa-2x"></i>
+                <div class="col-md-3 col-sm-6">
+                    <a href="#" class="quick-action-card text-decoration-none">
+                        <div class="quick-action-icon bg-warning-light">
+                            <i class="fas fa-envelope text-warning"></i>
+                        </div>
+                        <span>Buat Pengumuman</span>
+                    </a>
                 </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['total_submissions'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Total Pendaftaran</p>
+                <div class="col-md-3 col-sm-6">
+                    <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="quick-action-card text-decoration-none">
+                        <div class="quick-action-icon bg-warning-light">
+                            <i class="fas fa-database text-warning"></i>
+                        </div>
+                        <span>Master Data Ujian</span>
+                    </a>
                 </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-bullhorn fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['active_vacancies'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Lowongan Aktif</p>
+                <div class="col-md-3 col-sm-6">
+                    <a href="#" class="quick-action-card text-decoration-none">
+                        <div class="quick-action-icon bg-info-light">
+                            <i class="fas fa-chart-bar text-info"></i>
+                        </div>
+                        <span>Lihat Laporan</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -269,7 +330,7 @@ include __DIR__ . '/header-dashboard.php';
                 </div>
                 <div>
                     <h3 class="mb-1"><?php echo $stats['active_vacancies'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Lowongan Tersedia</p>
+                    <p class="text-muted mb-0">Ujian Tersedia</p>
                 </div>
             </div>
         </div>
@@ -297,10 +358,10 @@ include __DIR__ . '/header-dashboard.php';
     <!-- Left Column -->
     <div class="col-lg-8">
         <?php if ($user_role === 'USER' && !empty($active_vacancies)): ?>
-        <!-- Lowongan Aktif -->
+        <!-- Ujian Aktif -->
         <div class="dashboard-card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0"><i class="fas fa-briefcase me-2"></i>Lowongan Aktif</h4>
+                <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ujian Aktif</h4>
                 <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="text-primary text-decoration-none small">Lihat Semua</a>
             </div>
             
@@ -337,7 +398,7 @@ include __DIR__ . '/header-dashboard.php';
                         $quota_status = 'Kuota: ' . $current_applicants . '/' . $max_applicants;
                     }
                     
-                    // Cek status submission user untuk lowongan ini
+                    // Cek status submission user untuk ujian ini
                     $user_submission_status = isset($user_submission_statuses[$vacancy['id']]) ? $user_submission_statuses[$vacancy['id']] : null;
                     
                     // Tentukan warna badge berdasarkan status
@@ -555,9 +616,95 @@ include __DIR__ . '/header-dashboard.php';
     
     <!-- Right Column -->
     <div class="col-lg-4">
+    
+    <?php if ($user_role === 'SUPERADMIN'): ?>
+        <!-- SUPERADMIN Right Column -->
+        
+        <!-- System Overview -->
+        <div class="dashboard-card mb-4">
+            <div class="card-header">
+                <h4><i class="fas fa-server me-2"></i>Sistem Overview</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-circle text-success me-2" style="font-size: 8px;"></i>Status Sistem</span>
+                    <span class="badge bg-success">ONLINE</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-database me-2 text-muted"></i>Total User</span>
+                    <span class="fw-bold"><?php echo number_format($stats['total_users'] ?? 0); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-file-alt me-2 text-muted"></i>Total Ujian</span>
+                    <span class="fw-bold"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-file-alt me-2 text-muted"></i>Total Pendaftaran</span>
+                    <span class="fw-bold"><?php echo number_format($stats['total_submissions'] ?? 0); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><i class="fas fa-bullhorn me-2 text-muted"></i>Ujian Aktif</span>
+                    <span class="fw-bold text-success"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></span>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Quick Admin Links -->
+        <div class="dashboard-card mb-4">
+            <div class="card-header">
+                <h4><i class="fas fa-link me-2"></i>Menu Admin</h4>
+            </div>
+            <div class="list-group list-group-flush">
+                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2 text-primary"></i>Manajemen User
+                </a>
+                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="list-group-item list-group-item-action">
+                    <i class="fas fa-file-alt me-2 text-success"></i>Manajemen Ujian
+                </a>
+                <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="list-group-item list-group-item-action">
+                    <i class="fas fa-database me-2 text-warning"></i>Master Data Ujian
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-check-circle me-2 text-info"></i>Verifikasi Berkas
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-star me-2 text-warning"></i>Penilaian
+                </a>
+                <a href="#" class="list-group-item list-group-item-action">
+                    <i class="fas fa-chart-line me-2 text-danger"></i>Laporan & Statistik
+                </a>
+            </div>
+        </div>
+        
+        <!-- System Info -->
+        <div class="dashboard-card mb-4">
+            <div class="card-header">
+                <h4><i class="fas fa-info-circle me-2"></i>Info Teknis</h4>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Versi Sistem</span>
+                    <span class="badge bg-primary">v1.0</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>PHP Version</span>
+                    <span class="text-muted small"><?php echo phpversion(); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Login Terakhir</span>
+                    <span class="text-muted small"><?php echo date('d/m/Y H:i'); ?></span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>Keamanan</span>
+                    <span class="badge bg-success">AKTIF</span>
+                </li>
+            </ul>
+        </div>
+        
+    <?php elseif ($user_role === 'USER'): ?>
+        <!-- USER Right Column -->
 
     <!-- Profile Status Card -->
-        <?php if ($user_role === 'USER'): ?>
         <div class="dashboard-card mt-4">
             <div class="card-header">
                 <h4><i class="fas fa-user-check me-2"></i>Status Profil</h4>
@@ -633,11 +780,9 @@ include __DIR__ . '/header-dashboard.php';
                 <a href="<?php echo base_url('modules/profile/profile.php'); ?>" class="list-group-item list-group-item-action">
                     <i class="fas fa-user me-2 text-primary"></i>Profil Saya
                 </a>
-                <?php if ($user_role === 'USER'): ?>
                 <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="list-group-item list-group-item-action">
                     <i class="fas fa-file-alt me-2 text-primary"></i>Pendaftaran Saya
                 </a>
-                <?php endif; ?>
                 <a href="#" class="list-group-item list-group-item-action">
                     <i class="fas fa-calendar-alt me-2 text-primary"></i>Jadwal Seleksi
                 </a>
@@ -647,12 +792,145 @@ include __DIR__ . '/header-dashboard.php';
             </div>
         </div>
         
-        
-        <?php endif; ?>
+    <?php endif; ?>
     </div>
 </div>
 
 <style>
+/* ===== SUPERADMIN Stat Cards ===== */
+.stat-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+    border: 1px solid #edf2f9;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+.stat-card-body {
+    padding: 20px 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+.stat-card-primary .stat-icon {
+    background: #eef3ff;
+    color: #0d6efd;
+}
+.stat-card-success .stat-icon {
+    background: #eafaf1;
+    color: #198754;
+}
+.stat-card-warning .stat-icon {
+    background: #fff8e6;
+    color: #f0a000;
+}
+.stat-card-info .stat-icon {
+    background: #e8f7fa;
+    color: #0dcaf0;
+}
+.stat-info {
+    flex: 1;
+    min-width: 0;
+}
+.stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+    line-height: 1.2;
+}
+.stat-label {
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 2px 0 0;
+}
+.stat-card-footer {
+    padding: 10px 22px;
+    border-top: 1px solid #f1f5f9;
+    background: #fafbfc;
+}
+.stat-link {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0d6efd;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+.stat-link:hover {
+    color: #0a58ca;
+    text-decoration: none;
+}
+.stat-link i {
+    font-size: 0.7rem;
+    transition: transform 0.2s;
+}
+.stat-link:hover i {
+    transform: translateX(3px);
+}
+
+/* ===== Quick Action Cards ===== */
+.quick-action-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px 16px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #edf2f9;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+}
+.quick-action-card:hover {
+    background: #fff;
+    border-color: #cbd5e1;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    color: #1e293b;
+}
+.quick-action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.25s ease;
+}
+.quick-action-card:hover .quick-action-icon {
+    transform: scale(1.1);
+}
+.bg-primary-light { background: #eef3ff; }
+.bg-success-light { background: #eafaf1; }
+.bg-warning-light { background: #fff8e6; }
+.bg-info-light { background: #e8f7fa; }
+
+/* ===== List Group Enhanced ===== */
 .list-group-item {
     border: none;
     padding: 12px 0;
@@ -717,6 +995,7 @@ include __DIR__ . '/header-dashboard.php';
     -webkit-box-orient: vertical;
     overflow: hidden;
     min-height: 3.4em; /* Approx height for 3 lines */
+    line-clamp: 3;
 }
 
 /* Deskripsi */
@@ -789,6 +1068,7 @@ include __DIR__ . '/header-dashboard.php';
     .vacancy-title {
         min-height: auto;
         -webkit-line-clamp: 4; /* Allow more lines on mobile */
+        line-clamp: 4;
     }
     
     .vacancy-description {
