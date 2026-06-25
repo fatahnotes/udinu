@@ -23,6 +23,19 @@ $user_id = $_SESSION['user_id'];
 $error = '';
 $success = '';
 
+// Show flash message after successful submit
+if (!empty($_SESSION['flash_success'])) {
+    $success = $_SESSION['flash_success'];
+    unset($_SESSION['flash_success']);
+}
+if (!empty($_SESSION['flash_error'])) {
+    $error = $_SESSION['flash_error'];
+    unset($_SESSION['flash_error']);
+}
+
+// Show notification if redirected from submit
+$just_submitted = isset($_GET['submitted']);
+
 // Handle delete submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_submission'])) {
     $submission_id = intval($_POST['submission_id'] ?? 0);
@@ -109,20 +122,34 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                 <i class="fas fa-briefcase me-2"></i>Pendaftaran Aktif
             </h4>
             <span class="badge bg-<?php 
-                echo $active_submission['status'] === 'submitted' ? 'info' : 
-                    ($active_submission['status'] === 'verified' ? 'primary' : 
-                    ($active_submission['status'] === 'scored' ? 'warning' : 
-                    ($active_submission['status'] === 'accepted' ? 'success' : 
-                    ($active_submission['status'] === 'rejected' ? 'danger' : 'secondary'))));
+                echo match($active_submission['status']) {
+                    'draft' => 'secondary',
+                    'submitted' => 'info',
+                    'verified_satker', 'verified_pusat' => 'primary',
+                    'rejected_satker' => 'warning',
+                    'rejected_pusat' => 'danger',
+                    'exam_phase' => 'info',
+                    'scoring_phase' => 'warning',
+                    'announced' => 'info',
+                    'certified', 'passed' => 'success',
+                    'not_passed' => 'danger',
+                    default => 'secondary'
+                };
             ?>">
                 <?php 
                 $status_text = [
                     'draft' => 'DRAFT',
                     'submitted' => 'DIKIRIM',
-                    'verified' => 'DIVERIFIKASI',
-                    'scored' => 'DINILAI',
-                    'accepted' => 'DITERIMA',
-                    'rejected' => 'DITOLAK'
+                    'verified_satker' => 'LOLOS SATKER',
+                    'rejected_satker' => 'DITOLAK SATKER',
+                    'verified_pusat' => 'LOLOS PUSAT',
+                    'rejected_pusat' => 'DITOLAK PUSAT',
+                    'exam_phase' => 'MASA UJIAN',
+                    'scoring_phase' => 'PENILAIAN',
+                    'announced' => 'DIUMUMKAN',
+                    'certified' => 'TERSERTIFIKASI',
+                    'passed' => 'LULUS',
+                    'not_passed' => 'TIDAK LULUS'
                 ];
                 echo $status_text[$active_submission['status']] ?? strtoupper($active_submission['status']);
                 ?>
@@ -143,37 +170,45 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                     </span>
                 </div>
                 
-                <!-- Progress Timeline -->
+                <!-- Progress Timeline (7-Tahap) -->
                 <?php if ($active_submission['status'] !== 'draft'): ?>
                 <div class="progress-timeline mb-4">
                     <?php
                     $timeline_steps = [
-                        'submitted' => ['icon' => 'paper-plane', 'label' => 'Dikirim', 'date' => $active_submission['submission_date']],
-                        'verified' => ['icon' => 'check-circle', 'label' => 'Diverifikasi', 'date' => $active_submission['verification_date']],
-                        'scored' => ['icon' => 'star', 'label' => 'Dinilai', 'date' => $active_submission['scoring_date']],
-                        'announced' => ['icon' => 'bullhorn', 'label' => 'Pengumuman', 'date' => $active_submission['announcement_date']]
+                        'submitted'       => ['icon' => 'paper-plane',  'label' => 'Pendaftaran',      'date' => $active_submission['submission_date']],
+                        'verified_satker' => ['icon' => 'building',     'label' => 'Verifikasi Satker', 'date' => $active_submission['satker_verified_at']],
+                        'verified_pusat'  => ['icon' => 'landmark',     'label' => 'Verifikasi Pusat',  'date' => $active_submission['pusat_verified_at']],
+                        'exam_phase'      => ['icon' => 'pencil-alt',   'label' => 'Masa Ujian',        'date' => $active_submission['exam_date']],
+                        'scoring_phase'   => ['icon' => 'star',         'label' => 'Masa Penilaian',    'date' => $active_submission['scoring_date']],
+                        'announced'       => ['icon' => 'bullhorn',     'label' => 'Pengumuman',        'date' => $active_submission['announcement_date']],
+                        'certified'       => ['icon' => 'certificate',  'label' => 'Sertifikat',        'date' => null],
                     ];
                     
                     $current_step = $active_submission['status'];
-                    $step_order = ['submitted', 'verified', 'scored', 'announced'];
+                    $step_order = ['submitted', 'verified_satker', 'verified_pusat', 'exam_phase', 'scoring_phase', 'announced', 'certified'];
                     $current_index = array_search($current_step, $step_order);
                     $current_index = $current_index !== false ? $current_index : -1;
+                    
+                    // Handle rejection & final states
+                    $is_rejected = in_array($current_step, ['rejected_satker', 'rejected_pusat', 'not_passed']);
+                    if ($current_step === 'passed') $current_index = count($step_order) - 1;
                     ?>
                     
                     <div class="timeline">
                         <?php foreach ($timeline_steps as $key => $step): 
                             $step_index = array_search($key, $step_order);
-                            $is_active = $step_index <= $current_index;
-                            $is_completed = $step_index < $current_index;
+                            $is_active = !$is_rejected && $step_index <= $current_index;
+                            $is_completed = !$is_rejected && $step_index < $current_index;
+                            $is_current = $step_index === $current_index && !$is_rejected;
                         ?>
-                        <div class="timeline-step <?php echo $is_active ? 'active' : ''; ?> <?php echo $is_completed ? 'completed' : ''; ?>">
+                        <div class="timeline-step <?php echo $is_active ? 'active' : ''; ?> <?php echo $is_completed ? 'completed' : ''; ?> <?php echo $is_current ? 'current' : ''; ?>">
                             <div class="timeline-icon">
                                 <i class="fas fa-<?php echo $step['icon']; ?>"></i>
                             </div>
                             <div class="timeline-content">
                                 <h6><?php echo $step['label']; ?></h6>
                                 <?php if ($step['date']): ?>
-                                <p class="text-muted mb-0"><?php echo date('d M Y H:i', strtotime($step['date'])); ?></p>
+                                <p class="text-muted mb-0"><?php echo is_numeric($step['date']) ? date('d M Y', $step['date']) : (strtotime($step['date']) ? date('d M Y H:i', strtotime($step['date'])) : 'Menunggu...'); ?></p>
                                 <?php else: ?>
                                 <p class="text-muted mb-0">Menunggu...</p>
                                 <?php endif; ?>
@@ -186,15 +221,31 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                 
                 <!-- Current Status -->
                 <div class="alert alert-<?php 
-                    echo $active_submission['status'] === 'draft' ? 'warning' : 
-                        ($active_submission['status'] === 'accepted' ? 'success' : 
-                        ($active_submission['status'] === 'rejected' ? 'danger' : 'info'));
+                    echo match($active_submission['status']) {
+                        'draft' => 'warning',
+                        'submitted' => 'info',
+                        'verified_satker', 'verified_pusat' => 'primary',
+                        'rejected_satker' => 'warning',
+                        'rejected_pusat', 'not_passed' => 'danger',
+                        'exam_phase', 'scoring_phase' => 'info',
+                        'announced' => 'info',
+                        'certified', 'passed' => 'success',
+                        default => 'secondary'
+                    };
                 ?>">
                     <div class="d-flex align-items-center">
                         <i class="fas fa-<?php 
-                            echo $active_submission['status'] === 'draft' ? 'exclamation-triangle' : 
-                                ($active_submission['status'] === 'accepted' ? 'check-circle' : 
-                                ($active_submission['status'] === 'rejected' ? 'times-circle' : 'info-circle'));
+                            echo match($active_submission['status']) {
+                                'draft' => 'exclamation-triangle',
+                                'submitted' => 'paper-plane',
+                                'verified_satker', 'verified_pusat' => 'check-circle',
+                                'rejected_satker', 'rejected_pusat', 'not_passed' => 'times-circle',
+                                'exam_phase' => 'pencil-alt',
+                                'scoring_phase' => 'star',
+                                'announced' => 'bullhorn',
+                                'certified', 'passed' => 'award',
+                                default => 'info-circle'
+                            };
                         ?> fa-2x me-3"></i>
                         <div>
                             <h6 class="mb-1">Status Saat Ini: <strong>
@@ -202,10 +253,16 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                                 $status_display = [
                                     'draft' => 'DRAFT',
                                     'submitted' => 'DIKIRIM',
-                                    'verified' => 'DIVERIFIKASI',
-                                    'scored' => 'DINILAI',
-                                    'accepted' => 'DITERIMA',
-                                    'rejected' => 'DITOLAK'
+                                    'verified_satker' => 'LOLOS VERIFIKASI SATKER',
+                                    'rejected_satker' => 'DITOLAK SATKER',
+                                    'verified_pusat' => 'LOLOS VERIFIKASI PUSAT',
+                                    'rejected_pusat' => 'DITOLAK PUSAT',
+                                    'exam_phase' => 'MASA UJIAN',
+                                    'scoring_phase' => 'MASA PENILAIAN',
+                                    'announced' => 'DIUMUMKAN',
+                                    'certified' => 'TERSERTIFIKASI',
+                                    'passed' => 'LULUS',
+                                    'not_passed' => 'TIDAK LULUS'
                                 ];
                                 echo $status_display[$active_submission['status']] ?? strtoupper($active_submission['status']);
                                 ?>
@@ -214,13 +271,19 @@ include __DIR__ . '/../dashboard/header-dashboard.php';
                                 <?php 
                                 $status_messages = [
                                     'draft' => 'Pendaftaran Anda masih dalam draft. Silakan lengkapi dan submit sebelum tanggal tutup.',
-                                    'submitted' => 'Pendaftaran Anda telah diterima dan sedang menunggu verifikasi.',
-                                    'verified' => 'Dokumen Anda telah diverifikasi dan sedang menunggu penilaian.',
-                                    'scored' => 'Pendaftaran Anda telah dinilai dan sedang menunggu pengumuman.',
-                                    'accepted' => 'Selamat! Anda diterima. Silakan cek pengumuman resmi.',
-                                    'rejected' => 'Maaf, pendaftaran Anda tidak diterima.'
+                                    'submitted' => 'Pendaftaran Anda telah diterima dan sedang menunggu verifikasi oleh Admin Satker.',
+                                    'verified_satker' => 'Berkas Anda telah lolos verifikasi Satker. Menunggu verifikasi Admin Pusat.',
+                                    'rejected_satker' => 'Berkas Anda ditolak oleh Admin Satker. Silakan periksa catatan dan ajukan revisi.',
+                                    'verified_pusat' => 'Berkas Anda telah lolos verifikasi Pusat. Menunggu jadwal ujian.',
+                                    'rejected_pusat' => 'Pendaftaran Anda ditolak oleh Admin Pusat. Tetap semangat dan coba lagi di periode berikutnya.',
+                                    'exam_phase' => 'Anda sedang dalam masa ujian. Pastikan mengikuti ujian sesuai jadwal.',
+                                    'scoring_phase' => 'Ujian telah selesai. Nilai Anda sedang dalam proses penilaian.',
+                                    'announced' => 'Hasil ujian telah diumumkan. Silakan cek status kelulusan Anda.',
+                                    'certified' => 'Selamat! Sertifikat kelulusan Anda telah diterbitkan.',
+                                    'passed' => 'Selamat! Anda dinyatakan LULUS. Silakan unduh sertifikat digital Anda.',
+                                    'not_passed' => 'Maaf, Anda dinyatakan TIDAK LULUS. Tetap semangat dan coba lagi pada kesempatan berikutnya.'
                                 ];
-                                echo $status_messages[$active_submission['status']] ?? 'Sedang diproses...';
+                                echo $status_messages[$active_submission['status']] ?? 'Sedang diproses oleh sistem...';
                                 ?>
                             </p>
                         </div>

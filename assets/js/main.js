@@ -2,6 +2,11 @@
  * Main JavaScript for Guru Garuda System
  */
 
+// Stub function — actual session warning is in footer-dashboard.php inline script
+function initSessionWarning() {
+    // Footer inline script handles the real implementation
+}
+
 // DOM Ready
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize tooltips

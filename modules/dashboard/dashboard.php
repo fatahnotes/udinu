@@ -1,5 +1,5 @@
 <?php
-// modules/dashboard/dashboard.php
+// modules/dashboard/dashboard.php — Dashboard Premium
 $pageTitle = "Dashboard";
 $activePage = "dashboard";
 $customCSS = "";
@@ -8,23 +8,20 @@ $customJS = "";
 require_once __DIR__ . '/../../config/config.php';
 require_once __DIR__ . '/../auth/functions-auth.php';
 
-// Require login dan profil lengkap
 require_login();
 if ($_SESSION['user_role'] === 'USER') {
     require_complete_profile();
 }
 
-// Get user info dari session
 $user_id = $_SESSION['user_id'];
 $user_name = $_SESSION['user_name'];
 $user_email = $_SESSION['user_email'];
 $user_role = $_SESSION['user_role'];
 $profile_complete = $_SESSION['profile_complete'] ?? false;
 
-// Database connection
 $db = get_db_connection();
 
-// Ambil foto profil user
+// Profile photo
 $profile_foto = null;
 try {
     $stmt = $db->prepare("SELECT foto FROM profiles WHERE user_id = ?");
@@ -37,94 +34,85 @@ try {
     error_log("Profile foto fetch error: " . $e->getMessage());
 }
 
-// Log dashboard access
 log_activity('DASHBOARD_ACCESS', "User accessed dashboard", $user_id);
 
-// Stats dan data lainnya
 $stats = [];
 $announcements = [];
 $active_vacancies = [];
-$user_submission_statuses = []; // Untuk menyimpan status submission per vacancy
+$user_submission_statuses = [];
 
 try {
-    // Get user submissions count dan status untuk setiap vacancy (hanya untuk USER)
     if ($user_role === 'USER') {
         $stmt = $db->prepare("SELECT COUNT(*) FROM submissions WHERE user_id = ?");
         $stmt->execute([$user_id]);
         $stats['submissions'] = $stmt->fetchColumn();
-        
-        // Ambil status submission untuk setiap vacancy yang aktif
+
         $stmt = $db->prepare("
-            SELECT s.vacancy_id, s.status 
+            SELECT s.id as submission_id, s.vacancy_id, s.status
             FROM submissions s
             INNER JOIN vacancies v ON s.vacancy_id = v.id
-            WHERE s.user_id = ? 
-            AND v.is_active = TRUE 
-            AND v.open_date <= CURRENT_DATE 
+            WHERE s.user_id = ?
+            AND v.is_active = TRUE
+            AND v.open_date <= CURRENT_DATE
             AND v.close_date >= CURRENT_DATE
             ORDER BY s.updated_at DESC
         ");
         $stmt->execute([$user_id]);
-        $user_submissions = $stmt->fetchAll();
-        
-        // Konversi ke array dengan vacancy_id sebagai key
-        foreach ($user_submissions as $sub) {
-            $user_submission_statuses[$sub['vacancy_id']] = $sub['status'];
+        foreach ($stmt->fetchAll() as $sub) {
+            $user_submission_statuses[$sub['vacancy_id']] = [
+                'status' => $sub['status'],
+                'submission_id' => $sub['submission_id'],
+            ];
         }
     }
-    
-    // Get active vacancies untuk semua user
+
     $stmt = $db->prepare("
-        SELECT COUNT(*) 
-        FROM vacancies 
-        WHERE is_active = TRUE 
-        AND open_date <= CURRENT_DATE 
+        SELECT COUNT(*)
+        FROM vacancies
+        WHERE is_active = TRUE
+        AND open_date <= CURRENT_DATE
         AND close_date >= CURRENT_DATE
     ");
     $stmt->execute();
     $stats['active_vacancies'] = $stmt->fetchColumn();
-    
-    // Get announcements
-    $stmt = $db->prepare("
-        SELECT * FROM announcements 
-        WHERE is_published = TRUE 
-        ORDER BY published_at DESC 
-        LIMIT 5
-    ");
+
+    $stmt = $db->prepare("SELECT * FROM announcements WHERE is_published = TRUE ORDER BY published_at DESC LIMIT 5");
     $stmt->execute();
     $announcements = $stmt->fetchAll();
-    
-    // Get detail active vacancies untuk dashboard
+
     if ($user_role === 'USER') {
         $stmt = $db->prepare("
-            SELECT v.*, vt.type_name 
+            SELECT v.*, vt.type_name
             FROM vacancies v
             JOIN vacancy_types vt ON v.vacancy_type_id = vt.id
-            WHERE v.is_active = TRUE 
-            AND v.open_date <= CURRENT_DATE 
+            WHERE v.is_active = TRUE
+            AND v.open_date <= CURRENT_DATE
             AND v.close_date >= CURRENT_DATE
             ORDER BY v.close_date ASC
-            LIMIT 3
+            LIMIT 6
         ");
         $stmt->execute();
         $active_vacancies = $stmt->fetchAll();
     }
-    
-    // Untuk SUPERADMIN, get stats tambahan
+
     if ($user_role === 'SUPERADMIN') {
-        // Total users
         $stmt = $db->query("SELECT COUNT(*) FROM users WHERE is_deleted = FALSE");
         $stats['total_users'] = $stmt->fetchColumn();
-        
-        // Total vacancies
         $stmt = $db->query("SELECT COUNT(*) FROM vacancies");
         $stats['total_vacancies'] = $stmt->fetchColumn();
-        
-        // Total submissions
         $stmt = $db->query("SELECT COUNT(*) FROM submissions");
         $stats['total_submissions'] = $stmt->fetchColumn();
     }
-    
+
+    // Fetch latest submission for progress tracker (USER only)
+    $tracker_submission = null;
+    if ($user_role === 'USER') {
+        try {
+            $stmt = $db->prepare("SELECT s.*, v.title as vacancy_title, vt.type_name FROM submissions s JOIN vacancies v ON s.vacancy_id = v.id JOIN vacancy_types vt ON v.vacancy_type_id = vt.id WHERE s.user_id = ? ORDER BY s.updated_at DESC LIMIT 1");
+            $stmt->execute([$user_id]);
+            $tracker_submission = $stmt->fetch();
+        } catch (Exception $e) { /* may not exist */ }
+    }
 } catch (PDOException $e) {
     error_log("Dashboard stats error: " . $e->getMessage());
 }
@@ -132,450 +120,288 @@ try {
 include __DIR__ . '/header-dashboard.php';
 ?>
 
-<!-- Welcome Card -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="dashboard-card" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); color: white;">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h2 class="mb-3">Selamat Datang, <?php echo htmlspecialchars($user_name); ?>!</h2>
-                    <p class="mb-0">
-                        Anda login sebagai <strong><?php echo $user_role; ?></strong> di Sistem Pendaftaran UDIN & UPKP.
-                        <?php if (!$profile_complete && $user_role === 'USER'): ?>
-                            <br><i class="fas fa-exclamation-triangle me-1"></i>
-                            <strong>Lengkapi profil Anda</strong> untuk dapat mengikuti seleksi.
-                        <?php endif; ?>
-                    </p>
-                </div>
-                <div class="col-md-4 text-md-end">
-                    <div class="user-avatar" style="width: 100px; height: 100px; font-size: 40px; display: inline-flex; background: white; color: #0d6efd; border-radius: 50%; overflow: hidden; border: 3px solid white;">
-                        <?php if (!empty($profile_foto)): ?>
-                            <img src="<?php echo base_url($profile_foto); ?>" alt="Foto Profil" style="width: 100%; height: 100%; object-fit: cover;">
-                        <?php else: ?>
-                            <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); color: white;">
-                                <?php echo strtoupper(substr($user_name, 0, 1)); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
+<!-- ============================================================ -->
+<!-- WELCOME BANNER -->
+<!-- ============================================================ -->
+<div class="dash-banner mb-4">
+    <div class="dash-banner-bg"></div>
+    <div class="dash-banner-content">
+        <div class="dash-banner-text">
+            <h2 class="dash-banner-title">Selamat Datang, <?php echo htmlspecialchars($user_name); ?>!</h2>
+            <p class="dash-banner-sub">
+                Anda login sebagai <strong><?php echo $user_role; ?></strong> di Sistem Pendaftaran UDIN & UPKP
+                <?php if (!$profile_complete && $user_role === 'USER'): ?>
+                    <br><span class="badge bg-warning text-dark mt-1"><i class="fas fa-exclamation-triangle me-1"></i>Lengkapi profil Anda untuk dapat mengikuti seleksi</span>
+                <?php endif; ?>
+            </p>
+        </div>
+        <div class="dash-banner-avatar">
+            <?php if (!empty($profile_foto)): ?>
+                <img src="<?php echo base_url($profile_foto); ?>" alt="Foto">
+            <?php else: ?>
+                <div class="dash-avatar-placeholder"><?php echo strtoupper(substr($user_name, 0, 1)); ?></div>
+            <?php endif; ?>
         </div>
     </div>
 </div>
 
-<?php if ($user_role === 'SUPERADMIN'): ?>
-<!-- Superadmin Stats -->
-<div class="row g-3 mb-4">
-    <div class="col-xl-3 col-md-6">
-        <div class="stat-card stat-card-primary">
-            <div class="stat-card-body">
-                <div class="stat-icon">
-                    <i class="fas fa-users"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 class="stat-value"><?php echo number_format($stats['total_users'] ?? 0); ?></h3>
-                    <p class="stat-label">Total User</p>
-                </div>
+<?php if ($user_role === 'USER' && $tracker_submission): ?>
+<!-- ============================================================ -->
+<!-- PROGRESS TRACKER — Pizza-style horizontal steps -->
+<!-- ============================================================ -->
+<?php
+$ts = $tracker_submission;
+$status = strtolower($ts['status'] ?? 'draft');
+
+// Map 7-stage status to progress index
+$status_to_index = [
+    'draft' => 0,
+    'submitted' => 1,
+    'verified_satker' => 2, 'rejected_satker' => 1,
+    'verified_pusat' => 3, 'rejected_pusat' => 2,
+    'exam_phase' => 4,
+    'scoring_phase' => 5,
+    'announced' => 6,
+    'certified' => 7, 'passed' => 7, 'not_passed' => 6,
+];
+$currentStage = $status_to_index[$status] ?? 0;
+$is_rejected = in_array($status, ['rejected_satker', 'rejected_pusat', 'not_passed']);
+$is_passed = in_array($status, ['passed', 'certified']);
+
+$stages = [
+    ['icon'=>'fa-file-alt',   'label'=>'Pendaftaran',       'desc'=>'Submit berkas'],
+    ['icon'=>'fa-building',   'label'=>'Verifikasi Satker', 'desc'=>'Admin Satker'],
+    ['icon'=>'fa-landmark',   'label'=>'Verifikasi Pusat',  'desc'=>'Admin Pusat'],
+    ['icon'=>'fa-pencil-alt', 'label'=>'Masa Ujian',        'desc'=>'CAT/Makalah'],
+    ['icon'=>'fa-star',       'label'=>'Penilaian',         'desc'=>'Asesor + CAT'],
+    ['icon'=>'fa-bullhorn',   'label'=>'Pengumuman',        'desc'=>'Hasil'],
+    ['icon'=>'fa-certificate','label'=>'Sertifikat',        'desc'=>'Unduh'],
+];
+?>
+<div class="tracker-wrapper mb-4">
+    <div class="tracker-card">
+        <div class="tracker-title"><i class="fas fa-route me-2"></i>Status Pendaftaran: <strong><?php echo htmlspecialchars($ts['vacancy_title']); ?></strong> <span class="badge rounded-pill ms-2" style="background:#eef2ff;color:#4f46e5;font-size:0.7rem"><?php echo htmlspecialchars($ts['type_name']??''); ?></span></div>
+        <div class="tracker-steps">
+            <?php foreach ($stages as $i => $st):
+                $cls = '';
+                if ($is_rejected && $i === $currentStage) $cls = 'tracker-rejected';
+                elseif ($i < $currentStage && !$is_rejected) $cls = 'tracker-done';
+                elseif ($i === $currentStage && !$is_rejected) $cls = 'tracker-active';
+            ?>
+            <div class="tracker-step <?php echo $cls; ?>">
+                <div class="tracker-step-circle"><i class="fas <?php echo $st['icon']; ?>"></i></div>
+                <div class="tracker-step-label"><?php echo $st['label']; ?></div>
+                <div class="tracker-step-desc"><?php echo $st['desc']; ?></div>
+                <?php if ($i < 6): ?><div class="tracker-step-line"></div><?php endif; ?>
             </div>
-            <div class="stat-card-footer">
-                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="stat-link">Kelola User <i class="fas fa-arrow-right ms-1"></i></a>
-            </div>
+            <?php endforeach; ?>
         </div>
-    </div>
-    
-    <div class="col-xl-3 col-md-6">
-        <div class="stat-card stat-card-success">
-            <div class="stat-card-body">
-                <div class="stat-icon">
-                    <i class="fas fa-briefcase"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 class="stat-value"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></h3>
-                    <p class="stat-label">Total Ujian</p>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="stat-link">Kelola Ujian <i class="fas fa-arrow-right ms-1"></i></a>
-            </div>
+        <?php if ($is_passed): ?>
+        <div class="tracker-footer text-center mt-3 pt-2 border-top">
+            <span class="badge bg-success rounded-pill px-3 py-2 me-2"><i class="fas fa-check-circle me-1"></i>SELAMAT ANDA LULUS!</span>
+            <button class="btn btn-primary btn-sm rounded-pill px-4" onclick="alert('Fitur download sertifikat akan segera tersedia.')"><i class="fas fa-download me-1"></i>Download Sertifikat</button>
         </div>
-    </div>
-    
-    <div class="col-xl-3 col-md-6">
-        <div class="stat-card stat-card-warning">
-            <div class="stat-card-body">
-                <div class="stat-icon">
-                    <i class="fas fa-file-alt"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 class="stat-value"><?php echo number_format($stats['total_submissions'] ?? 0); ?></h3>
-                    <p class="stat-label">Total Pendaftaran</p>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="stat-link text-muted">Semua Submission</span>
-            </div>
+        <?php elseif ($is_rejected): ?>
+        <div class="tracker-footer text-center mt-3 pt-2 border-top">
+            <span class="badge bg-danger rounded-pill px-3 py-2"><i class="fas fa-times-circle me-1"></i>Ditolak — Tetap semangat dan coba lagi!</span>
         </div>
-    </div>
-    
-    <div class="col-xl-3 col-md-6">
-        <div class="stat-card stat-card-info">
-            <div class="stat-card-body">
-                <div class="stat-icon">
-                    <i class="fas fa-bullhorn"></i>
-                </div>
-                <div class="stat-info">
-                    <h3 class="stat-value"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></h3>
-                    <p class="stat-label">Ujian Aktif</p>
-                </div>
-            </div>
-            <div class="stat-card-footer">
-                <span class="stat-link text-muted">Sedang Berjalan</span>
-            </div>
+        <?php elseif ($status === 'not_passed'): ?>
+        <div class="tracker-footer text-center mt-3 pt-2 border-top">
+            <span class="badge bg-warning rounded-pill px-3 py-2"><i class="fas fa-times-circle me-1"></i>Belum Lulus — Tetap semangat!</span>
         </div>
+        <?php endif; ?>
     </div>
 </div>
-
-<!-- SUPERADMIN Quick Actions -->
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h4><i class="fas fa-bolt me-2"></i>Aksi Cepat</h4>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-3 col-sm-6">
-                    <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="quick-action-card text-decoration-none">
-                        <div class="quick-action-icon bg-primary-light">
-                            <i class="fas fa-plus-circle text-primary"></i>
-                        </div>
-                        <span>Tambah Ujian</span>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="quick-action-card text-decoration-none">
-                        <div class="quick-action-icon bg-success-light">
-                            <i class="fas fa-user-plus text-success"></i>
-                        </div>
-                        <span>Tambah User</span>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="#" class="quick-action-card text-decoration-none">
-                        <div class="quick-action-icon bg-warning-light">
-                            <i class="fas fa-envelope text-warning"></i>
-                        </div>
-                        <span>Buat Pengumuman</span>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="quick-action-card text-decoration-none">
-                        <div class="quick-action-icon bg-warning-light">
-                            <i class="fas fa-database text-warning"></i>
-                        </div>
-                        <span>Master Data Ujian</span>
-                    </a>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <a href="#" class="quick-action-card text-decoration-none">
-                        <div class="quick-action-icon bg-info-light">
-                            <i class="fas fa-chart-bar text-info"></i>
-                        </div>
-                        <span>Lihat Laporan</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<?php elseif ($user_role === 'USER'): ?>
-<!-- User Stats -->
-<div class="row mb-4">
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-user-tie fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo strtoupper($user_role); ?></h3>
-                    <p class="text-muted mb-0">Role Anda</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-file-alt fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['submissions'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Yang Anda Daftar</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-bullhorn fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $stats['active_vacancies'] ?? 0; ?></h3>
-                    <p class="text-muted mb-0">Ujian Tersedia</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="col-md-3 col-sm-6 mb-3">
-        <div class="dashboard-card">
-            <div class="d-flex align-items-center">
-                <div class="rounded-circle <?php echo $profile_complete ? 'bg-info' : 'bg-danger'; ?> text-white d-flex align-items-center justify-content-center me-3" 
-                     style="width: 60px; height: 60px;">
-                    <i class="fas fa-<?php echo $profile_complete ? 'check-circle' : 'exclamation-circle'; ?> fa-2x"></i>
-                </div>
-                <div>
-                    <h3 class="mb-1"><?php echo $profile_complete ? 'LENGKAP' : 'BELUM'; ?></h3>
-                    <p class="text-muted mb-0">Status Profil</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <?php endif; ?>
 
-<div class="row">
-    <!-- Left Column -->
-    <div class="col-lg-8">
-        <?php if ($user_role === 'USER' && !empty($active_vacancies)): ?>
-        <!-- Ujian Aktif -->
-        <div class="dashboard-card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Ujian Aktif</h4>
-                <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="text-primary text-decoration-none small">Lihat Semua</a>
+<!-- ============================================================ -->
+<!-- STATS ROW -->
+<!-- ============================================================ -->
+<div class="row g-3 mb-4">
+    <?php if ($user_role === 'SUPERADMIN'): ?>
+    <div class="col-xl-3 col-md-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#eef2ff;color:#4f46e5"><i class="fas fa-users"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo number_format($stats['total_users'] ?? 0); ?></div>
+                <div class="dash-stat-label">Total User</div>
             </div>
-            
+            <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="dash-stat-link"><i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#d1fae5;color:#059669"><i class="fas fa-briefcase"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></div>
+                <div class="dash-stat-label">Total Ujian</div>
+            </div>
+            <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="dash-stat-link"><i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#fef3c7;color:#d97706"><i class="fas fa-file-alt"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo number_format($stats['total_submissions'] ?? 0); ?></div>
+                <div class="dash-stat-label">Total Pendaftaran</div>
+            </div>
+            <span class="dash-stat-link text-muted"><i class="fas fa-eye"></i></span>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#dbeafe;color:#2563eb"><i class="fas fa-bullhorn"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></div>
+                <div class="dash-stat-label">Ujian Aktif</div>
+            </div>
+            <span class="dash-stat-link text-muted"><i class="fas fa-eye"></i></span>
+        </div>
+    </div>
+    <?php elseif ($user_role === 'USER'): ?>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#eef2ff;color:#4f46e5"><i class="fas fa-user-tie"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo $user_role; ?></div>
+                <div class="dash-stat-label">Role Anda</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#d1fae5;color:#059669"><i class="fas fa-file-alt"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo $stats['submissions'] ?? 0; ?></div>
+                <div class="dash-stat-label">Pendaftaran</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:#fef3c7;color:#d97706"><i class="fas fa-bullhorn"></i></div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value"><?php echo $stats['active_vacancies'] ?? 0; ?></div>
+                <div class="dash-stat-label">Ujian Tersedia</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon" style="background:<?php echo $profile_complete ? '#d1fae5' : '#fee2e2'; ?>;color:<?php echo $profile_complete ? '#059669' : '#dc2626'; ?>">
+                <i class="fas fa-<?php echo $profile_complete ? 'check-circle' : 'exclamation-circle'; ?>"></i>
+            </div>
+            <div class="dash-stat-info">
+                <div class="dash-stat-value" style="font-size:0.9rem"><?php echo $profile_complete ? 'LENGKAP' : 'BELUM'; ?></div>
+                <div class="dash-stat-label">Status Profil</div>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+</div>
+
+<!-- ============================================================ -->
+<!-- MAIN CONTENT -->
+<!-- ============================================================ -->
+<div class="row">
+    <div class="col-lg-8">
+
+        <?php if ($user_role === 'SUPERADMIN'): ?>
+        <!-- Quick Actions -->
+        <div class="dash-section-card">
+            <div class="dash-section-header"><i class="fas fa-bolt text-amber me-2"></i>Aksi Cepat</div>
+            <div class="dash-quick-actions">
+                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="dash-quick-btn">
+                    <span class="dash-quick-icon" style="background:#eef2ff;color:#4f46e5"><i class="fas fa-plus-circle"></i></span>
+                    <span>Tambah Ujian</span>
+                </a>
+                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="dash-quick-btn">
+                    <span class="dash-quick-icon" style="background:#d1fae5;color:#059669"><i class="fas fa-user-plus"></i></span>
+                    <span>Tambah User</span>
+                </a>
+                <a href="#" class="dash-quick-btn">
+                    <span class="dash-quick-icon" style="background:#fef3c7;color:#d97706"><i class="fas fa-envelope"></i></span>
+                    <span>Buat Pengumuman</span>
+                </a>
+                <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="dash-quick-btn">
+                    <span class="dash-quick-icon" style="background:#dbeafe;color:#2563eb"><i class="fas fa-database"></i></span>
+                    <span>Master Data</span>
+                </a>
+                <a href="#" class="dash-quick-btn">
+                    <span class="dash-quick-icon" style="background:#fce7f3;color:#db2777"><i class="fas fa-chart-bar"></i></span>
+                    <span>Laporan</span>
+                </a>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <?php if ($user_role === 'USER' && !empty($active_vacancies)): ?>
+        <!-- Active Exams -->
+        <div class="dash-section-card">
+            <div class="dash-section-header">
+                <i class="fas fa-file-alt text-blue me-2"></i>Ujian Aktif
+                <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="ms-auto text-decoration-none small fw-semibold" style="color:#0d6efd">Lihat Semua <i class="fas fa-chevron-right fa-xs"></i></a>
+            </div>
             <div class="row g-3">
-                <?php foreach ($active_vacancies as $vacancy): 
+                <?php foreach ($active_vacancies as $vacancy):
                     $days_left = ceil((strtotime($vacancy['close_date']) - time()) / (60 * 60 * 24));
-                    $progress = (($days_left <= 30) ? $days_left : 30) / 30 * 100;
-                    
-                    // Hitung progress kuota pendaftar
                     $max_applicants = $vacancy['max_applicants'];
                     $current_applicants = $vacancy['current_applicants'] ?? 0;
-                    
-                    // Jika max_applicants null atau 0, artinya tidak terbatas
                     $has_quota = !empty($max_applicants) && $max_applicants > 0;
-                    $quota_percentage = $has_quota ? min(100, ($current_applicants / $max_applicants) * 100) : 0;
-                    $quota_color = 'success'; // Default warna
+                    $quota_pct = $has_quota ? min(100, ($current_applicants / $max_applicants) * 100) : 0;
+                    $quota_full = $has_quota && $quota_pct >= 100;
+                    $user_status_data = $user_submission_statuses[$vacancy['id']] ?? null;
+                    $user_status = $user_status_data['status'] ?? null;
+                    $user_submission_id = $user_status_data['submission_id'] ?? 0;
+                    $urgency = $days_left <= 7 ? 'danger' : ($days_left <= 14 ? 'warning' : 'info');
                     
-                    // Tentukan warna berdasarkan persentase kuota
-                    if ($quota_percentage >= 100) {
-                        $quota_color = 'danger'; // Penuh
-                    } elseif ($quota_percentage >= 80) {
-                        $quota_color = 'warning'; // Hampir penuh
-                    } elseif ($quota_percentage >= 50) {
-                        $quota_color = 'info'; // Setengah terisi
-                    }
-                    
-                    // Status kuota untuk tampilan
-                    $quota_status = '';
-                    if (!$has_quota) {
-                        $quota_status = 'Kuota: Tidak Terbatas';
-                    } elseif ($quota_percentage >= 100) {
-                        $quota_status = 'Kuota Penuh';
-                    } else {
-                        $quota_status = 'Kuota: ' . $current_applicants . '/' . $max_applicants;
-                    }
-                    
-                    // Cek status submission user untuk ujian ini
-                    $user_submission_status = isset($user_submission_statuses[$vacancy['id']]) ? $user_submission_statuses[$vacancy['id']] : null;
-                    
-                    // Tentukan warna badge berdasarkan status
-                    $status_badge_class = '';
-                    $status_text = '';
-                    if ($user_submission_status) {
-                        switch(strtoupper($user_submission_status)) {
-                            case 'DRAFT':
-                                $status_badge_class = 'bg-secondary';
-                                $status_text = 'Draft';
-                                break;
-                            case 'SUBMITTED':
-                            case 'TERKIRIM':
-                                $status_badge_class = 'bg-primary';
-                                $status_text = 'Terkirim';
-                                break;
-                            case 'REVIEW':
-                            case 'DIREVIEW':
-                                $status_badge_class = 'bg-info';
-                                $status_text = 'Direview';
-                                break;
-                            case 'APPROVED':
-                            case 'DISETUJUI':
-                                $status_badge_class = 'bg-success';
-                                $status_text = 'Disetujui';
-                                break;
-                            case 'REJECTED':
-                            case 'DITOLAK':
-                                $status_badge_class = 'bg-danger';
-                                $status_text = 'Ditolak';
-                                break;
-                            case 'PENDING':
-                                $status_badge_class = 'bg-warning';
-                                $status_text = 'Pending';
-                                break;
-                            default:
-                                $status_badge_class = 'bg-secondary';
-                                $status_text = $user_submission_status;
-                        }
-                    }
+                    // Status labels for display
+                    $status_labels = [
+                        'draft' => 'Draft', 'submitted' => 'Dikirim',
+                        'verified_satker' => 'Lolos Satker', 'rejected_satker' => 'Ditolak Satker',
+                        'verified_pusat' => 'Lolos Pusat', 'rejected_pusat' => 'Ditolak Pusat',
+                        'exam_phase' => 'Masa Ujian', 'scoring_phase' => 'Penilaian',
+                        'announced' => 'Diumumkan', 'certified' => 'Tersertifikasi',
+                        'passed' => 'Lulus', 'not_passed' => 'Tidak Lulus',
+                    ];
+                    $status_display = $status_labels[$user_status] ?? ucfirst($user_status ?? '');
+                    $status_css = str_replace('_', '-', strtolower($user_status ?? ''));
                 ?>
                 <div class="col-md-4">
-                    <div class="card h-100 shadow-sm position-relative">
-                        <!-- Badge Status Submission (di pojok kanan atas) -->
-                        <?php if ($user_submission_status): ?>
-                        <div class="position-absolute top-0 end-0 m-2">
-                            <span class="badge <?php echo $status_badge_class; ?> status-badge" 
-                                  style="font-size: 0.7rem; padding: 4px 8px; border-radius: 12px;"
-                                  title="Status pendaftaran Anda">
-                                <?php echo $status_text; ?>
-                            </span>
+                    <div class="dash-exam-card">
+                        <?php if ($user_status): ?>
+                        <span class="dash-exam-status dash-exam-status-<?php echo $status_css; ?>"><?php echo $status_display; ?></span>
+                        <?php endif; ?>
+                        <div class="dash-exam-type"><?php echo htmlspecialchars($vacancy['type_name']); ?></div>
+                        <h6 class="dash-exam-title"><?php echo htmlspecialchars($vacancy['title']); ?></h6>
+                        <p class="dash-exam-desc"><?php echo htmlspecialchars(mb_strlen($vacancy['description']??'') > 80 ? mb_substr($vacancy['description'], 0, 80).'...' : ($vacancy['description']??'')); ?></p>
+                        <div class="dash-exam-meta">
+                            <span class="dash-days-badge dash-days-<?php echo $urgency; ?>"><i class="fas fa-clock me-1"></i><?php echo $days_left; ?> hari lagi</span>
+                            <span class="text-muted small"><?php echo date('d/m', strtotime($vacancy['open_date'])); ?> – <?php echo date('d/m', strtotime($vacancy['close_date'])); ?></span>
+                        </div>
+                        <?php if ($has_quota): ?>
+                        <div class="dash-exam-quota">
+                            <div class="d-flex justify-content-between small mb-1"><span>Kuota</span><span><?php echo $current_applicants; ?>/<?php echo $max_applicants; ?></span></div>
+                            <div class="progress" style="height:4px"><div class="progress-bar bg-<?php echo $quota_full?'danger':($quota_pct>=80?'warning':'success'); ?>" style="width:<?php echo $quota_pct; ?>%"></div></div>
                         </div>
                         <?php endif; ?>
-                        
-                        <div class="card-body d-flex flex-column">
-                            <!-- Badge dan Info -->
-                            <div class="mb-3">
-                                <div class="mb-2">
-                                    <span class="badge bg-primary"><?php echo htmlspecialchars($vacancy['type_name']); ?></span>
-                                </div>
-                                <div>
-                                    <span class="badge bg-<?php echo $days_left <= 7 ? 'danger' : ($days_left <= 14 ? 'warning' : 'info'); ?>">
-                                        <i class="fas fa-clock me-1"></i><?php echo $days_left; ?> hari lagi
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            <!-- Judul -->
-                            <h6 class="card-title vacancy-title">
-                                <?php echo htmlspecialchars($vacancy['title']); ?>
-                            </h6>
-                            
-                            <!-- Deskripsi -->
-                            <div class="flex-grow-1 mb-3">
-                                <p class="card-text small text-muted vacancy-description">
-                                    <?php 
-                                    $description = htmlspecialchars($vacancy['description'] ?? '');
-                                    if (strlen($description) > 80) {
-                                        echo substr($description, 0, 80) . '...';
-                                    } else {
-                                        echo $description;
-                                    }
-                                    ?>
-                                </p>
-                            </div>
-                            
-                            <!-- Progress Bar Sisa Waktu -->
-                            <div class="mb-3">
-                                <!-- Sisa Waktu -->
-                                <div class="mb-2">
-                                    <div class="small text-muted d-flex justify-content-between mb-1">
-                                        <span>Sisa Waktu Pendaftaran</span>
-                                        <span><?php echo $days_left; ?> hari</span>
-                                    </div>
-                                    <div class="progress" style="height: 6px;">
-                                        <div class="progress-bar bg-<?php echo $days_left <= 7 ? 'danger' : ($days_left <= 14 ? 'warning' : 'success'); ?>" 
-                                             style="width: <?php echo $progress; ?>%"></div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Kuota Pendaftar (hanya tampil jika ada batasan) -->
-                                <?php if ($has_quota): ?>
-                                <div class="mb-2">
-                                    <div class="small text-muted d-flex justify-content-between mb-1">
-                                        <span>Kuota Pendaftar</span>
-                                        <span><?php echo $current_applicants; ?>/<?php echo $max_applicants; ?></span>
-                                    </div>
-                                    <div class="progress" style="height: 6px;">
-                                        <div class="progress-bar bg-<?php echo $quota_color; ?>" 
-                                             style="width: <?php echo $quota_percentage; ?>%"></div>
-                                    </div>
-                                    <div class="small text-center mt-1">
-                                        <?php if ($quota_percentage >= 100): ?>
-                                            <span class="text-danger">
-                                                <i class="fas fa-exclamation-triangle me-1"></i>Kuota Penuh
-                                            </span>
-                                        <?php elseif ($quota_percentage >= 80): ?>
-                                            <span class="text-warning">
-                                                <i class="fas fa-exclamation-circle me-1"></i>Hampir Penuh
-                                            </span>
-                                        <?php else: ?>
-                                            <span class="text-success">
-                                                <i class="fas fa-check-circle me-1"></i>Masih Tersedia
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
+                        <div class="mt-3">
+                            <?php if ($profile_complete): ?>
+                                <?php if ($quota_full): ?>
+                                    <button class="btn btn-outline-danger btn-sm rounded-pill w-100" disabled><i class="fas fa-times-circle me-1"></i>Kuota Penuh</button>
+                                <?php elseif ($user_status === 'draft'): ?>
+                                    <a href="<?php echo base_url('modules/submission/apply.php?id='.$vacancy['id']); ?>" class="btn btn-warning btn-sm rounded-pill w-100"><i class="fas fa-edit me-1"></i>Lanjutkan Draft</a>
+                                <?php elseif ($user_status === 'rejected_satker'): ?>
+                                    <a href="<?php echo base_url('modules/submission/apply.php?id='.$vacancy['id']); ?>" class="btn btn-warning btn-sm rounded-pill w-100"><i class="fas fa-redo me-1"></i>Ajukan Ulang</a>
+                                <?php elseif ($user_status): ?>
+                                    <a href="<?php echo base_url('modules/submission/apply.php?submission_id=' . $user_submission_id . '&view=1'); ?>" class="btn btn-outline-primary btn-sm rounded-pill w-100"><i class="fas fa-eye me-1"></i>Lihat Status</a>
                                 <?php else: ?>
-                                <div class="mb-2">
-                                    <div class="small text-muted d-flex justify-content-between mb-1">
-                                        <span>Kuota Pendaftar</span>
-                                        <span class="text-success">
-                                            <i class="fas fa-infinity me-1"></i>Tidak Terbatas
-                                        </span>
-                                    </div>
-                                </div>
+                                    <a href="<?php echo base_url('modules/submission/apply.php?id='.$vacancy['id']); ?>" class="btn btn-primary btn-sm rounded-pill w-100"><i class="fas fa-paper-plane me-1"></i>Daftar</a>
                                 <?php endif; ?>
-                                
-                                <!-- Tanggal -->
-                                <div class="small text-muted d-flex justify-content-between mt-2">
-                                    <span>Buka: <?php echo date('d/m', strtotime($vacancy['open_date'])); ?></span>
-                                    <span>Tutup: <?php echo date('d/m', strtotime($vacancy['close_date'])); ?></span>
-                                </div>
-                            </div>
-                            
-                            <!-- Tombol Aksi -->
-                            <div class="mt-auto">
-                                <?php if ($profile_complete): ?>
-                                    <?php if ($has_quota && $quota_percentage >= 100): ?>
-                                        <button class="btn btn-danger btn-sm w-100" disabled>
-                                            <i class="fas fa-times-circle me-1"></i>Kuota Penuh
-                                        </button>
-                                    <?php elseif ($user_submission_status): ?>
-                                        <?php if (strtoupper($user_submission_status) == 'DRAFT'): ?>
-                                            <a href="<?php echo base_url('modules/submission/apply.php?id=' . $vacancy['id']); ?>" 
-                                               class="btn btn-warning btn-sm w-100">
-                                                <i class="fas fa-edit me-1"></i>Lanjutkan Draft
-                                            </a>
-                                        <?php else: ?>
-                                            <a href="<?php echo base_url('modules/submission/view.php?id=' . $vacancy['id']); ?>" 
-                                               class="btn btn-info btn-sm w-100">
-                                                <i class="fas fa-eye me-1"></i>Lihat Status
-                                            </a>
-                                        <?php endif; ?>
-                                    <?php else: ?>
-                                        <a href="<?php echo base_url('modules/submission/apply.php?id=' . $vacancy['id']); ?>" 
-                                           class="btn btn-primary btn-sm w-100">
-                                            <i class="fas fa-paper-plane me-1"></i>Daftar Sekarang
-                                        </a>
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <a href="<?php echo base_url('modules/profile/profile.php?mode=edit'); ?>" 
-                                       class="btn btn-secondary btn-sm w-100">
-                                        <i class="fas fa-exclamation-circle me-1"></i>Lengkapi Profil Dulu
-                                    </a>
-                                <?php endif; ?>
-                            </div>
+                            <?php else: ?>
+                                <a href="<?php echo base_url('modules/profile/profile.php?mode=edit'); ?>" class="btn btn-outline-secondary btn-sm rounded-pill w-100"><i class="fas fa-exclamation-circle me-1"></i>Lengkapi Profil</a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -583,336 +409,182 @@ include __DIR__ . '/header-dashboard.php';
             </div>
         </div>
         <?php endif; ?>
-        
+
         <!-- Announcements -->
-        <div class="dashboard-card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h4 class="mb-0"><i class="fas fa-bullhorn me-2"></i>Pengumuman Terbaru</h4>
-                <a href="#" class="text-primary text-decoration-none small">Lihat Semua</a>
+        <div class="dash-section-card">
+            <div class="dash-section-header">
+                <i class="fas fa-bullhorn text-green me-2"></i>Pengumuman Terbaru
+                <a href="#" class="ms-auto text-decoration-none small fw-semibold" style="color:#0d6efd">Lihat Semua <i class="fas fa-chevron-right fa-xs"></i></a>
             </div>
-            
             <?php if (!empty($announcements)): ?>
-                <?php foreach ($announcements as $announcement): ?>
-                    <div class="mb-3 pb-3 border-bottom">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <h6 class="mb-0"><?php echo htmlspecialchars($announcement['title']); ?></h6>
-                            <span class="badge bg-primary"><?php echo htmlspecialchars($announcement['announcement_type']); ?></span>
+                <?php foreach ($announcements as $ann): ?>
+                <div class="dash-announce-item">
+                    <div class="dash-announce-icon"><i class="fas fa-bullhorn"></i></div>
+                    <div class="flex-grow-1">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h6 class="mb-1"><?php echo htmlspecialchars($ann['title']); ?></h6>
+                            <span class="badge rounded-pill" style="background:#eef2ff;color:#4f46e5;font-size:0.7rem"><?php echo htmlspecialchars($ann['announcement_type']); ?></span>
                         </div>
-                        <p class="text-muted mb-2"><?php echo nl2br(htmlspecialchars(substr($announcement['content'], 0, 200) . '...')); ?></p>
-                        <div class="small text-muted">
-                            <i class="fas fa-calendar me-1"></i>
-                            <?php echo date('d M Y H:i', strtotime($announcement['published_at'])); ?>
-                        </div>
+                        <p class="text-muted small mb-1"><?php echo htmlspecialchars(mb_strlen($ann['content']) > 150 ? mb_substr($ann['content'], 0, 150).'...' : $ann['content']); ?></p>
+                        <small class="text-muted"><i class="fas fa-calendar-alt me-1"></i><?php echo date('d M Y H:i', strtotime($ann['published_at'])); ?></small>
                     </div>
+                </div>
                 <?php endforeach; ?>
             <?php else: ?>
-                <div class="text-center py-4">
-                    <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
-                    <p class="text-muted">Tidak ada pengumuman saat ini.</p>
-                </div>
+                <div class="text-center py-4"><i class="fas fa-newspaper fa-2x text-muted mb-2 d-block"></i><p class="text-muted small mb-0">Tidak ada pengumuman saat ini.</p></div>
             <?php endif; ?>
         </div>
     </div>
-    
-    <!-- Right Column -->
-    <div class="col-lg-4">
-    
-    <?php if ($user_role === 'SUPERADMIN'): ?>
-        <!-- SUPERADMIN Right Column -->
-        
-        <!-- System Overview -->
-        <div class="dashboard-card mb-4">
-            <div class="card-header">
-                <h4><i class="fas fa-server me-2"></i>Sistem Overview</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-circle text-success me-2" style="font-size: 8px;"></i>Status Sistem</span>
-                    <span class="badge bg-success">ONLINE</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-database me-2 text-muted"></i>Total User</span>
-                    <span class="fw-bold"><?php echo number_format($stats['total_users'] ?? 0); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-file-alt me-2 text-muted"></i>Total Ujian</span>
-                    <span class="fw-bold"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-file-alt me-2 text-muted"></i>Total Pendaftaran</span>
-                    <span class="fw-bold"><?php echo number_format($stats['total_submissions'] ?? 0); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span><i class="fas fa-bullhorn me-2 text-muted"></i>Ujian Aktif</span>
-                    <span class="fw-bold text-success"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></span>
-                </li>
-            </ul>
-        </div>
-        
-        <!-- Quick Admin Links -->
-        <div class="dashboard-card mb-4">
-            <div class="card-header">
-                <h4><i class="fas fa-link me-2"></i>Menu Admin</h4>
-            </div>
-            <div class="list-group list-group-flush">
-                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="list-group-item list-group-item-action">
-                    <i class="fas fa-users me-2 text-primary"></i>Manajemen User
-                </a>
-                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="list-group-item list-group-item-action">
-                    <i class="fas fa-file-alt me-2 text-success"></i>Manajemen Ujian
-                </a>
-                <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="list-group-item list-group-item-action">
-                    <i class="fas fa-database me-2 text-warning"></i>Master Data Ujian
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-check-circle me-2 text-info"></i>Verifikasi Berkas
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-star me-2 text-warning"></i>Penilaian
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-chart-line me-2 text-danger"></i>Laporan & Statistik
-                </a>
-            </div>
-        </div>
-        
-        <!-- System Info -->
-        <div class="dashboard-card mb-4">
-            <div class="card-header">
-                <h4><i class="fas fa-info-circle me-2"></i>Info Teknis</h4>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Versi Sistem</span>
-                    <span class="badge bg-primary">v1.0</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>PHP Version</span>
-                    <span class="text-muted small"><?php echo phpversion(); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Login Terakhir</span>
-                    <span class="text-muted small"><?php echo date('d/m/Y H:i'); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Keamanan</span>
-                    <span class="badge bg-success">AKTIF</span>
-                </li>
-            </ul>
-        </div>
-        
-    <?php elseif ($user_role === 'USER'): ?>
-        <!-- USER Right Column -->
 
-    <!-- Profile Status Card -->
-        <div class="dashboard-card mt-4">
-            <div class="card-header">
-                <h4><i class="fas fa-user-check me-2"></i>Status Profil</h4>
-            </div>
-            <div class="card-body text-center">
-                <div class="mb-3">
-                    <?php if (!empty($profile_foto)): ?>
-                        <img src="<?php echo base_url($profile_foto); ?>" alt="Foto Profil" 
-                             style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #0d6efd;">
-                    <?php else: ?>
-                        <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); 
-                                  display: flex; align-items: center; justify-content: center; color: white; font-size: 30px; margin: 0 auto;">
-                            <?php echo strtoupper(substr($user_name, 0, 1)); ?>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <h5><?php echo htmlspecialchars($user_name); ?></h5>
-                <p class="text-muted"><?php echo htmlspecialchars($user_email); ?></p>
-                
-                <div class="mt-3">
-                    <?php if ($profile_complete): ?>
-                        <span class="badge bg-success" style="font-size: 1rem; padding: 8px 16px;">
-                            <i class="fas fa-check-circle me-1"></i>PROFIL LENGKAP
-                        </span>
-                        <p class="text-muted mt-2 mb-0">Profil Anda sudah lengkap dan siap untuk mendaftar.</p>
-                    <?php else: ?>
-                        <span class="badge bg-warning" style="font-size: 1rem; padding: 8px 16px;">
-                            <i class="fas fa-exclamation-circle me-1"></i>PROFIL BELUM LENGKAP
-                        </span>
-                        <p class="text-muted mt-2 mb-0">Lengkapi profil Anda untuk dapat mendaftar.</p>
-                        <a href="<?php echo base_url('modules/profile/profile.php?mode=edit'); ?>" 
-                           class="btn btn-primary btn-sm mt-2">
-                            <i class="fas fa-edit me-1"></i>Lengkapi Sekarang
-                        </a>
-                    <?php endif; ?>
-                </div>
+    <!-- ============================================================ -->
+    <!-- RIGHT SIDEBAR -->
+    <!-- ============================================================ -->
+    <div class="col-lg-4">
+        <?php if ($user_role === 'SUPERADMIN'): ?>
+        <div class="dash-sidebar-card">
+            <h6 class="text-uppercase small fw-bold text-muted mb-3"><i class="fas fa-server me-2"></i>Sistem Overview</h6>
+            <div class="dash-sidebar-list">
+                <div class="dash-sidebar-item"><span>Status Sistem</span><span class="badge bg-success rounded-pill">ONLINE</span></div>
+                <div class="dash-sidebar-item"><span>Total User</span><span class="fw-semibold"><?php echo number_format($stats['total_users'] ?? 0); ?></span></div>
+                <div class="dash-sidebar-item"><span>Total Ujian</span><span class="fw-semibold"><?php echo number_format($stats['total_vacancies'] ?? 0); ?></span></div>
+                <div class="dash-sidebar-item"><span>Total Pendaftaran</span><span class="fw-semibold"><?php echo number_format($stats['total_submissions'] ?? 0); ?></span></div>
+                <div class="dash-sidebar-item"><span>Ujian Aktif</span><span class="fw-semibold text-success"><?php echo number_format($stats['active_vacancies'] ?? 0); ?></span></div>
             </div>
         </div>
-        
-        <!-- System Info -->
-        <div class="dashboard-card mb-4">
-            <div class="card-header">
-                <h4><i class="fas fa-info-circle me-2"></i>Info Sistem</h4>
-            </div>
-            
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Status Sistem</span>
-                    <span class="badge bg-success">ONLINE</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Login Terakhir</span>
-                    <span><?php echo date('d/m/Y H:i'); ?></span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Keamanan</span>
-                    <span class="badge bg-success">AKTIF</span>
-                </li>
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <span>Versi Sistem</span>
-                    <span>v1.0</span>
-                </li>
-            </ul>
-        </div>
-        
-        <!-- Quick Links -->
-        <div class="dashboard-card">
-            <div class="card-header">
-                <h4><i class="fas fa-link me-2"></i>Tautan Cepat</h4>
-            </div>
-            
-            <div class="list-group list-group-flush">
-                <a href="<?php echo base_url('modules/profile/profile.php'); ?>" class="list-group-item list-group-item-action">
-                    <i class="fas fa-user me-2 text-primary"></i>Profil Saya
-                </a>
-                <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="list-group-item list-group-item-action">
-                    <i class="fas fa-file-alt me-2 text-primary"></i>Pendaftaran Saya
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-calendar-alt me-2 text-primary"></i>Jadwal Seleksi
-                </a>
-                <a href="#" class="list-group-item list-group-item-action">
-                    <i class="fas fa-question-circle me-2 text-primary"></i>FAQ & Bantuan
-                </a>
+        <div class="dash-sidebar-card">
+            <h6 class="text-uppercase small fw-bold text-muted mb-3"><i class="fas fa-link me-2"></i>Menu Admin</h6>
+            <div class="dash-sidebar-links">
+                <a href="<?php echo base_url('modules/admin/user-management.php'); ?>" class="dash-sidebar-link"><i class="fas fa-users me-2"></i>Manajemen User</a>
+                <a href="<?php echo base_url('modules/admin/vacancy-management.php'); ?>" class="dash-sidebar-link"><i class="fas fa-file-alt me-2"></i>Manajemen Ujian</a>
+                <a href="<?php echo base_url('modules/admin/exam-master.php'); ?>" class="dash-sidebar-link"><i class="fas fa-database me-2"></i>Master Data Ujian</a>
+                <a href="#" class="dash-sidebar-link"><i class="fas fa-check-circle me-2"></i>Verifikasi Berkas</a>
+                <a href="#" class="dash-sidebar-link"><i class="fas fa-star me-2"></i>Penilaian</a>
+                <a href="#" class="dash-sidebar-link"><i class="fas fa-chart-line me-2"></i>Laporan & Statistik</a>
             </div>
         </div>
-        
-    <?php endif; ?>
+        <div class="dash-sidebar-card">
+            <h6 class="text-uppercase small fw-bold text-muted mb-3"><i class="fas fa-info-circle me-2"></i>Info Teknis</h6>
+            <div class="dash-sidebar-list">
+                <div class="dash-sidebar-item"><span>Versi Sistem</span><span class="badge rounded-pill" style="background:#eef2ff;color:#4f46e5">v1.0</span></div>
+                <div class="dash-sidebar-item"><span>PHP</span><span class="text-muted small"><?php echo phpversion(); ?></span></div>
+                <div class="dash-sidebar-item"><span>Login Terakhir</span><span class="text-muted small"><?php echo date('d/m/Y H:i'); ?></span></div>
+                <div class="dash-sidebar-item"><span>Keamanan</span><span class="badge bg-success rounded-pill">AKTIF</span></div>
+            </div>
+        </div>
+
+        <?php elseif ($user_role === 'USER'): ?>
+        <div class="dash-sidebar-card text-center">
+            <?php if (!empty($profile_foto)): ?>
+                <img src="<?php echo base_url($profile_foto); ?>" alt="Foto" class="dash-sidebar-avatar mb-2">
+            <?php else: ?>
+                <div class="dash-sidebar-avatar mb-2 mx-auto" style="background:linear-gradient(135deg,#1a3a5c,#0d6efd);color:#fff;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:700"><?php echo strtoupper(substr($user_name, 0, 1)); ?></div>
+            <?php endif; ?>
+            <h6 class="mb-1"><?php echo htmlspecialchars($user_name); ?></h6>
+            <p class="text-muted small"><?php echo htmlspecialchars($user_email); ?></p>
+            <?php if ($profile_complete): ?>
+                <span class="badge bg-success rounded-pill px-3 py-2"><i class="fas fa-check-circle me-1"></i>PROFIL LENGKAP</span>
+                <p class="text-muted small mt-2 mb-0">Siap mendaftar ujian.</p>
+            <?php else: ?>
+                <span class="badge bg-warning text-dark rounded-pill px-3 py-2"><i class="fas fa-exclamation-circle me-1"></i>PROFIL BELUM LENGKAP</span>
+                <a href="<?php echo base_url('modules/profile/profile.php?mode=edit'); ?>" class="btn btn-primary btn-sm rounded-pill px-4 mt-2"><i class="fas fa-edit me-1"></i>Lengkapi</a>
+            <?php endif; ?>
+        </div>
+
+        <div class="dash-sidebar-card">
+            <h6 class="text-uppercase small fw-bold text-muted mb-3"><i class="fas fa-info-circle me-2"></i>Info Sistem</h6>
+            <div class="dash-sidebar-list">
+                <div class="dash-sidebar-item"><span>Status</span><span class="badge bg-success rounded-pill">ONLINE</span></div>
+                <div class="dash-sidebar-item"><span>Login Terakhir</span><span class="text-muted small"><?php echo date('d/m/Y H:i'); ?></span></div>
+                <div class="dash-sidebar-item"><span>Keamanan</span><span class="badge bg-success rounded-pill">AKTIF</span></div>
+            </div>
+        </div>
+
+        <div class="dash-sidebar-card">
+            <h6 class="text-uppercase small fw-bold text-muted mb-3"><i class="fas fa-link me-2"></i>Tautan Cepat</h6>
+            <div class="dash-sidebar-links">
+                <a href="<?php echo base_url('modules/profile/profile.php'); ?>" class="dash-sidebar-link"><i class="fas fa-user me-2"></i>Profil Saya</a>
+                <a href="<?php echo base_url('modules/submission/submission.php'); ?>" class="dash-sidebar-link"><i class="fas fa-file-alt me-2"></i>Pendaftaran Saya</a>
+                <a href="#" class="dash-sidebar-link"><i class="fas fa-calendar-alt me-2"></i>Jadwal Seleksi</a>
+                <a href="#" class="dash-sidebar-link"><i class="fas fa-question-circle me-2"></i>FAQ & Bantuan</a>
+            </div>
+        </div>
+        <?php endif; ?>
     </div>
 </div>
 
+<!-- ============================================================ -->
+<!-- STYLES -->
+<!-- ============================================================ -->
 <style>
-/* ===== SUPERADMIN Stat Cards ===== */
-.stat-card {
-    background: white;
-    border-radius: 14px;
+/* === Welcome Banner === */
+.dash-banner {
+    position: relative;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    transition: all 0.3s ease;
-    border: 1px solid #edf2f9;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    background: #fff;
 }
-.stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+.dash-banner-bg {
+    height: 100px;
+    background: linear-gradient(135deg, #0a2463 0%, #123499 25%, #1a56db 50%, #2563eb 75%, #3b82f6 100%);
+    position: relative;
 }
-.stat-card-body {
-    padding: 20px 22px;
+.dash-banner-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.dash-banner-content {
+    position: relative;
+    padding: 20px 28px;
+    margin-top: -40px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    flex: 1;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: #fff;
 }
-.stat-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 12px;
+.dash-banner-text { flex: 1; min-width: 200px; }
+.dash-banner-title { color: #1e293b; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+.dash-banner-sub { color: #64748b; font-size: 0.88rem; margin-bottom: 0; }
+.dash-banner-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #fff;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    flex-shrink: 0;
+    background: #e2e8f0;
+}
+.dash-banner-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.dash-avatar-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.3rem;
-    flex-shrink: 0;
-}
-.stat-card-primary .stat-icon {
-    background: #eef3ff;
-    color: #0d6efd;
-}
-.stat-card-success .stat-icon {
-    background: #eafaf1;
-    color: #198754;
-}
-.stat-card-warning .stat-icon {
-    background: #fff8e6;
-    color: #f0a000;
-}
-.stat-card-info .stat-icon {
-    background: #e8f7fa;
-    color: #0dcaf0;
-}
-.stat-info {
-    flex: 1;
-    min-width: 0;
-}
-.stat-value {
+    background: linear-gradient(135deg, #1a3a5c, #0d6efd);
+    color: #fff;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #1e293b;
-    margin: 0;
-    line-height: 1.2;
-}
-.stat-label {
-    font-size: 0.82rem;
-    color: #64748b;
-    margin: 2px 0 0;
-}
-.stat-card-footer {
-    padding: 10px 22px;
-    border-top: 1px solid #f1f5f9;
-    background: #fafbfc;
-}
-.stat-link {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #0d6efd;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    transition: all 0.2s;
-}
-.stat-link:hover {
-    color: #0a58ca;
-    text-decoration: none;
-}
-.stat-link i {
-    font-size: 0.7rem;
-    transition: transform 0.2s;
-}
-.stat-link:hover i {
-    transform: translateX(3px);
 }
 
-/* ===== Quick Action Cards ===== */
-.quick-action-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 20px 16px;
-    border-radius: 12px;
-    background: #f8fafc;
-    border: 1px solid #edf2f9;
-    transition: all 0.25s ease;
-    cursor: pointer;
-    color: #334155;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-align: center;
-}
-.quick-action-card:hover {
+/* === Stat Cards === */
+.dash-stat-card {
     background: #fff;
-    border-color: #cbd5e1;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    color: #1e293b;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: all 0.2s;
+    position: relative;
 }
-.quick-action-icon {
+.dash-stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.dash-stat-icon {
     width: 48px;
     height: 48px;
     border-radius: 12px;
@@ -920,284 +592,303 @@ include __DIR__ . '/header-dashboard.php';
     align-items: center;
     justify-content: center;
     font-size: 1.2rem;
-    transition: all 0.25s ease;
+    flex-shrink: 0;
 }
-.quick-action-card:hover .quick-action-icon {
-    transform: scale(1.1);
+.dash-stat-info { flex: 1; }
+.dash-stat-value { font-size: 1.4rem; font-weight: 700; color: #1e293b; line-height: 1.2; }
+.dash-stat-label { font-size: 0.78rem; color: #94a3b8; font-weight: 500; }
+.dash-stat-link {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    transition: color 0.2s;
+    text-decoration: none;
 }
-.bg-primary-light { background: #eef3ff; }
-.bg-success-light { background: #eafaf1; }
-.bg-warning-light { background: #fff8e6; }
-.bg-info-light { background: #e8f7fa; }
+.dash-stat-card:hover .dash-stat-link { color: #0d6efd; }
 
-/* ===== List Group Enhanced ===== */
-.list-group-item {
-    border: none;
-    padding: 12px 0;
-    color: #495057;
-    transition: all 0.3s;
+/* === Section Cards === */
+.dash-section-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 20px;
+}
+.dash-section-header {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    display: flex;
+    align-items: center;
 }
 
-.list-group-item:hover {
-    color: #0d6efd;
-    background: none;
-    padding-left: 10px;
+/* === Quick Actions === */
+.dash-quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.dash-quick-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 18px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #edf2f9;
+    text-decoration: none;
+    color: #334155;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
 }
-
-.btn-dashboard, .btn-outline-dashboard.btn {
+.dash-quick-btn:hover { background: #fff; border-color: #cbd5e1; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); color: #1e293b; text-decoration: none; }
+.dash-quick-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1rem;
+    transition: transform 0.2s;
 }
+.dash-quick-btn:hover .dash-quick-icon { transform: scale(1.1); }
 
-.border-bottom {
-    border-color: #e9ecef !important;
+/* === Exam Cards === */
+.dash-exam-card {
+    background: #fff;
+    border: 1px solid #edf2f9;
+    border-radius: 12px;
+    padding: 18px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.2s;
+    position: relative;
 }
-
-.badge {
-    padding: 6px 12px;
-    font-weight: 500;
-}
-
-/* Perbaikan styling untuk card lowongan */
-.card {
-    background: white;
-    border: 1px solid #dee2e6;
-    transition: all 0.3s ease;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
-    border-color: #0d6efd;
-}
-
-.card-body {
-    background: white;
-    border-radius: 10px;
-}
-
-/* JUDUL CARD - UPDATED: Allow text wrapping */
-.vacancy-title {
+.dash-exam-card:hover { border-color: #cbd5e1; box-shadow: 0 4px 12px rgba(0,0,0,0.06); transform: translateY(-2px); }
+.dash-exam-type {
+    font-size: 0.7rem;
     font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 12px;
+    color: #4f46e5;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+}
+.dash-exam-title {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 6px;
     line-height: 1.4;
-    /* Allow text to wrap to multiple lines */
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-    /* Limit to 3 lines max */
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    min-height: 3.4em; /* Approx height for 3 lines */
-    line-clamp: 3;
 }
-
-/* Deskripsi */
-.vacancy-description {
-    color: #6c757d;
-    line-height: 1.6;
-    font-size: 0.9rem;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
-
-/* Badge status submission */
-.status-badge {
-    z-index: 10;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255,255,255,0.5);
-}
-
-/* Progress bar styling */
-.progress {
-    border-radius: 10px;
-    background-color: #e9ecef;
-}
-
-.progress-bar {
-    border-radius: 10px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
-}
-
-.btn-secondary, .btn-info, .btn-warning, .btn-danger {
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-weight: 500;
-}
-
-.btn-info {
-    background: linear-gradient(135deg, #0dcaf0 0%, #0ba8cc 100%);
-    border: none;
-}
-
-.btn-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-    border: none;
-}
-
-.flex-grow-1 {
+.dash-exam-desc {
+    font-size: 0.78rem;
+    color: #94a3b8;
+    margin-bottom: 10px;
     flex: 1;
 }
-
-.mt-auto {
-    margin-top: auto;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .vacancy-title {
-        min-height: auto;
-        -webkit-line-clamp: 4; /* Allow more lines on mobile */
-        line-clamp: 4;
-    }
-    
-    .vacancy-description {
-        min-height: auto;
-    }
-    
-    .col-md-4 {
-        margin-bottom: 20px;
-    }
-    
-    .status-badge {
-        font-size: 0.6rem !important;
-        padding: 3px 6px !important;
-    }
-}
-
-/* For better text wrapping on all elements */
-.text-wrap {
-    word-wrap: break-word;
-    white-space: normal;
-    overflow-wrap: break-word;
-}
-
-/* Ensure badges also wrap if needed */
-.badge {
-    white-space: normal;
-    word-wrap: break-word;
-    max-width: 100%;
-}
-
-/* User avatar in welcome card */
-.user-avatar img {
-    transition: transform 0.3s ease;
-}
-
-.user-avatar:hover img {
-    transform: scale(1.05);
-}
-
-/* Profile status card */
-.card-body.text-center h5 {
+.dash-exam-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.dash-exam-quota { margin-bottom: 4px; }
+.dash-exam-status {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.65rem;
+    padding: 2px 10px;
+    border-radius: 12px;
     font-weight: 600;
-    color: #2c3e50;
+    text-transform: uppercase;
+}
+.dash-exam-status-draft { background: #f1f5f9; color: #64748b; }
+.dash-exam-status-submitted { background: #dbeafe; color: #2563eb; }
+.dash-exam-status-verified { background: #d1fae5; color: #059669; }
+.dash-exam-status-rejected { background: #fee2e2; color: #dc2626; }
+.dash-exam-status-accepted { background: #d1fae5; color: #059669; }
+
+.dash-days-badge {
+    font-size: 0.72rem;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+}
+.dash-days-danger { background: #fee2e2; color: #dc2626; }
+.dash-days-warning { background: #fef3c7; color: #d97706; }
+.dash-days-info { background: #dbeafe; color: #2563eb; }
+
+/* === Announcements === */
+.dash-announce-item {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+.dash-announce-item:last-child { border-bottom: 0; }
+.dash-announce-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #d1fae5;
+    color: #059669;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+/* === Sidebar === */
+.dash-sidebar-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    margin-bottom: 16px;
+}
+.dash-sidebar-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #e2e8f0;
+}
+.dash-sidebar-list { display: flex; flex-direction: column; gap: 2px; }
+.dash-sidebar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    font-size: 0.85rem;
+    color: #334155;
+}
+.dash-sidebar-item + .dash-sidebar-item { border-top: 1px solid #f8fafc; }
+.dash-sidebar-links { display: flex; flex-direction: column; gap: 2px; }
+.dash-sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 9px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #475569;
+    text-decoration: none;
+    transition: all 0.15s;
+}
+.dash-sidebar-link:hover { background: #f1f5f9; color: #1e293b; text-decoration: none; }
+.dash-sidebar-link i { color: #94a3b8; width: 18px; text-align: center; }
+
+/* === Progress Tracker (Pizza-style) === */
+.tracker-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 24px 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.tracker-title {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 24px;
+    text-align: center;
+}
+.tracker-steps {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    position: relative;
+}
+.tracker-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+}
+.tracker-step-circle {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #f1f5f9;
+    border: 3px solid #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    color: #94a3b8;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s;
+    flex-shrink: 0;
+}
+.tracker-step-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    margin-top: 8px;
+    line-height: 1.3;
+}
+.tracker-step-desc {
+    font-size: 0.65rem;
+    color: #cbd5e1;
+    margin-top: 2px;
+    line-height: 1.3;
+}
+.tracker-step-line {
+    position: absolute;
+    top: 24px;
+    left: calc(50% + 30px);
+    right: calc(-50% + 30px);
+    height: 3px;
+    background: #e2e8f0;
+    z-index: 0;
+}
+.tracker-done .tracker-step-circle { background: #d1fae5; border-color: #059669; color: #059669; }
+.tracker-done .tracker-step-label { color: #059669; }
+.tracker-done .tracker-step-desc { color: #6ee7b7; }
+.tracker-done .tracker-step-line { background: #059669; }
+.tracker-active .tracker-step-circle {
+    background: #1a3a5c;
+    border-color: #1a3a5c;
+    color: #fff;
+    box-shadow: 0 0 0 6px rgba(26,58,92,0.12);
+    animation: trackerPulse 2s infinite;
+}
+.tracker-active .tracker-step-label { color: #1e293b; }
+.tracker-active .tracker-step-desc { color: #64748b; }
+.tracker-rejected .tracker-step-circle { background: #fee2e2; border-color: #dc2626; color: #dc2626; }
+.tracker-rejected .tracker-step-label { color: #dc2626; }
+.tracker-rejected .tracker-step-desc { color: #f87171; }
+@keyframes trackerPulse {
+    0%,100% { box-shadow: 0 0 0 6px rgba(26,58,92,0.12); }
+    50% { box-shadow: 0 0 0 14px rgba(26,58,92,0.04); }
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .dash-banner-content { flex-direction: column; align-items: flex-start; }
+    .dash-banner-avatar { align-self: center; }
+    .dash-stat-card { padding: 16px; }
+    .dash-stat-value { font-size: 1.2rem; }
+    .dash-quick-actions { gap: 8px; }
+    .dash-quick-btn { min-width: 80px; padding: 12px; }
+    .tracker-steps { overflow-x: auto; padding-bottom: 10px; }
+    .tracker-step { flex: 0 0 auto; min-width: 80px; }
+    .tracker-step-label { font-size: 0.65rem; }
+    .tracker-step-desc { display: none; }
+    .tracker-step-circle { width: 38px; height: 38px; font-size: 0.8rem; }
+    .tracker-step-line { top: 19px; left: calc(50% + 22px); right: calc(-50% + 22px); }
 }
 </style>
 
-<?php 
-// Tambahkan JavaScript khusus untuk dashboard
-$customJS .= <<<JS
-// Dashboard specific JavaScript
-document.addEventListener('DOMContentLoaded', function() {
-    // Update waktu login
-    const loginTimeElement = document.querySelector('[data-time="login-time"]');
-    if (loginTimeElement) {
-        setInterval(function() {
-            const now = new Date();
-            loginTimeElement.textContent = 
-                now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID');
-        }, 60000);
-    }
-    
-    // Smooth scroll untuk anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-    
-    // Tooltip untuk judul yang terpotong
-    document.querySelectorAll('.text-truncate').forEach(element => {
-        if (element.offsetWidth < element.scrollWidth) {
-            element.setAttribute('title', element.textContent);
-        }
-    });
-    
-    // Hover effect untuk card lowongan
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
-    });
-    
-    // Tooltip untuk badge status
-    document.querySelectorAll('.status-badge').forEach(badge => {
-        badge.addEventListener('mouseenter', function() {
-            const title = this.getAttribute('title');
-            if (title) {
-                // Create tooltip
-                const tooltip = document.createElement('div');
-                tooltip.className = 'custom-tooltip';
-                tooltip.textContent = title;
-                tooltip.style.position = 'absolute';
-                tooltip.style.background = 'rgba(0,0,0,0.8)';
-                tooltip.style.color = 'white';
-                tooltip.style.padding = '5px 10px';
-                tooltip.style.borderRadius = '4px';
-                tooltip.style.fontSize = '12px';
-                tooltip.style.zIndex = '9999';
-                tooltip.style.whiteSpace = 'nowrap';
-                
-                const rect = this.getBoundingClientRect();
-                tooltip.style.top = (rect.top - 35) + 'px';
-                tooltip.style.left = (rect.left + rect.width/2 - tooltip.offsetWidth/2) + 'px';
-                
-                document.body.appendChild(tooltip);
-                this.tooltipElement = tooltip;
-            }
-        });
-        
-        badge.addEventListener('mouseleave', function() {
-            if (this.tooltipElement) {
-                this.tooltipElement.remove();
-                this.tooltipElement = null;
-            }
-        });
-    });
-});
-JS;
-
-include __DIR__ . '/footer-dashboard.php'; 
-?>
+<?php include __DIR__ . '/footer-dashboard.php'; ?>

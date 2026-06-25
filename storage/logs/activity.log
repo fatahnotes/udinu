@@ -981,3 +981,406 @@
 [2026-06-23 14:37:35] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
 [2026-06-23 14:38:15] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
 [2026-06-23 14:40:03] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 16:42:19] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 16:42:19] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 16:42:24] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-23 16:42:47] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-23 16:42:47] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 16:56:20] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 16:56:42] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 16:56:50] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:07:41] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:07:42] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:09:34] ACTION: PROFILE_UPDATE | USER: 27 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 17:10:41] ACTION: PROFILE_UPDATE | USER: 27 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 17:12:16] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:12:27] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:12:37] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:12:44] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:13:38] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:13:39] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:16:50] ACTION: PROFILE_UPDATE | USER: 27 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 17:25:29] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:25:30] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 17:27:13] ACTION: PROFILE_UPDATE | USER: 27 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 17:32:18] ACTION: PROFILE_UPDATE | USER: 27 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 21:38:54] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 21:38:55] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:41:40] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:41:43] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-23 21:42:18] ACTION: REGISTER_SUCCESS | USER: 28 | DETAILS: New user registered: dona@gmail.com | IP: ::1
+[2026-06-23 21:42:31] ACTION: LOGIN_SUCCESS | USER: 28 | DETAILS: User logged in: 28 | IP: ::1
+[2026-06-23 21:43:02] ACTION: LOGOUT | USER: 28 | DETAILS: User logged out: dona harun | IP: ::1
+[2026-06-23 21:43:13] ACTION: LOGIN_SUCCESS | USER: 1 | DETAILS: User logged in: 1 | IP: ::1
+[2026-06-23 21:43:13] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:43:52] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:48:26] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:48:28] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:49:15] ACTION: DASHBOARD_ACCESS | USER: 1 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:50:07] ACTION: LOGOUT | USER: 1 | DETAILS: User logged out: Super Administrator | IP: ::1
+[2026-06-23 21:50:38] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-23 21:50:38] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:54:58] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:55:00] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:55:17] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:55:33] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:55:59] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:56:00] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:56:19] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:56:57] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:58:08] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 21:58:55] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:08] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:10] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:10] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:11] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:11] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:03:34] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:04:43] ACTION: LOGOUT | USER: 27 | DETAILS: User logged out: Fatah Yasin | IP: ::1
+[2026-06-23 22:04:53] ACTION: LOGIN_SUCCESS | USER: 28 | DETAILS: User logged in: 28 | IP: ::1
+[2026-06-23 22:06:40] ACTION: PROFILE_UPDATE | USER: 28 | DETAILS: Profile updated | IP: ::1
+[2026-06-23 22:06:44] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:06:55] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:07:25] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:13:38] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:13:41] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:15:32] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:17:04] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:40:48] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:41:02] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:42:57] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:07] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: SU Rapat Koordinasi Tindak Lanjut Penyusunan Laman Pengumuman & Helpdesk Pengadaan UDIN & UPKP, 17 Juni 2026, UPNVJ.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:13] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:21] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: SU Rapat Koordinasi Tindak Lanjut Penyusunan Laman Pengumuman & Helpdesk Pengadaan UDIN & UPKP, 17 Juni 2026, UPNVJ.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:26] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:31] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 7.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:36] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:40] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:43:44] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:44:00] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:45:28] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:45:44] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:46:45] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:46:46] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:46:52] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:46:56] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:00] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:05] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: SU Rapat Koordinasi Tindak Lanjut Penyusunan Laman Pengumuman & Helpdesk Pengadaan UDIN & UPKP, 17 Juni 2026, UPNVJ.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:10] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:14] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:18] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 5.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:22] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:47:27] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:48:49] ACTION: SUBMISSION_UPDATED | USER: 28 | DETAILS: User updated draft submission ID: 65 | IP: ::1
+[2026-06-23 22:53:28] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:53:36] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:53:40] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:53:44] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:53:49] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:53:54] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 5.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:53:58] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 6.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:54:02] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 7.png for submission ID: 65 | IP: ::1
+[2026-06-23 22:54:07] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:54:11] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: SU Rapat Koordinasi Tindak Lanjut Penyusunan Laman Pengumuman & Helpdesk Pengadaan UDIN & UPKP, 17 Juni 2026, UPNVJ.pdf for submission ID: 65 | IP: ::1
+[2026-06-23 22:54:46] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:54:58] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:59:36] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:59:37] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:59:37] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:59:41] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 22:59:57] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:00:04] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:08] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:12] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:18] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:23] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 5.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:28] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 6.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:32] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 7.png for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:36] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:00:41] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: SU Rapat Koordinasi Tindak Lanjut Penyusunan Laman Pengumuman & Helpdesk Pengadaan UDIN & UPKP, 17 Juni 2026, UPNVJ.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:05] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:10] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:15] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:20] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:25] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:30] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:35] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:39] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:01:43] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 67 | IP: ::1
+[2026-06-23 23:03:05] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:03:26] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:04:46] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:04:49] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:05:23] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:05:30] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:05:34] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:05:39] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:05:47] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:05:51] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 5.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:05:59] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 6.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:06:03] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 7.png for submission ID: 68 | IP: ::1
+[2026-06-23 23:06:08] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 68 | IP: ::1
+[2026-06-23 23:06:13] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 68 | IP: ::1
+[2026-06-23 23:13:04] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:13:13] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:16] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:20] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:27] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:31] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:36] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 5.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:41] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 6.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:44] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 7.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:48] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 69 | IP: ::1
+[2026-06-23 23:13:55] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for submission ID: 69 with formation: 0 | IP: ::1
+[2026-06-23 23:13:55] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-23 23:14:20] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for submission ID: 69 with formation: 0 | IP: ::1
+[2026-06-23 23:14:20] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-23 23:16:08] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:16:37] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:18:23] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:18:25] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:18:37] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 1.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:18:41] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: Paparan UDIN dan UPKP lanjutan.pdf for submission ID: 70 | IP: ::1
+[2026-06-23 23:18:46] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:18:54] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 4.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:18:58] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:19:02] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:19:07] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:19:11] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 2.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:19:16] ACTION: FILE_UPLOADED | USER: 28 | DETAILS: User uploaded file: file 3.png for submission ID: 70 | IP: ::1
+[2026-06-23 23:19:22] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for submission ID: 70 with formation: 0 | IP: ::1
+[2026-06-23 23:19:22] ACTION: APPLICATION_SUBMITTED | USER: 28 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-23 23:19:31] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-23 23:19:46] ACTION: DASHBOARD_ACCESS | USER: 28 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:10:52] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-24 06:10:52] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:11:00] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:13:55] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:21:25] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:21:28] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:22:22] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:22:31] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:22:42] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:22:52] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:23:02] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:23:11] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:23:18] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:23:29] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:23:54] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 62 | IP: ::1
+[2026-06-24 06:24:02] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 62 with formation: 0 | IP: ::1
+[2026-06-24 06:24:02] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 06:24:26] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 62 with formation: 0 | IP: ::1
+[2026-06-24 06:24:26] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 06:33:47] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:34:04] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 62 with formation: 0 | IP: ::1
+[2026-06-24 06:34:05] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 06:34:46] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:34:55] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:37:11] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:37:13] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:38:04] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:40:11] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:40:48] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: 20260526161711Surat Tugas Qurban-rev-sign.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:02] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:10] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:19] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:30] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:39] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:47] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:41:55] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:42:03] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 103 | IP: ::1
+[2026-06-24 06:42:59] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 103 with formation: 0 | IP: ::1
+[2026-06-24 06:42:59] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 06:46:34] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:46:56] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:47:06] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:14] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:21] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:31] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:39] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:47] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:47:56] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:48:04] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:48:12] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 104 | IP: ::1
+[2026-06-24 06:48:19] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 06:48:30] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 104 with formation: 0 | IP: ::1
+[2026-06-24 06:48:30] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 06:59:41] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:00:08] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:00:19] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:00:31] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:00:39] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:00:47] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:00:55] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:01:02] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:01:13] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:01:21] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 105 | IP: ::1
+[2026-06-24 07:01:27] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 105 with formation: 0 | IP: ::1
+[2026-06-24 07:01:27] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 07:09:56] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:10:23] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:10:36] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:10:49] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:11:03] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:11:17] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:11:29] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:11:43] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:11:56] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:12:07] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 106 | IP: ::1
+[2026-06-24 07:12:34] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 106 with formation: 0 | IP: ::1
+[2026-06-24 07:12:34] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 07:22:05] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:22:21] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:22:36] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:22:51] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:23:05] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:23:20] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:23:34] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:23:47] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:24:00] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:24:13] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 107 | IP: ::1
+[2026-06-24 07:24:27] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 107 with formation: 0 | IP: ::1
+[2026-06-24 07:24:27] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 07:32:37] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:32:47] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:33:01] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:33:14] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:33:27] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:33:40] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:33:57] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:34:10] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:34:24] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:34:38] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: WFA.png for submission ID: 108 | IP: ::1
+[2026-06-24 07:34:52] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 108 | IP: ::1
+[2026-06-24 07:35:12] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 108 with formation: 0 | IP: ::1
+[2026-06-24 07:35:12] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 07:35:16] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:35:28] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 108 with formation: 0 | IP: ::1
+[2026-06-24 07:35:28] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 07:35:31] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 07:35:42] ACTION: SUBMISSION_UPDATED | USER: 27 | DETAILS: User updated draft submission ID: 108 | IP: ::1
+[2026-06-24 07:35:56] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:19:47] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-24 10:19:47] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:31:02] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:31:16] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:31:29] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:31:40] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:31:48] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:31:59] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:32:09] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:32:18] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:32:27] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:32:35] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 141 | IP: ::1
+[2026-06-24 10:32:41] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 141 with formation: 0 | IP: ::1
+[2026-06-24 10:32:41] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 10:32:44] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:33:05] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:42:36] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:42:46] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:43:43] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:43:52] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:03] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:14] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:24] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:34] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:44] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:51] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:44:59] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 142 | IP: ::1
+[2026-06-24 10:45:07] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 142 with formation: 0 | IP: ::1
+[2026-06-24 10:45:07] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 10:45:08] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:48:42] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:48:55] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:04] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:13] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:22] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:30] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:38] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:47] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:49:54] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:50:02] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: TIKET GARUDA 24-26 JUN CGK DPS CGK MR FATAH YASIN-.pdf for submission ID: 143 | IP: ::1
+[2026-06-24 10:50:25] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 143 with formation: 0 | IP: ::1
+[2026-06-24 10:50:25] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-24 10:50:27] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:58:24] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-24 10:58:34] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 143 with formation: 0 | IP: ::1
+[2026-06-24 11:00:27] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 143 with formation: 0 | IP: ::1
+[2026-06-25 06:16:12] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-25 06:16:13] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:16:34] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:16:44] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:18:54] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:47:48] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:47:51] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 06:47:53] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:31:28] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-25 08:31:28] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:42:18] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:42:23] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:42:31] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 143 | IP: ::1
+[2026-06-25 08:42:33] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:42:49] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [asli]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 144 | IP: ::1
+[2026-06-25 08:43:54] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:46:21] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:49:32] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:49:35] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:50:03] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 144 | IP: ::1
+[2026-06-25 08:50:11] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:50:28] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: cetak A5-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 145 | IP: ::1
+[2026-06-25 08:54:39] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:54:40] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 08:54:48] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 145 | IP: ::1
+[2026-06-25 08:54:50] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:04:24] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:04:40] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Paparan Persiapan ZIWBK_BPK_Bali_2026.pdf for submission ID: 146 | IP: ::1
+[2026-06-25 09:08:28] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:08:29] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:08:36] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 146 | IP: ::1
+[2026-06-25 09:08:38] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:08:59] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: BoardingP-Fatah Ys.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 09:09:09] ACTION: FILE_DELETED | USER: 27 | DETAILS: User deleted file ID: 365 from submission ID: 147 | IP: ::1
+[2026-06-25 09:13:08] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 09:13:27] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: BoardingP-Suaedi.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:10:07] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 10:10:30] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:10:43] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:10:57] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:11:10] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:11:25] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:11:39] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:11:51] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:12:06] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:12:17] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 147 with formation: 0 | IP: ::1
+[2026-06-25 10:12:33] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 147 with formation: 0 | IP: ::1
+[2026-06-25 10:12:42] ACTION: FILE_DELETED | USER: 27 | DETAILS: User deleted file ID: 374 from submission ID: 147 | IP: ::1
+[2026-06-25 10:16:50] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 147 | IP: ::1
+[2026-06-25 10:17:02] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 147 with formation: 0 | IP: ::1
+[2026-06-25 10:22:18] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 147 with formation: 0 | IP: ::1
+[2026-06-25 10:22:18] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-25 10:22:20] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 10:22:36] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 147 with formation: 0 | IP: ::1
+[2026-06-25 10:22:36] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-25 10:22:39] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 17:35:11] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-25 17:35:12] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 17:35:35] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [asli]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 148 | IP: ::1
+[2026-06-25 17:35:51] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 148 | IP: ::1
+[2026-06-25 17:35:54] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 18:58:47] ACTION: LOGIN_SUCCESS | USER: 27 | DETAILS: User logged in: 27 | IP: ::1
+[2026-06-25 18:58:47] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 18:58:56] ACTION: SUBMISSION_CANCELLED | USER: 27 | DETAILS: User cancelled draft submission ID: 149 | IP: ::1
+[2026-06-25 18:59:00] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 18:59:36] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [asli]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 18:59:49] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [asli]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:00:00] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:00:11] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [font besar]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:00:21] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: [asli]-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:00:34] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:00:48] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:01:01] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:01:12] ACTION: FILE_UPLOADED | USER: 27 | DETAILS: User uploaded file: Pegangan Operator-Narasi Paparan_Irjen Kemenbud BPK Bali.pdf for submission ID: 150 | IP: ::1
+[2026-06-25 19:01:21] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for submission ID: 150 | IP: ::1
+[2026-06-25 19:01:21] ACTION: APPLICATION_SUBMITTED | USER: 27 | DETAILS: Submitted application for vacancy ID: 17 | IP: ::1
+[2026-06-25 19:03:07] ACTION: DASHBOARD_ACCESS | USER: 27 | DETAILS: User accessed dashboard | IP: ::1
+[2026-06-25 19:04:35] ACTION: LOGOUT | USER: 27 | DETAILS: User logged out: Fatah Yasin | IP: ::1

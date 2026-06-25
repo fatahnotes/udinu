@@ -161,18 +161,29 @@ function generate_csrf_token() {
  * Validate CSRF Token
  */
 function validate_csrf_token($token) {
-    if (empty($_SESSION['csrf_token']) || empty($token)) {
+    if (empty($token)) {
+        error_log("CSRF FAIL: Token is empty in POST");
+        return false;
+    }
+    if (empty($_SESSION['csrf_token'])) {
+        error_log("CSRF FAIL: No token in session. Session ID: " . session_id());
+        // Auto-generate a new token so user can retry after refresh
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        $_SESSION['csrf_token_time'] = time();
         return false;
     }
     
     if (!hash_equals($_SESSION['csrf_token'], $token)) {
+        error_log("CSRF FAIL: Token mismatch. SessLen=" . strlen($_SESSION['csrf_token']) . " PostLen=" . strlen($token));
         return false;
     }
     
-    // Check token expiration
     if (isset($_SESSION['csrf_token_time'])) {
         if (time() - $_SESSION['csrf_token_time'] > CSRF_TOKEN_LIFETIME) {
+            error_log("CSRF FAIL: Token expired. Age=" . (time() - $_SESSION['csrf_token_time']) . "s Limit=" . CSRF_TOKEN_LIFETIME . "s");
             unset($_SESSION['csrf_token'], $_SESSION['csrf_token_time']);
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+            $_SESSION['csrf_token_time'] = time();
             return false;
         }
     }

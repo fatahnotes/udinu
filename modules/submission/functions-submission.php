@@ -41,7 +41,7 @@ function has_active_submission($db, $user_id) {
         $sql = "SELECT COUNT(*) 
                 FROM submissions 
                 WHERE user_id = ? 
-                AND status NOT IN ('draft', 'rejected')";
+                AND status NOT IN ('draft', 'rejected_satker', 'rejected_pusat', 'not_passed')";
         
         $stmt = $db->prepare($sql);
         $stmt->execute([$user_id]);
@@ -64,7 +64,7 @@ function get_user_current_submission($db, $user_id) {
                 JOIN vacancies v ON s.vacancy_id = v.id
                 LEFT JOIN vacancy_types vt ON v.vacancy_type_id = vt.id
                 WHERE s.user_id = ? 
-                AND s.status NOT IN ('draft', 'rejected')
+                AND s.status NOT IN ('draft', 'rejected_satker', 'rejected_pusat', 'not_passed')
                 LIMIT 1";
         
         $stmt = $db->prepare($sql);
@@ -172,6 +172,9 @@ function can_apply_to_vacancy($db, $user_id, $vacancy_id) {
         if ($existing_submission) {
             if ($existing_submission['status'] === 'draft') {
                 return ['can_apply' => true, 'vacancy' => $vacancy, 'submission_id' => $existing_submission['id']];
+            } elseif ($existing_submission['status'] === 'rejected_satker') {
+                // Allow re-submission after rejection by satker
+                return ['can_apply' => true, 'vacancy' => $vacancy, 'submission_id' => $existing_submission['id']];
             } else {
                 return ['can_apply' => false, 'reason' => 'Anda sudah mendaftar lowongan ini'];
             }
@@ -181,7 +184,7 @@ function can_apply_to_vacancy($db, $user_id, $vacancy_id) {
         // PERBAIKAN: Hapus alias 's.' karena tabel tidak diberi alias
         $sql = "SELECT COUNT(*) FROM submissions 
                 WHERE user_id = ? 
-                AND status NOT IN ('draft', 'rejected')
+                AND status NOT IN ('draft', 'rejected_satker', 'rejected_pusat', 'not_passed')
                 AND vacancy_id != ?";
         $stmt = $db->prepare($sql);
         $stmt->execute([$user_id, $vacancy_id]);
@@ -214,14 +217,19 @@ function can_apply_to_vacancy($db, $user_id, $vacancy_id) {
  */
 function create_submission_draft($db, $user_id, $vacancy_id) {
     try {
-        // Check if draft already exists
-        $sql = "SELECT id FROM submissions 
-                WHERE user_id = ? AND vacancy_id = ? AND status = 'draft'";
+        // Check if draft or rejected_satker already exists — reuse it
+        $sql = "SELECT id, status FROM submissions 
+                WHERE user_id = ? AND vacancy_id = ? AND status IN ('draft', 'rejected_satker')";
         $stmt = $db->prepare($sql);
         $stmt->execute([$user_id, $vacancy_id]);
         
-        if ($draft = $stmt->fetch()) {
-            return $draft['id'];
+        if ($existing = $stmt->fetch()) {
+            // If rejected_satker, reset to draft for re-submission
+            if ($existing['status'] === 'rejected_satker') {
+                $reset = $db->prepare("UPDATE submissions SET status = 'draft', updated_at = NOW() WHERE id = ?");
+                $reset->execute([$existing['id']]);
+            }
+            return $existing['id'];
         }
         
         // Create new draft
@@ -262,10 +270,15 @@ function submit_application($db, $submission_id, $user_id, $files_data) {
         
         // Insert submission files
         foreach ($files_data as $file) {
+            $docNumber = $file['document_number'] ?? null;
+            $docDate   = $file['document_date'] ?? null;
+            if ($docNumber === '') $docNumber = null;
+            if ($docDate === '') $docDate = null;
+
             $sql = "INSERT INTO submission_files 
                     (submission_id, file_name, file_path, file_type, 
-                     file_size, mime_type, uploaded_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
+                     file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             
             $stmt = $db->prepare($sql);
             $stmt->execute([
@@ -274,7 +287,10 @@ function submit_application($db, $submission_id, $user_id, $files_data) {
                 $file['path'],
                 $file['type'],
                 $file['size'],
-                $file['mime']
+                $file['mime'],
+                ($file['document_id'] ?? null) ?: null,
+                $docNumber,
+                $docDate,
             ]);
         }
         
@@ -292,16 +308,65 @@ function submit_application($db, $submission_id, $user_id, $files_data) {
 }
 
 /**
- * Cancel submission draft
+ * Cancel submission draft — hapus total termasuk file fisik
  */
 function cancel_submission_draft($db, $submission_id, $user_id) {
     try {
-        $sql = "DELETE FROM submissions 
-                WHERE id = ? AND user_id = ? AND status = 'draft'";
+        // Get all file paths BEFORE deleting DB records
+        $stmt = $db->prepare("SELECT file_path FROM submission_files WHERE submission_id = ?");
+        $stmt->execute([$submission_id]);
+        $files_to_delete = $stmt->fetchAll(PDO::FETCH_COLUMN);
         
-        $stmt = $db->prepare($sql);
-        return $stmt->execute([$submission_id, $user_id]);
-    } catch (PDOException $e) {
+        $db->beginTransaction();
+        
+        // Delete submission files from DB
+        $stmt = $db->prepare("DELETE FROM submission_files WHERE submission_id = ?");
+        $stmt->execute([$submission_id]);
+
+        // Delete verification results if any
+        $stmt = $db->prepare("DELETE FROM verification_results WHERE submission_id = ?");
+        $stmt->execute([$submission_id]);
+
+        // Delete the draft submission (also allow deleting rejected_satker)
+        $stmt = $db->prepare("DELETE FROM submissions WHERE id = ? AND user_id = ? AND status IN ('draft', 'rejected_satker')");
+        $stmt->execute([$submission_id, $user_id]);
+
+        if ($stmt->rowCount() === 0) {
+            $db->rollBack();
+            error_log("CANCEL_DRAFT: No draft found to delete. ID: $submission_id, User: $user_id");
+            return false;
+        }
+
+        $db->commit();
+        
+        // Delete physical files from disk AFTER successful DB commit
+        $base_path = dirname(__DIR__, 2);
+        foreach ($files_to_delete as $file_path) {
+            $full_path = $base_path . '/' . $file_path;
+            if (file_exists($full_path)) {
+                unlink($full_path);
+                error_log("CANCEL_DRAFT: Deleted physical file: $full_path");
+            }
+        }
+        
+        // Try to remove the submission directory if empty
+        $upload_dir = $base_path . '/storage/uploads/submissions/' . $submission_id;
+        if (is_dir($upload_dir)) {
+            // Remove any remaining files in directory
+            $remaining = glob($upload_dir . '/*');
+            foreach ($remaining as $f) {
+                if (is_file($f)) unlink($f);
+            }
+            // Remove directory if empty
+            @rmdir($upload_dir);
+        }
+        
+        log_activity('SUBMISSION_CANCELLED', "User cancelled draft submission ID: $submission_id", $user_id);
+        return true;
+    } catch (Exception $e) {
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
         error_log("Error canceling submission draft: " . $e->getMessage());
         return false;
     }
@@ -327,10 +392,15 @@ function update_submission_draft($db, $submission_id, $user_id, $files_data, $de
         
         // Insert new files
         foreach ($files_data as $file) {
+            $docNumber = $file['document_number'] ?? null;
+            $docDate   = $file['document_date'] ?? null;
+            if ($docNumber === '') $docNumber = null;
+            if ($docDate === '') $docDate = null;
+
             $sql = "INSERT INTO submission_files 
                     (submission_id, file_name, file_path, file_type, 
-                     file_size, mime_type, uploaded_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
+                     file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             
             $stmt = $db->prepare($sql);
             $stmt->execute([
@@ -339,7 +409,10 @@ function update_submission_draft($db, $submission_id, $user_id, $files_data, $de
                 $file['path'],
                 $file['type'],
                 $file['size'],
-                $file['mime']
+                $file['mime'],
+                ($file['document_id'] ?? null) ?: null,
+                $docNumber,
+                $docDate,
             ]);
         }
         
@@ -421,8 +494,15 @@ function validate_submission_file($file, $allowed_types, $max_size) {
 
 /**
  * Save uploaded file securely for submission
+ * @param array $file            $_FILES array element
+ * @param string $document_code  Document code from vacancy_documents
+ * @param int    $submission_id  Submission ID
+ * @param string $document_number Optional document number
+ * @param string $document_date   Optional document date (Y-m-d)
+ * @param int    $document_id     Optional vacancy_documents.id for FK
+ * @return array|false
  */
-function save_submission_file($file, $document_code, $submission_id) {
+function save_submission_file($file, $document_code, $submission_id, $document_number = '', $document_date = '', $document_id = 0) {
     // Validasi file type (hanya PDF, JPG, PNG, JPEG)
     $file_ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $allowed_extensions = ['pdf', 'jpg', 'jpeg', 'png'];
@@ -477,7 +557,10 @@ function save_submission_file($file, $document_code, $submission_id) {
             'path' => $relative_path,
             'type' => $file_ext,
             'size' => $file['size'],
-            'mime' => $mime_type
+            'mime' => $mime_type,
+            'document_number' => $document_number,
+            'document_date' => $document_date,
+            'document_id' => $document_id,
         ];
     } else {
         $error = error_get_last();
@@ -552,12 +635,32 @@ function get_all_vacancy_types($db) {
 
 /**
  * Submit application with formation selection
+ * UPDATED: robust transaction handling + rowCount verification
  */
 function submit_application_with_formation($db, $submission_id, $user_id, $formation_id, $files_data) {
+    error_log("SUBMIT_FUNC: Called with submission_id=$submission_id, user_id=$user_id, formation_id=$formation_id, files_count=" . count($files_data));
+    
+    // Safety: clean up any dangling transaction
+    if ($db->inTransaction()) {
+        error_log("SUBMIT_FUNC WARNING: Rolling back unexpected active transaction");
+        $db->rollBack();
+    }
+    
     $db->beginTransaction();
     
     try {
-        // Update submission status and formation (only if formation_id > 0)
+        // Step 1: Verify submission exists as draft
+        $check = $db->prepare("SELECT id, vacancy_id FROM submissions WHERE id = ? AND user_id = ? AND status = 'draft'");
+        $check->execute([$submission_id, $user_id]);
+        $draft = $check->fetch();
+        if (!$draft) {
+            $db->rollBack();
+            error_log("SUBMIT_FUNC FAIL: Draft not found. Submission: $submission_id, User: $user_id");
+            return false;
+        }
+        error_log("SUBMIT_FUNC: Draft verified. Vacancy ID: " . $draft['vacancy_id']);
+
+        // Step 2: UPDATE status from 'draft' to 'submitted'
         if ($formation_id > 0) {
             $sql = "UPDATE submissions 
                     SET status = 'submitted', 
@@ -565,61 +668,84 @@ function submit_application_with_formation($db, $submission_id, $user_id, $forma
                         submission_date = NOW(),
                         updated_at = NOW()
                     WHERE id = ? AND user_id = ? AND status = 'draft'";
-            
             $stmt = $db->prepare($sql);
             $stmt->execute([$formation_id, $submission_id, $user_id]);
         } else {
-            // No formation selected
             $sql = "UPDATE submissions 
                     SET status = 'submitted', 
                         submission_date = NOW(),
                         updated_at = NOW()
                     WHERE id = ? AND user_id = ? AND status = 'draft'";
-            
             $stmt = $db->prepare($sql);
             $stmt->execute([$submission_id, $user_id]);
         }
         
-        if ($stmt->rowCount() === 0) {
-            error_log("ERROR: No rows updated. Submission ID: $submission_id, User ID: $user_id, Status: draft");
-            throw new Exception("Gagal mengupdate status pendaftaran - tidak ada baris yang diupdate");
+        $rows_updated = $stmt->rowCount();
+        error_log("SUBMIT_FUNC: UPDATE affected $rows_updated rows (expected 1)");
+        
+        if ($rows_updated === 0) {
+            throw new Exception("UPDATE affected 0 rows — status may already be changed or draft not found");
         }
         
-        // Insert submission files (if any)
+        // Step 3: Verify status changed (inside transaction)
+        $check = $db->prepare("SELECT status FROM submissions WHERE id = ?");
+        $check->execute([$submission_id]);
+        $current_status = $check->fetchColumn();
+        error_log("SUBMIT_FUNC: Status after UPDATE (inside tx) = " . ($current_status ?: 'NULL'));
+        
+        if ($current_status !== 'submitted') {
+            throw new Exception("Status is '$current_status', expected 'submitted'. Trigger may have rolled back the change.");
+        }
+        
+        // Step 4: Insert any new submission files
         foreach ($files_data as $file) {
+            $docNumber = ($file['document_number'] ?? null);
+            $docDate   = ($file['document_date'] ?? null);
+            if ($docNumber === '') $docNumber = null;
+            if ($docDate === '') $docDate = null;
+
             $sql = "INSERT INTO submission_files 
-                    (submission_id, file_name, file_path, file_type, 
-                     file_size, mime_type, uploaded_at) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
-            
+                    (submission_id, file_name, file_path, file_type, file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
             $stmt = $db->prepare($sql);
             $stmt->execute([
-                $submission_id,
-                $file['name'],
-                $file['path'],
-                $file['type'],
-                $file['size'],
-                $file['mime']
+                $submission_id, $file['name'], $file['path'], $file['type'],
+                $file['size'], $file['mime'],
+                ($file['document_id'] ?? null) ?: null,
+                $docNumber, $docDate,
             ]);
         }
         
-        // Update vacancy current_applicants count
-        $sql = "UPDATE vacancies v 
-                JOIN submissions s ON v.id = s.vacancy_id 
-                SET v.current_applicants = v.current_applicants + 1 
-                WHERE s.id = ?";
+        // Step 5: Update vacancy applicant count
+        $sql = "UPDATE vacancies SET current_applicants = current_applicants + 1 WHERE id = ?";
         $stmt = $db->prepare($sql);
-        $stmt->execute([$submission_id]);
+        $stmt->execute([$draft['vacancy_id']]);
         
-        // Log activity
-        log_activity('APPLICATION_SUBMITTED', "Submitted application for submission ID: $submission_id with formation: $formation_id", $user_id);
-        
+        // Step 6: COMMIT
         $db->commit();
+        error_log("SUBMIT_FUNC: Transaction COMMITTED successfully");
+        
+        // Step 7: FINAL VERIFICATION (outside transaction)
+        $finalCheck = $db->prepare("SELECT status FROM submissions WHERE id = ?");
+        $finalCheck->execute([$submission_id]);
+        $finalStatus = $finalCheck->fetchColumn();
+        error_log("SUBMIT_FUNC: Final status after commit = " . ($finalStatus ?: 'NULL'));
+        
+        if ($finalStatus !== 'submitted') {
+            error_log("SUBMIT_FUNC CRITICAL: Status is '$finalStatus' after commit! A trigger is likely reverting the change.");
+            return false;
+        }
+        
+        log_activity('APPLICATION_SUBMITTED', "Submitted application for submission ID: $submission_id", $user_id);
+        error_log("SUBMIT_FUNC SUCCESS: submission_id=$submission_id verified as 'submitted'");
         return true;
         
     } catch (Exception $e) {
-        $db->rollBack();
-        error_log("Error submitting application: " . $e->getMessage());
+        if ($db->inTransaction()) {
+            $db->rollBack();
+        }
+        error_log("SUBMIT_FUNC ERROR: " . $e->getMessage() . " | submission_id=$submission_id");
+        error_log("SUBMIT_FUNC TRACE: " . $e->getTraceAsString());
         return false;
     }
 }
@@ -653,15 +779,32 @@ function update_submission_draft_with_formation($db, $submission_id, $user_id, $
             throw new Exception("Gagal mengupdate draft - tidak ada baris yang diupdate");
         }
         
-        // Delete selected files
+        // Delete selected files (DB + physical)
         if (!empty($delete_files)) {
+            // Get file paths BEFORE deleting DB records
             $placeholders = implode(',', array_fill(0, count($delete_files), '?'));
-            $sql = "DELETE FROM submission_files 
+            $sql = "SELECT file_path FROM submission_files 
                     WHERE id IN ($placeholders) AND submission_id = ?";
-            
             $params = array_merge($delete_files, [$submission_id]);
             $stmt = $db->prepare($sql);
             $stmt->execute($params);
+            $paths_to_delete = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            
+            // Delete from DB
+            $sql = "DELETE FROM submission_files 
+                    WHERE id IN ($placeholders) AND submission_id = ?";
+            $stmt = $db->prepare($sql);
+            $stmt->execute($params);
+            
+            // Delete physical files from disk
+            $base_path = dirname(__DIR__, 2);
+            foreach ($paths_to_delete as $fp) {
+                $full_path = $base_path . '/' . $fp;
+                if (file_exists($full_path)) {
+                    unlink($full_path);
+                    error_log("DELETE_FILE: Removed physical file: $full_path");
+                }
+            }
         }
         
         // Insert new files
@@ -672,10 +815,15 @@ function update_submission_draft_with_formation($db, $submission_id, $user_id, $
             $stmt->execute([$submission_id, $file['name']]);
             
             if (!$stmt->fetch()) {
+                $docNumber = $file['document_number'] ?? null;
+                $docDate   = $file['document_date'] ?? null;
+                if ($docNumber === '') $docNumber = null;
+                if ($docDate === '') $docDate = null;
+
                 $sql = "INSERT INTO submission_files 
                         (submission_id, file_name, file_path, file_type, 
-                         file_size, mime_type, uploaded_at) 
-                        VALUES (?, ?, ?, ?, ?, ?, NOW())";
+                         file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
                 
                 $stmt = $db->prepare($sql);
                 $stmt->execute([
@@ -684,7 +832,10 @@ function update_submission_draft_with_formation($db, $submission_id, $user_id, $
                     $file['path'],
                     $file['type'],
                     $file['size'],
-                    $file['mime']
+                    $file['mime'],
+                    ($file['document_id'] ?? null) ?: null,
+                    $docNumber,
+                    $docDate,
                 ]);
             }
         }
@@ -764,11 +915,16 @@ function get_user_submissions($db, $user_id, $limit = null) {
                     CASE 
                         WHEN s.status = 'draft' THEN 1
                         WHEN s.status = 'submitted' THEN 2
-                        WHEN s.status = 'verified' THEN 3
-                        WHEN s.status = 'scored' THEN 4
-                        WHEN s.status = 'accepted' THEN 5
-                        WHEN s.status = 'rejected' THEN 6
-                        ELSE 7
+                        WHEN s.status = 'verified_satker' THEN 3
+                        WHEN s.status = 'verified_pusat' THEN 4
+                        WHEN s.status = 'exam_phase' THEN 5
+                        WHEN s.status = 'scoring_phase' THEN 6
+                        WHEN s.status = 'announced' THEN 7
+                        WHEN s.status = 'certified' THEN 8
+                        WHEN s.status = 'passed' THEN 9
+                        WHEN s.status = 'not_passed' THEN 9
+                        WHEN s.status LIKE 'rejected%' THEN 10
+                        ELSE 11
                     END,
                     s.created_at DESC";
         
@@ -841,6 +997,138 @@ function delete_submission_file($db, $file_id, $user_id) {
         
     } catch (PDOException $e) {
         error_log("Error deleting submission file: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Update a submission that has already been submitted (without changing status).
+ * Allows user to edit metadata and upload additional files while keeping 'submitted' status.
+ * 
+ * @param PDO   $db             Database connection
+ * @param int   $submission_id  Submission ID
+ * @param int   $user_id        User ID
+ * @param int   $formation_id   Formation ID (optional)
+ * @param array $files_data     New files to add
+ * @return bool
+ */
+function update_submitted_submission($db, $submission_id, $user_id, $formation_id, $files_data) {
+    error_log("UPDATE_SUBMITTED_FUNC: Called with submission_id=$submission_id, user_id=$user_id, formation_id=$formation_id, files_count=" . count($files_data));
+    
+    try {
+        // Verify submission exists and belongs to user
+        $check = $db->prepare("SELECT id, status FROM submissions WHERE id = ? AND user_id = ?");
+        $check->execute([$submission_id, $user_id]);
+        $submission = $check->fetch();
+        
+        if (!$submission) {
+            error_log("UPDATE_SUBMITTED_FUNC FAIL: Submission not found. ID: $submission_id, User: $user_id");
+            return false;
+        }
+        
+        if ($submission['status'] === 'draft') {
+            error_log("UPDATE_SUBMITTED_FUNC FAIL: Cannot use update_submitted on draft. Use submit instead.");
+            return false;
+        }
+        
+        // Update formation if provided
+        if ($formation_id > 0) {
+            $sql = "UPDATE submissions SET formation_id = ?, updated_at = NOW() WHERE id = ? AND user_id = ?";
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$formation_id, $submission_id, $user_id]);
+        } else {
+            // Just update timestamp
+            $sql = "UPDATE submissions SET updated_at = NOW() WHERE id = ? AND user_id = ?";
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$submission_id, $user_id]);
+        }
+        
+        // Insert any new files
+        foreach ($files_data as $file) {
+            $docNumber = $file['document_number'] ?? null;
+            $docDate   = $file['document_date'] ?? null;
+            if ($docNumber === '') $docNumber = null;
+            if ($docDate === '') $docDate = null;
+
+            $sql = "INSERT INTO submission_files 
+                    (submission_id, file_name, file_path, file_type, 
+                     file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+            
+            $stmt = $db->prepare($sql);
+            $stmt->execute([
+                $submission_id,
+                $file['name'],
+                $file['path'],
+                $file['type'],
+                $file['size'],
+                $file['mime'],
+                ($file['document_id'] ?? null) ?: null,
+                $docNumber,
+                $docDate,
+            ]);
+        }
+        
+        log_activity('SUBMISSION_UPDATED', "User updated submitted application ID: $submission_id", $user_id);
+        error_log("UPDATE_SUBMITTED_FUNC SUCCESS: submission_id=$submission_id");
+        
+        return true;
+        
+    } catch (Exception $e) {
+        error_log("UPDATE_SUBMITTED_FUNC ERROR: " . $e->getMessage());
+        return false;
+    }
+}
+
+/**
+ * Update document_number and document_date for existing submission files
+ * based on form POST data. Used when saving draft or submitting.
+ */
+function update_existing_file_metadata($db, $submission_id, $user_id, $documents, $post_data) {
+    try {
+        // Verify submission belongs to user
+        $sql = "SELECT id FROM submissions WHERE id = ? AND user_id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$submission_id, $user_id]);
+        if (!$stmt->fetch()) return false;
+
+        // Get all existing files for this submission
+        $sql = "SELECT * FROM submission_files WHERE submission_id = ?";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$submission_id]);
+        $existing_files = $stmt->fetchAll();
+
+        foreach ($documents as $doc) {
+            $doc_id = $doc['id'];
+            $doc_code = $doc['document_code'];
+            $new_number = trim($post_data['doc_number_' . $doc_id] ?? '');
+            $new_date   = trim($post_data['doc_date_' . $doc_id] ?? '');
+
+            // Find the matching existing file for this document
+            foreach ($existing_files as $ef) {
+                if (strpos($ef['file_name'], $doc_code) !== false || strpos($ef['file_path'], $doc_code) !== false) {
+                    // Check if values actually changed
+                    $cur_number = $ef['document_number'] ?? '';
+                    $cur_date   = $ef['document_date'] ?? '';
+                    if ($cur_number !== $new_number || $cur_date !== $new_date) {
+                        $sql = "UPDATE submission_files 
+                                SET document_number = ?, document_date = ? 
+                                WHERE id = ?";
+                        $stmt = $db->prepare($sql);
+                        $stmt->execute([
+                            ($new_number !== '' ? $new_number : null),
+                            ($new_date !== '' ? $new_date : null),
+                            $ef['id'],
+                        ]);
+                        error_log("DEBUG: Updated metadata for file ID {$ef['id']}: number=$new_number, date=$new_date");
+                    }
+                    break;
+                }
+            }
+        }
+        return true;
+    } catch (PDOException $e) {
+        error_log("Error updating file metadata: " . $e->getMessage());
         return false;
     }
 }

@@ -32,9 +32,8 @@ if ($_SESSION['user_role'] !== 'USER') {
     exit;
 }
 
-// Load auth functions
+// Load auth functions (contains validate_csrf_token)
 require_once $base_path . '/modules/auth/functions-auth.php';
-
 // Load submission functions
 require_once __DIR__ . '/functions-submission.php';
 
@@ -48,13 +47,131 @@ if (empty($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower($_SERVER['HTTP_X_REQU
     echo json_encode(['success' => false, 'message' => 'Invalid request type']);
     exit;
 }
+
+// === NEW: Validasi CSRF token ===
+$csrf_token = $_POST['csrf_token'] ?? '';
+if (!validate_csrf_token($csrf_token)) {
+    error_log("CSRF validation failed for auto-save. Token: $csrf_token");
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Token keamanan tidak valid. Refresh halaman.']);
+    exit;
+}
+
 // Get parameters
 $submission_id = intval($_POST['submission_id'] ?? 0);
 $document_id = intval($_POST['document_id'] ?? 0);
 $document_code = trim($_POST['document_code'] ?? '');
+$document_number = trim($_POST['document_number'] ?? '');
+$document_date = trim($_POST['document_date'] ?? '');
+$action = trim($_POST['action'] ?? '');
 
-error_log("DEBUG: Auto-save params - submission_id: $submission_id, document_id: $document_id, document_code: $document_code");
+error_log("DEBUG: Auto-save params - action: $action, submission_id: $submission_id, document_id: $document_id, document_code: $document_code, doc_number: $document_number, doc_date: $document_date");
 
+// --- DELETE FILE (AJAX) ---
+if ($action === 'delete_file') {
+    $file_id = intval($_POST['file_id'] ?? 0);
+    if ($submission_id <= 0 || $file_id <= 0) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Parameter tidak valid']);
+        exit;
+    }
+
+    $db = get_db_connection();
+    $user_id = $_SESSION['user_id'];
+
+    // Verify file belongs to user's submission (allow draft, submitted, rejected_satker)
+    $sql = "SELECT sf.id, sf.file_path 
+            FROM submission_files sf
+            JOIN submissions s ON sf.submission_id = s.id
+            WHERE sf.id = ? AND s.user_id = ? 
+            AND s.status IN ('draft', 'submitted', 'rejected_satker')";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$file_id, $user_id]);
+    $file = $stmt->fetch();
+
+    if (!$file) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'File tidak ditemukan atau tidak dapat dihapus']);
+        exit;
+    }
+
+    // Delete physical file
+    $full_path = $base_path . '/' . $file['file_path'];
+    if (file_exists($full_path)) {
+        unlink($full_path);
+        error_log("DELETE_FILE_AJAX: Removed physical file: $full_path");
+    }
+
+    // Delete DB record
+    $stmt = $db->prepare("DELETE FROM submission_files WHERE id = ?");
+    $stmt->execute([$file_id]);
+
+    // Update submission timestamp
+    $stmt = $db->prepare("UPDATE submissions SET updated_at = NOW() WHERE id = ?");
+    $stmt->execute([$submission_id]);
+
+    log_activity('FILE_DELETED', "User deleted file ID: $file_id from submission ID: $submission_id", $user_id);
+
+    echo json_encode(['success' => true, 'message' => 'File berhasil dihapus', 'file_id' => $file_id]);
+    exit;
+}
+
+// --- METADATA-ONLY UPDATE ---
+if ($action === 'update_metadata') {
+    if ($submission_id <= 0 || $document_id <= 0) {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'Invalid parameters']);
+        exit;
+    }
+
+    $db = get_db_connection();
+    $user_id = $_SESSION['user_id'];
+
+    // Verify submission belongs to user and is draft
+    $sql = "SELECT id FROM submissions WHERE id = ? AND user_id = ? AND status = 'draft'";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$submission_id, $user_id]);
+    if (!$stmt->fetch()) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Draft tidak ditemukan']);
+        exit;
+    }
+
+    // Get document_code from vacancy_documents
+    $sql = "SELECT document_code FROM vacancy_documents WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$document_id]);
+    $doc = $stmt->fetch();
+    if (!$doc) {
+        echo json_encode(['success' => true, 'message' => 'No document found, skipping']);
+        exit;
+    }
+
+    // Update metadata on existing submission_files matching this document_code
+    $sql = "UPDATE submission_files 
+            SET document_number = ?, document_date = ?
+            WHERE submission_id = ? 
+            AND (file_name LIKE ? OR file_path LIKE ?)";
+    $like_pattern = $doc['document_code'] . '_%';
+    $stmt = $db->prepare($sql);
+    $stmt->execute([
+        ($document_number !== '' ? $document_number : null),
+        ($document_date !== '' ? $document_date : null),
+        $submission_id,
+        $like_pattern,
+        $like_pattern,
+    ]);
+
+    // Also update timestamp
+    $sql = "UPDATE submissions SET updated_at = NOW() WHERE id = ?";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([$submission_id]);
+
+    echo json_encode(['success' => true, 'message' => 'Metadata diperbarui']);
+    exit;
+}
+
+// --- FILE UPLOAD (original flow) ---
 if ($submission_id <= 0 || $document_id <= 0 || empty($document_code)) {
     error_log("ERROR: Invalid parameters");
     http_response_code(400);
@@ -154,7 +271,7 @@ if ($existing_file) {
 }
 
 // Save new file
-$saved_file = save_submission_file($_FILES['file'], $document_code, $submission_id);
+$saved_file = save_submission_file($_FILES['file'], $document_code, $submission_id, $document_number, $document_date, $document_id);
 
 if (!$saved_file) {
     error_log("ERROR: Failed to save file to server");
@@ -164,8 +281,9 @@ if (!$saved_file) {
 }
 
 // Save to database
-$sql = "INSERT INTO submission_files (submission_id, file_name, file_path, file_type, file_size, mime_type, uploaded_at) 
-        VALUES (?, ?, ?, ?, ?, ?, NOW())";
+$doc_id = intval($document_id);
+$sql = "INSERT INTO submission_files (submission_id, file_name, file_path, file_type, file_size, mime_type, document_id, document_number, document_date, uploaded_at) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
 $stmt = $db->prepare($sql);
 $result = $stmt->execute([
     $submission_id,
@@ -173,7 +291,10 @@ $result = $stmt->execute([
     $saved_file['path'],
     $saved_file['type'],
     $saved_file['size'],
-    $saved_file['mime']
+    $saved_file['mime'],
+    ($doc_id > 0 ? $doc_id : null),
+    ($saved_file['document_number'] !== '' ? $saved_file['document_number'] : null),
+    ($saved_file['document_date'] !== '' ? $saved_file['document_date'] : null),
 ]);
 
 if (!$result) {
@@ -206,11 +327,13 @@ echo json_encode([
     'message' => 'File berhasil disimpan',
     'file_id' => $file_id,
     'file_name' => $saved_file['name'],
-    'file_path' => base_url($saved_file['path']),
+    'file_path' => base_url('modules/submission/view-file.php?file_id=' . $file_id . '&submission_id=' . $submission_id),
     'file_size' => $saved_file['size'],
     'file_size_formatted' => format_submission_bytes($saved_file['size']),
     'document_code' => $document_code,
-    'document_id' => $document_id
+    'document_id' => $document_id,
+    'document_number' => $saved_file['document_number'] ?? '',
+    'document_date' => $saved_file['document_date'] ?? '',
 ]);
 
 error_log("SUCCESS: File uploaded successfully for submission ID: $submission_id, file: {$saved_file['name']}");

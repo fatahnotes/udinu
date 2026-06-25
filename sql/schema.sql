@@ -43,13 +43,32 @@ CREATE TABLE user_roles (
 CREATE TABLE profiles (
     id SERIAL PRIMARY KEY,
     user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    nip VARCHAR(30),
+    nik VARCHAR(16),
     gender VARCHAR(10),
     phone VARCHAR(20),
     address TEXT,
-    birth_year INTEGER CHECK (birth_year >= 1900 AND birth_year <= EXTRACT(YEAR FROM CURRENT_DATE)),
+    tempat_lahir VARCHAR(100),
+    tanggal_lahir DATE,
+    agama VARCHAR(20),
+    status_perkawinan VARCHAR(20),
+    golongan VARCHAR(10),
+    jabatan_id INTEGER REFERENCES jabatan(id),
+    unit_kerja_id INTEGER REFERENCES unit_kerja(id) ON DELETE SET NULL,
+    status_pekerjaan VARCHAR(20),
+    npwp VARCHAR(20),
+    no_karpeg VARCHAR(30),
+    tmt_cpns DATE,
+    tmt_pns DATE,
     last_education VARCHAR(100),
     major VARCHAR(100),
     institution VARCHAR(255),
+    foto VARCHAR(500),
+    provinsi VARCHAR(100),
+    linkedin_url VARCHAR(255),
+    skills TEXT,
+    sertifikasi TEXT,
+    bio TEXT,
     is_profile_complete BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -224,6 +243,30 @@ CREATE INDEX idx_email_verification_tokens_token ON email_verification_tokens(to
 CREATE INDEX idx_email_verification_tokens_expires ON email_verification_tokens(expires_at);
 CREATE INDEX idx_password_reset_tokens_token ON password_reset_tokens(token);
 CREATE INDEX idx_password_reset_tokens_expires ON password_reset_tokens(expires_at);
+
+-- User education history (multiple entries per user)
+CREATE TABLE user_education (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    level VARCHAR(50) NOT NULL,
+    major VARCHAR(100),
+    degree VARCHAR(50),
+    institution VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_user_education_user ON user_education(user_id);
+
+-- User training/pelatihan (multiple entries per user)
+CREATE TABLE user_training (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    training_name VARCHAR(255) NOT NULL,
+    organizer VARCHAR(100),
+    training_year INTEGER,
+    certificate VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_user_training_user ON user_training(user_id);
 
 -- Triggers for updated_at
 CREATE OR REPLACE FUNCTION update_updated_at_column()
